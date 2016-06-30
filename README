@@ -1,0 +1,30 @@
+My final report states that my pathfinding-algorithm is a greedy Best-First search, and not A*. While this was true at the time of its writing, this has been fixed now, in this version of the system now successfully uses the A* pathfinding-algorithm to plan routes.
+The final report also states that the only way to search for a Node is to know its id. This was also true at the time of its writing, but some functionality has now been added to make it possible to find the Node closest to some coordinates specified by the user. This makes it easier for the user to specify where they are, and where they want to go.
+
+To make sure A* was working as intended, and not as a greedy Best-First search, some code was altered right before this project was handed in.
+Most notably: Node has been given an additional field called distanceTravelled, and parts of the search in A* has been updated to use this field.
+The additional field inside Node should really not be there, as it has little to do with the data of the actual Node, and more to do with how the search is implemented. The distanceTravelled data should really be kept inside the search, as it is the only place where it is relevant.
+The code has gotten a little messy inside the search, and many of the if() statements have become very long, making them hard to read
+
+NOTE:
+I changed the name of the project just before handing it in, to comply with requirements.
+The name was changed from "jok13_AccessAber" to "jok13_AccessAber-Pathfinding".
+I got an error-message telling me that not all files were renamed, but as none of my tests seem to be failing, it seems to be okay.
+I tried to rename it afterwards as well, but no errors were received that time, so I don't know what has happened...
+Should there be an error saying: "path: jok13_AccessAber/... could not be found" this is why.
+A potential fix could be to rename the project to "jok13_AccessAber" again.
+I just want to make sure that what I hand in is named in accordance with the requirements, so I can't rename the project myself before handing it in.
+
+RUNNING:
+To run the program, you can either launch RunTheSystemTest.java (and edit the input-parameters to the Main class in there), or launch RunTheSystem.java with the four input parameters: "double startNodeLatitude", "double startNodeLongitude", "double goalNodeLatitude", "double goalNodeLongitude".
+The program will first search for the Nodes closest to the coordinates you input, then find a route between those Nodes and return the Nodes on that route to you.
+
+There are some Nodes which are not connected to any other Node in the system, so a route cannot be planned from or to them. If the program takes too long to finish (say 10 seconds), just start it again using some different start and goal Nodes.
+
+TESTING:
+There are test-classes for each class in the system, which makes it possible to test each class individually.
+There is also a AllTests.java class, which will run all the test-classes together on the same data. These tests will take a little while to run, as there are quite a few of them, but not more than a few seconds.
+
+KNOWN ERRORS:
+I have noticed that the path returned by my search sometimes pass through the same Node twice. This is most likely an error resulting in a sub-optimal path, but without a map to check the route on, I cannot be sure. It seems like the search avoids infinite loops though, so it should still be "complete".
+All buildings in the list/database of Ways are named "yes". This is because the .osm file indicates that the building is in fact a building (key=building, value=yes), and I have not managed to read the buildings' names yet(key=name, value=Llandinam).
