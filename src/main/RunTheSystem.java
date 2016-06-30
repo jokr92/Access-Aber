@@ -8,7 +8,7 @@ import route.AStar;
 public class RunTheSystem {
 
 	/**
-	 * The Main method of this system..
+	 * The Main method of this system.
 	 * @param args Assumes args[0] is startLatitude, args[1] is startLongitude, args[2] is goalLatitude, and args[3] is goal goalLongitude
 	 * @author Jostein Kristiansen(jok13)
 	 */
