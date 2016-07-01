@@ -1,9 +1,7 @@
 package database;
 
 import java.util.List;
-
 import static org.junit.Assert.*;
-
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -85,8 +83,7 @@ public class BuildDatabaseTest {
 		assertTrue(wayConfig.get(0).getUser()!=null);
 		assertTrue(wayConfig.get(0).getUid()!=null);
 		assertFalse(wayConfig.get(0).getNodeRelations().isEmpty());
-		assertTrue(wayConfig.get(0).getKey()!=null);
-		assertTrue(wayConfig.get(0).getValue()!=null);
+		assertFalse(wayConfig.get(0).getKeyValuePairs().isEmpty());
 		
 		assertTrue(wayConfig.get(wayConfig.size()/2).getId()!=null);
 		assertTrue(wayConfig.get(wayConfig.size()/2).getVisible()!=null);
@@ -96,8 +93,7 @@ public class BuildDatabaseTest {
 		assertTrue(wayConfig.get(wayConfig.size()/2).getUser()!=null);
 		assertTrue(wayConfig.get(wayConfig.size()/2).getUid()!=null);
 		assertFalse(wayConfig.get(wayConfig.size()/2).getNodeRelations().isEmpty());
-		assertTrue(wayConfig.get(wayConfig.size()/2).getKey()!=null);
-		assertTrue(wayConfig.get(wayConfig.size()/2).getValue()!=null);
+		assertFalse(wayConfig.get(wayConfig.size()/2).getKeyValuePairs().isEmpty());
 		
 		assertTrue(wayConfig.get(wayConfig.size()-1).getId()!=null);
 		assertTrue(wayConfig.get(wayConfig.size()-1).getVisible()!=null);
@@ -107,8 +103,7 @@ public class BuildDatabaseTest {
 		assertTrue(wayConfig.get(wayConfig.size()-1).getUser()!=null);
 		assertTrue(wayConfig.get(wayConfig.size()-1).getUid()!=null);
 		assertFalse(wayConfig.get(wayConfig.size()-1).getNodeRelations().isEmpty());
-		assertTrue(wayConfig.get(wayConfig.size()-1).getKey()!=null);
-		assertTrue(wayConfig.get(wayConfig.size()-1).getValue()!=null);
+		assertFalse(wayConfig.get(wayConfig.size()-1).getKeyValuePairs().isEmpty());
 	}
 	
 	@Test
@@ -310,10 +305,10 @@ public class BuildDatabaseTest {
 	}
 	
 	@Test
-	public void KeyFieldsShouldNotBeTheSameInAllEntries(){
+	public void KeyAndValuePairsShouldNotBeTheSameInAllEntries(){
 		Boolean different=false;
 		for(Way testway:wayConfig){
-			if(!testway.getKey().equals(prevWay.getKey())){
+			if(!testway.getKeyValuePairs().equals(prevWay.getKeyValuePairs())){
 				different=true;
 				break;
 			}
@@ -322,18 +317,5 @@ public class BuildDatabaseTest {
 		}
 		assertTrue(different);
 	}
-	
-	@Test
-	public void ValueFieldsShouldNotBeTheSameInAllEntries(){
-		Boolean different=false;
-		for(Way testway:wayConfig){
-			if(testway.getValue()!=(prevWay.getValue())){
-				different=true;
-				break;
-			}
-			
-			prevWay=testway;
-		}
-		assertTrue(different);
-	}
+
 }

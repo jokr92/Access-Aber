@@ -164,27 +164,26 @@ public class BuildDatabase{
 	            	}
 	            	continue;
 	            	//adds the type(key) and identifier(value) to this way
-	            }else if (startElement.getName().getLocalPart().equals(WAY_TAG_START.getString())&&(way.getKey()==null||way.getValue()==null)){
+	            }else if (startElement.getName().getLocalPart().equals(WAY_TAG_START.getString())){
 	            	attributes = startElement.getAttributes();
+	            	String key=null;
+	            	String value=null;
+	            	
+	            	//Start adding a new entry (label)
 	            	while (attributes.hasNext()) {
 	                    attribute = attributes.next();
 	                    name=attribute.getName().toString();
 	                    String attributeValue=attribute.getValue();
 	                    
-	                    //Adds a key to this way
 	                    if (name.equals(WAY_TAG_KEY.getString())) {
-	                    	for(Keys k:Keys.values()){
-	                    		if(k.getKey().equals(attributeValue)){
-	                    			way.setKey(attributeValue);
-	                    			break;
-	                    		}
-	                    	}
-	                    	//adds a value to this way
-	                    }else if (name.equals(WAY_TAG_VALUE.getString())){//TODO Does not add building name as the value of buildings. Adds yes instead
-	                    	way.setValue(attributeValue);
+	                    	key=attributeValue;
+	                    }else if (name.equals(WAY_TAG_VALUE.getString())){
+	                    	value=attributeValue;
 	                    }
 	            	}
+	            	if(key!=null){way.addKeyValuePair(key, value);}
 	            	continue;
+	            	//Finish adding a new entry (label)
                 }
 	          }
             // If we reach the end of a way, we add it to the list
