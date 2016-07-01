@@ -1,13 +1,13 @@
 package database;
 
 /**
- * Holds all the fields used to build Nodes and Ways
+ * Holds all the common fields used to build Nodes and Ways
  * @author Jostein Kristiansen(jok13)
  *@see database.Node
  *@see database.Way
  */
 
-class Field {
+abstract class Field {
 	protected String id; 
 	protected Boolean visible;
 	protected String version;

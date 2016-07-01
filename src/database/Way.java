@@ -1,7 +1,10 @@
 package database;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.Set;
 
 /**
  * Builds Ways.
@@ -16,8 +19,7 @@ public class Way extends Field{
 	 * List of nodes, referring to nodes in the Array of Nodes in {@link database.BuildDatabase#getNodes()}
 	 */
 	private List<Node> nodeRelations=new ArrayList<Node>();
-	private String key;
-	private String value;
+	private HashMap<String, String> keyValuePairs=new HashMap<String,String>();
 
 	public List<Node> getNodeRelations() {
 		return nodeRelations;
@@ -25,23 +27,19 @@ public class Way extends Field{
 	public void setNodeRelation(Node node) {
 		this.nodeRelations.add(node);
 	}
-	public String getKey() {
-		return key;
+	//TODO Write unit tests for this
+	public void addKeyValuePair(String key, String value){
+		keyValuePairs.put(key, value);
 	}
-	public void setKey(String key) {
-		this.key = key;
+	//TODO Write unit test for this
+	public Set<Entry<String, String>> getKeyValuePairs() {
+		return keyValuePairs.entrySet();
 	}
-	
-	public String getValue() {
-		return value;
-	}
-	public void setValue(String value) {
-		this.value = value;
-	}
+
 	@Override
 	  public String toString() {
 	    return "Way [id=" + id + ", visible=" + visible + ", version="
 	        + version + ", changeset=" + changeset + ", timestamp=" + timestamp
-	        + ", user=" + user +", uid=" + uid + ", key=" + key + "]";
+	        + ", user=" + user +", uid=" + uid + "]";
 	  }
 }

@@ -30,7 +30,7 @@ public class SearchDatabaseTest {
 		assertNull(SearchDatabase.searchForNode("<node id=\"2997275611\""));
 		assertNull(SearchDatabase.searchForNode("osm"));
 		assertNull(SearchDatabase.searchForNode("ThisIsNotANode"));
-		assertNull(SearchDatabase.searchForNode("1"));//To see if it finds exact or just similar matches
+		assertNull(SearchDatabase.searchForNode("1"));//To see whether it finds exact or just similar matches
 	}
 	
 	@Test
