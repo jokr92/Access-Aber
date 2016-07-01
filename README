@@ -1,4 +1,4 @@
--THIS README IS VERY OLD, AND MAY THEREFORE NOT REFLECT THE CURRENT STATE OF THE SYSTEM-
+-THIS README IS VERY OLD, AND MAY THEREFORE NOT FULLY REFLECT THE CURRENT STATE OF THE SYSTEM-
 
 My final report states that my pathfinding-algorithm is a greedy Best-First search, and not A*. While this was true at the time of its writing, this has been fixed now, in this version of the system now successfully uses the A* pathfinding-algorithm to plan routes.
 The final report also states that the only way to search for a Node is to know its id. This was also true at the time of its writing, but some functionality has now been added to make it possible to find the Node closest to some coordinates specified by the user. This makes it easier for the user to specify where they are, and where they want to go.
