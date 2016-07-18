@@ -2,85 +2,54 @@ package database;
 
 import static org.junit.Assert.*;
 
+//import java.util.ArrayList;
+//import java.util.List;
+
 import org.junit.Test;
 
 public class WayTest {
-	
+
+	@Test
+	public void ClassShouldBeAnInterface(){
+			assertTrue(Way.class.isInterface());
+		}
+	/*
 	Way testWay = new Way();
-
-	@Test
-	public void GetAndSetNodeRelationsShouldReturnAResult() {
-		Node node = new Node();
-		assertTrue(testWay.getNodeRelations().isEmpty());
-		testWay.setNodeRelation(node);
-		assertFalse(testWay.getNodeRelations().isEmpty());
-	}
-	@Test
-	public void GetAndSetKeyShouldReturnAResult() {
-		assertNull(testWay.getKey());
-		testWay.setKey("key");
-		assertTrue(testWay.getKey().equals("key"));
-	}
-
-	@Test
-	public void GetAndSetValueShouldReturnAResult() {
-		assertNull(testWay.getValue());
-		testWay.setValue("value");
-		assertTrue(testWay.getValue().equals("value"));
-	}
-
+	
 	@Test
 	public void GetAndSetIdShouldReturnAResult() {
 		assertNull(testWay.getId());
 		testWay.setId("id");
 		assertTrue(testWay.getId().equals("id"));
 	}
-
+	
 	@Test
-	public void GetAndSetVisibleShouldReturnAResult() {
-		assertNull(testWay.getVisible());
-		testWay.setVisible(true);
-		assertTrue(testWay.getVisible());
+	public void GetAndSetNodeRelationShouldReturnAResult() {
+		OSMNode node = new OSMNode();
+		assertTrue(testWay.getNodeRelations().isEmpty());
+		testWay.setNodeRelation(node);
+		assertFalse(testWay.getNodeRelations().isEmpty());
 	}
 	
 	@Test
-	public void GetAndSetVersionShouldReturnAResult() {
-		assertNull(testWay.getVersion());
-		testWay.setVersion("ver");
-		assertTrue(testWay.getVersion().equals("ver"));
+	public void ShouldReplaceNodeRelationsWithNewList(){
+		List<OSMNode> nodeRelations1=new ArrayList<OSMNode>();
+		List<OSMNode> nodeRelations2=new ArrayList<OSMNode>();
+		OSMNode node1 = new OSMNode();
+		OSMNode node2 = new OSMNode();
+		
+		nodeRelations1.add(node1);
+		nodeRelations2.add(node1);
+		nodeRelations1.add(node2);
+		
+		assertTrue(testWay.getNodeRelations().isEmpty());
+		
+		testWay.setNodeRelations(nodeRelations1);
+		assertTrue(testWay.getNodeRelations().equals(nodeRelations1));
+		
+		testWay.setNodeRelations(nodeRelations2);
+		assertFalse(testWay.getNodeRelations().equals(nodeRelations1));
+		assertTrue(testWay.getNodeRelations().equals(nodeRelations2));
 	}
-	
-	@Test
-	public void GetAndSetChangesetShouldReturnAResult() {
-		assertNull(testWay.getChangeset());
-		testWay.setChangeset("Chng");
-		assertTrue(testWay.getChangeset().equals("Chng"));
-	}
-	
-	@Test
-	public void GetAndSetTimestampShouldReturnAResult() {
-		assertNull(testWay.getTimestamp());
-		testWay.setTimestamp("time");
-		assertTrue(testWay.getTimestamp().equals("time"));
-	}
-
-	@Test
-	public void GetAndSetUserShouldReturnAResult() {
-		assertNull(testWay.getUser());
-		testWay.setUser("jok13");
-		assertTrue(testWay.getUser().equals("jok13"));
-	}
-
-	@Test
-	public void GetAndSetUidShouldReturnAResult() {
-		assertNull(testWay.getUid());
-		testWay.setUid("uid");
-		assertTrue(testWay.getUid().equals("uid"));
-	}
-	
-	@Test
-	public void testToString() {
-		assertFalse(testWay.toString().isEmpty());
-	}
-
+*/
 }

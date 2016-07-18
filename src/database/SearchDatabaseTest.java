@@ -41,28 +41,28 @@ public class SearchDatabaseTest {
 	
 	@Test
 	public void ShouldFindRelationsBetweenNodesAndExpandTheRelations(){
-		List<Way> testList = new ArrayList<Way>(SearchDatabase.getWaysContainingNode("1078822336"));
-		for(Way way:testList){
+		List<OSMWay> testList = new ArrayList<OSMWay>(SearchDatabase.getWaysContainingNode("1078822336"));
+		for(OSMWay way:testList){
 			assertFalse(way.getNodeRelations().isEmpty());
 		}
 	}
 	
 	@Test
 	public void ShouldExpandRelationsBetweenNodesUntilASpecificNodeIsFound(){
-		Node startNode=SearchDatabase.searchForNode("2947828308");//"1078822336";
-		Node goalNode=SearchDatabase.searchForNode("2947828315");
-		Node currentNode=null;
+		OSMNode startNode=SearchDatabase.searchForNode("2947828308");//"1078822336";
+		OSMNode goalNode=SearchDatabase.searchForNode("2947828315");
+		OSMNode currentNode=null;
 		boolean found=false;
 		
-		List<Node> queueList = new ArrayList<Node>();//For organising the order of the nodes to be expanded
+		List<OSMNode> queueList = new ArrayList<OSMNode>();//For organising the order of the nodes to be expanded
 		List<String> visitedNodes = new ArrayList<String>();//For preventing revisiting of nodes, potentially ending in a loop
-		List<Node> importList = new ArrayList<Node>();//For handling imported nodes before they are passed into the queueArray
+		List<OSMNode> importList = new ArrayList<OSMNode>();//For handling imported nodes before they are passed into the queueArray
 		
-		queueList=(SearchDatabase.filterAccessibleWays(SearchDatabase.getWaysContainingNode(startNode.getId())));
+		queueList=(SearchDatabase.filterAccessibleNodes(SearchDatabase.getWaysContainingNode(startNode.getId())));
 		visitedNodes.add(startNode.getId());
-		Iterator<Node> i = queueList.iterator();
+		Iterator<OSMNode> i = queueList.iterator();
 		while(i.hasNext()){
-			Node node = i.next();
+			OSMNode node = i.next();
 			if(visitedNodes.contains(node.getId())){
 				i.remove();//So that we do not search for it again
 			}
@@ -78,7 +78,7 @@ public class SearchDatabaseTest {
 				queueList.remove(0);
 				visitedNodes.add(currentNode.getId());
 				
-						for(Way way:SearchDatabase.getWaysContainingNode(currentNode.getId())){
+						for(OSMWay way:SearchDatabase.getWaysContainingNode(currentNode.getId())){
 							if(way.getNodeRelations().contains(goalNode)){//TODO Does this also find very similar nodes? ie is 1 the same as 11, 21 etc?
 								found=true;
 								visitedNodes.add(goalNode.getId());
@@ -88,9 +88,9 @@ public class SearchDatabaseTest {
 						}
 				
 				if(found==false){
-					Iterator<Node> j = importList.iterator();
+					Iterator<OSMNode> j = importList.iterator();
 					while(j.hasNext()){
-						Node node = j.next();
+						OSMNode node = j.next();
 						if(visitedNodes.contains(node.getId())){
 							j.remove();//Faster to do it here than in the queueArray, as that array is most likely much larger
 
@@ -109,7 +109,7 @@ public class SearchDatabaseTest {
 	public void FilterShouldRemoveAnyWayThatIsNotMeantForNavigation(){
 		long nodesInAllWays=0;
 		long nodesInFilteredWays=0;
-		for(Way way:BuildDatabase.getWays()){
+		for(OSMWay way:BuildDatabase.getWays()){
 			nodesInAllWays=nodesInAllWays+way.getNodeRelations().size();
 		}
 		nodesInFilteredWays=SearchDatabase.filterAccessibleWays(BuildDatabase.getWays()).size();
@@ -120,7 +120,7 @@ public class SearchDatabaseTest {
 	
 	@Test
 	public void ShouldFindNodeSpecifiedByExactCoordinates(){
-		Node testNode = BuildDatabase.getNodes().get(BuildDatabase.getNodes().size()/2);
+		OSMNode testNode = BuildDatabase.getNodes().get(BuildDatabase.getNodes().size()/2);
 		double lat=testNode.getLatitude();
 		double lon=testNode.getLongitude();
 		

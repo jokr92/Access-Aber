@@ -2,6 +2,7 @@ package database;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
 
 import route.AStar;
 
@@ -15,11 +16,12 @@ public class SearchDatabase{
 	
 	/**
 	 * Searches for a specified node in {@link database.BuildDatabase#getNodes()}.
+	 * TODO Should {@link database.BuildDatabase#getNodes()} be sorted? It might speed up searches
 	 * @param nodeID The ID of the node to search for
 	 * @return The node if found, null otherwise.
 	 */
-	public static Node searchForNode(final String nodeID){
-		for(Node node:BuildDatabase.getNodes()){
+	public static OSMNode searchForNode(final String nodeID){
+		for(OSMNode node:BuildDatabase.getNodes()){
 			if (node.getId().equals(nodeID)){
 				return node;
 			}
@@ -32,11 +34,11 @@ public class SearchDatabase{
 	 * @param nodeToFind The ID of the node to search for
 	 * @return An unordered list of every Way that contains this Node
 	 */
-	public static List<Way> getWaysContainingNode(final String nodeToFind){
-		List<Way> matches = new ArrayList<Way>();
+	public static List<OSMWay> getWaysContainingNode(final String nodeToFind){
+		List<OSMWay> matches = new ArrayList<OSMWay>();
 		
-		for(Way way:BuildDatabase.getWays()){
-			for(Node node:way.getNodeRelations()){
+		for(OSMWay way:BuildDatabase.getWays()){
+			for(OSMNode node:way.getNodeRelations()){
 				if(node.getId().equals(nodeToFind)){
 					matches.add(way);
 					//matches.addAll(way.getNodeRelations());//returns all nodes in this way
@@ -54,34 +56,59 @@ public class SearchDatabase{
 	 * @param wayList List of Ways to run the filter on.
 	 * @return A list of nodes that can be used for navigation.
 	 */
-	public static List<Node> filterAccessibleWays(final List<Way> wayList){
-		List<Node> navigatableNodes = new ArrayList<Node>();
-		for(Way way:wayList){
+	public static List<OSMWay> filterAccessibleWays(final List<OSMWay> wayList){
+		List<OSMWay> navigatableWays = new ArrayList<OSMWay>();
+		for(OSMWay way:wayList){
 			try{
 				//Only adds a Way to the list if it is a highway(eg. a road, path, etc.), and it is not stairs
-			if(way.getKey().equals(Keys.KEY_HIGHWAY.getKey())&&(!way.getValue().equals(Keys.VALUE_STEPS.getKey()))){
-			navigatableNodes.addAll(way.getNodeRelations());
-			}//else{System.out.println(way.getKey() +", "+way.getValue() + " is not suitable for navigation");}
+			for(Entry<String, Object> dbPair:way.getKeyValuePairs()){
+				for(Keys enumPair:Keys.values()){
+					if(dbPair.getKey().equals(enumPair.getKey())&&dbPair.getValue().equals(enumPair.getValue())){
+						navigatableWays.add(way);
+						break;
+						}
+				}//else{System.out.println(way.getKey() +", "+way.getValue() + " is not suitable for navigation");}
+				
+			}
 			}catch(NullPointerException e){
 				//in case a Key or Value is null; which can happen in the OSM database.
 			}
+		}
+		return navigatableWays;
+	}
+	
+	/**
+	 *TODO Currently, the filter is: Key=highway && Value!=steps. Is it possible to create a better filter? Maybe it should be possible to cross open spaces like k=amenity v=parking?
+	 * Filters out the Ways that are not marked with a highway key (ie. any Way that is not a road, path, stair, etc.).
+	 * This is meant to aid in restricting the nodes used for pathfinding, as not all nodes are actually meant for navigation.
+	 * @param wayList List of Ways to run the filter on.
+	 * @return A list of Nodes that can be used for navigation.
+	 */
+	public static List<OSMNode> filterAccessibleNodes(final List<OSMWay> wayList){
+		List<OSMNode> navigatableNodes = new ArrayList<OSMNode>();
+		for(OSMWay way:filterAccessibleWays(wayList)){
+				//Only adds a Node to the list if it is part of a highway(eg. a road, path, etc.), and it is not stairs
+						navigatableNodes.addAll(way.getNodeRelations());			
 		}
 		return navigatableNodes;
 	}
 	
 	/**
 	 * Searches through the database of Nodes {@link database.BuildDatabase #getNodes()} for the Node closest to the input coordinates
+	 * TODO The node found may not be accessible or connected to any other nodes; I should fix this
 	 * @param lat degrees min -90, max 90
 	 * @param lon degrees min -180, max 180
 	 * @return The Node closest to the coordinates specified in the input
 	 */
-	public static Node findClosestNode(double lat, double lon){
-		Node closestNode=null;
-		double distance=Double.POSITIVE_INFINITY;
-		for(Node node:BuildDatabase.getNodes()){
-			if(AStar.distanceBetweenPoints(node.getLatitude(), node.getLongitude(), lat, lon)<distance){
+	public static OSMNode findClosestNode(double lat, double lon){
+		OSMNode closestNode=null;
+		double shortestDistance=Double.POSITIVE_INFINITY;
+		double currentDistance=Double.POSITIVE_INFINITY;
+		for(OSMNode node:BuildDatabase.getNodes()){
+			currentDistance=AStar.distanceBetweenPoints(node.getLatitude(), node.getLongitude(), lat, lon);
+			if(currentDistance<shortestDistance){
 				closestNode=node;
-				distance=AStar.distanceBetweenPoints(node.getLatitude(), node.getLongitude(), lat, lon);
+				shortestDistance=currentDistance;
 			}
 		}
 		return closestNode;

@@ -1,57 +1,30 @@
 package database;
+
+import java.util.Comparator;
+
 /**
- * Builds Nodes.
- * A node contains the fields: id, visible, version, changeset, timestamp, user, uid, lat, long
- * @author Vogella
- * Source: www.vogella.com/tutorials/JavaXML/article.html
- * License: www.eclipse.org/legal/epl-v10.html
- * @see database.Field
+ * Holds all the required fields used to build Nodes
+ * @author Jostein Kristiansen(jok13)
+ *@see database.OSMNode
+ *@see database.OSMWay
  */
-public class Node extends Field{
-	  private double lat;
-	  private double lon;
-	  
-	  /**
-	   * TODO This should probably be kept elsewhere, but I am in a rush to get A* to work, so I'll keep it here for now
-	   */
-	  private double distanceTravelled;
 
-	public double getLatitude() {
-		return lat;
-	}
+/*abstract*//*Can't instantiate an abstract class*/ interface Node extends Comparator<Node>{
 
-	public void setLatitude(double lat) {
-		this.lat = lat;
-	}
-
-	public double getLongitude() {
-		return lon;
-	}
-
-	public void setLongitude(double lon) {
-		this.lon = lon;
-	}
+	String getId();
 	
-	/**
-	 * TODO This method should probably be deleted
-	 * @see {@link #distanceTravelled}
-	 */
-	public double getDistanceTravelled(){
-		return distanceTravelled;
-	}
+	void setId(String id);
 	
-	/**
-	 * TODO This method should probably be deleted
-	 * @see {@link #distanceTravelled}
-	 */
-	public void setDistanceTravelled(double distanceTravelled){
-		this.distanceTravelled = distanceTravelled;
-	}
+	double getLatitude();
 	
+	void setLatitude(double lat);
+
+	double getLongitude();
+	
+	void setLongitude(double lon);
+
 	@Override
-	  public String toString() {
-	    return "Node [id=" + id + ", visible=" + visible + ", version="
-	        + version + ", changeset=" + changeset + ", timestamp=" + timestamp
-	        + ", user=" + user +", uid=" + uid + ", lat=" + lat + ", lon=" + lon + "]";
-	  }
-	} 
+	public default int compare(Node n1, Node n2) {
+		return n1.getId().compareTo(n2.getId());
+	}
+}

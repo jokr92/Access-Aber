@@ -9,7 +9,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import database.BuildDatabase;
-import database.Node;
+import database.OSMNode;
 import database.SearchDatabase;
 /**
  * 
@@ -29,17 +29,20 @@ public class AStarTest {
 	public void shouldGetDistanceBetweenTwoPoints(){
 		assertTrue(AStar.distanceBetweenPoints(3.2, 2, 1, 4.1)==4.3);
 		assertTrue(AStar.distanceBetweenPoints(1, 4.1, 3.2, 2)==4.3);
+		
+		/*Makes sure that all distances are positive(CRUCIAL FOR PATH-COST CALCULATIONS)*/
+		assertTrue(AStar.distanceBetweenPoints(1, 1, 1, 1)>0);
 	}
 	
 	@Test
 	public void ShouldExpandTheStartNodeAndSortTheResultingChildrenByTheirProximityToTheGoalNode(){
-		List<Node> unsortedTestNodes = new ArrayList<Node>();
-		List<Node> sortedTestNodes = new ArrayList<Node>();
+		List<OSMNode> unsortedTestNodes = new ArrayList<OSMNode>();
+		List<OSMNode> sortedTestNodes = new ArrayList<OSMNode>();
 
 		AStar.setStartNode(SearchDatabase.searchForNode("2641099872"));
 		AStar.setGoalNode(SearchDatabase.searchForNode("3274334109"));
 		
-		Node startNode=AStar.getStartNode();
+		OSMNode startNode=AStar.getStartNode();
 		
 		unsortedTestNodes=AStar.getNavigatableConnectedNodes(startNode.getId());
 		
@@ -56,11 +59,11 @@ public class AStarTest {
 	
 	@Test
 	public void ShouldFindShortestRouteFromOneNodeToAnother(){
-		List<Node> path = new ArrayList<Node>();
+		List<OSMNode> path = new ArrayList<OSMNode>();
 		AStar.setStartNode(SearchDatabase.searchForNode("2947828308"));
 		AStar.setGoalNode(SearchDatabase.searchForNode("2947828315"));
-		Node startNode=AStar.getStartNode();
-		Node goalNode=AStar.getGoalNode();
+		OSMNode startNode=AStar.getStartNode();
+		OSMNode goalNode=AStar.getGoalNode();
 		
 		path=AStar.search(startNode, goalNode);
 		

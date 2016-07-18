@@ -13,11 +13,11 @@ import org.junit.Test;
 
 public class BuildDatabaseTest {
 	
-	static List<Node> nodeConfig;
-	static List<Way> wayConfig;
+	static List<OSMNode> nodeConfig;
+	static List<OSMWay> wayConfig;
 	
-	static Node prevNode = new Node();
-	static Way prevWay = new Way();
+	static OSMNode prevNode = new OSMNode();
+	static OSMWay prevWay = new OSMWay();
 		
 	@BeforeClass
 	public static void PopulateLists(){
@@ -32,7 +32,7 @@ public class BuildDatabaseTest {
 	
 	@Test
 	public void NodeAndWayListsShouldBePopulated(){
-		List<Way> wayConfig = BuildDatabase.getWays();
+		List<OSMWay> wayConfig = BuildDatabase.getWays();
 		assertFalse(nodeConfig.isEmpty());
 		//System.out.println(nodeConfig.size());
 		assertFalse(wayConfig.isEmpty());
@@ -41,9 +41,9 @@ public class BuildDatabaseTest {
 	
 	@Test
 	public void AllNodeFieldsShouldBePopulated(){
-		List<Node> nodeConfig = BuildDatabase.getNodes();
+		List<OSMNode> nodeConfig = BuildDatabase.getNodes();
 		assertTrue(nodeConfig.get(0).getId()!=null);
-		assertTrue(nodeConfig.get(0).getVisible()!=null);
+		assertTrue(nodeConfig.get(0).isVisible());
 		assertTrue(nodeConfig.get(0).getVersion()!=null);
 		assertTrue(nodeConfig.get(0).getChangeset()!=null);
 		assertTrue(nodeConfig.get(0).getTimestamp()!=null);
@@ -53,7 +53,7 @@ public class BuildDatabaseTest {
 		assertTrue(nodeConfig.get(0).getLongitude()>0||(nodeConfig.get(0).getLongitude()<0));
 		
 		assertTrue(nodeConfig.get(nodeConfig.size()/2).getId()!=null);
-		assertTrue(nodeConfig.get(nodeConfig.size()/2).getVisible()!=null);
+		assertTrue(nodeConfig.get(nodeConfig.size()/2).isVisible());
 		assertTrue(nodeConfig.get(nodeConfig.size()/2).getVersion()!=null);
 		assertTrue(nodeConfig.get(nodeConfig.size()/2).getChangeset()!=null);
 		assertTrue(nodeConfig.get(nodeConfig.size()/2).getTimestamp()!=null);
@@ -63,7 +63,7 @@ public class BuildDatabaseTest {
 		assertTrue(nodeConfig.get(nodeConfig.size()/2).getLongitude()>0||(nodeConfig.get(0).getLongitude()<0));
 		
 		assertTrue(nodeConfig.get(nodeConfig.size()-1).getId()!=null);
-		assertTrue(nodeConfig.get(nodeConfig.size()-1).getVisible()!=null);
+		assertTrue(nodeConfig.get(nodeConfig.size()-1).isVisible());
 		assertTrue(nodeConfig.get(nodeConfig.size()-1).getVersion()!=null);
 		assertTrue(nodeConfig.get(nodeConfig.size()-1).getChangeset()!=null);
 		assertTrue(nodeConfig.get(nodeConfig.size()-1).getTimestamp()!=null);
@@ -76,7 +76,7 @@ public class BuildDatabaseTest {
 	@Test
 	public void AllWayFieldsShouldBePopulated(){
 		assertTrue(wayConfig.get(0).getId()!=null);
-		assertTrue(wayConfig.get(0).getVisible()!=null);
+		assertTrue(wayConfig.get(0).isVisible());
 		assertTrue(wayConfig.get(0).getVersion()!=null);
 		assertTrue(wayConfig.get(0).getChangeset()!=null);
 		assertTrue(wayConfig.get(0).getTimestamp()!=null);
@@ -86,7 +86,7 @@ public class BuildDatabaseTest {
 		assertFalse(wayConfig.get(0).getKeyValuePairs().isEmpty());
 		
 		assertTrue(wayConfig.get(wayConfig.size()/2).getId()!=null);
-		assertTrue(wayConfig.get(wayConfig.size()/2).getVisible()!=null);
+		assertTrue(wayConfig.get(wayConfig.size()/2).isVisible());
 		assertTrue(wayConfig.get(wayConfig.size()/2).getVersion()!=null);
 		assertTrue(wayConfig.get(wayConfig.size()/2).getChangeset()!=null);
 		assertTrue(wayConfig.get(wayConfig.size()/2).getTimestamp()!=null);
@@ -96,7 +96,7 @@ public class BuildDatabaseTest {
 		assertFalse(wayConfig.get(wayConfig.size()/2).getKeyValuePairs().isEmpty());
 		
 		assertTrue(wayConfig.get(wayConfig.size()-1).getId()!=null);
-		assertTrue(wayConfig.get(wayConfig.size()-1).getVisible()!=null);
+		assertTrue(wayConfig.get(wayConfig.size()-1).isVisible());
 		assertTrue(wayConfig.get(wayConfig.size()-1).getVersion()!=null);
 		assertTrue(wayConfig.get(wayConfig.size()-1).getChangeset()!=null);
 		assertTrue(wayConfig.get(wayConfig.size()-1).getTimestamp()!=null);
@@ -109,7 +109,7 @@ public class BuildDatabaseTest {
 	@Test
 	public void IdFieldsShouldNotBeTheSameInAllEntries(){
 		Boolean different=false;
-		for(Node testNode:nodeConfig){
+		for(OSMNode testNode:nodeConfig){
 			if(!testNode.getId().equals(prevNode.getId())){
 				different=true;
 				break;
@@ -119,7 +119,7 @@ public class BuildDatabaseTest {
 		}
 		assertTrue(different);
 		different=false;
-		for(Way testWay:wayConfig){
+		for(OSMWay testWay:wayConfig){
 			if(!testWay.getId().equals(prevWay.getId())){
 				different=true;
 				break;
@@ -159,7 +159,7 @@ public class BuildDatabaseTest {
 	@Test
 	public void VersionFieldsShouldNotBeTheSameInAllEntries(){
 		Boolean different=false;
-		for(Node testNode:nodeConfig){
+		for(OSMNode testNode:nodeConfig){
 			if(!testNode.getVersion().equals(prevNode.getVersion())){
 				different=true;
 				break;
@@ -169,7 +169,7 @@ public class BuildDatabaseTest {
 		}
 		assertTrue(different);
 		different=false;
-		for(Way testWay:wayConfig){
+		for(OSMWay testWay:wayConfig){
 			if(!testWay.getVersion().equals(prevWay.getVersion())){
 				different=true;
 				break;
@@ -183,7 +183,7 @@ public class BuildDatabaseTest {
 	@Test
 	public void ChangesetFieldsShouldNotBeTheSameInAllEntries(){
 		Boolean different=false;
-		for(Node testNode:nodeConfig){
+		for(OSMNode testNode:nodeConfig){
 			if(!testNode.getChangeset().equals(prevNode.getChangeset())){
 				different=true;
 				break;
@@ -193,7 +193,7 @@ public class BuildDatabaseTest {
 		}
 		assertTrue(different);
 		different=false;
-		for(Way testWay:wayConfig){
+		for(OSMWay testWay:wayConfig){
 			if(!testWay.getChangeset().equals(prevWay.getChangeset())){
 				different=true;
 				break;
@@ -207,7 +207,7 @@ public class BuildDatabaseTest {
 	@Test
 	public void TimestampFieldsShouldNotBeTheSameInAllEntries(){
 		Boolean different=false;
-		for(Node testNode:nodeConfig){
+		for(OSMNode testNode:nodeConfig){
 			if(!testNode.getTimestamp().equals(prevNode.getTimestamp())){
 				different=true;
 				break;
@@ -217,7 +217,7 @@ public class BuildDatabaseTest {
 		}
 		assertTrue(different);
 		different=false;
-		for(Way testWay:wayConfig){
+		for(OSMWay testWay:wayConfig){
 			if(!testWay.getTimestamp().equals(prevWay.getTimestamp())){
 				different=true;
 				break;
@@ -231,7 +231,7 @@ public class BuildDatabaseTest {
 	@Test
 	public void UserFieldsShouldNotBeTheSameInAllEntries(){
 		Boolean different=false;
-		for(Node testNode:nodeConfig){
+		for(OSMNode testNode:nodeConfig){
 			if(!testNode.getUser().equals(prevNode.getUser())){
 				different=true;
 				break;
@@ -241,7 +241,7 @@ public class BuildDatabaseTest {
 		}
 		assertTrue(different);
 		different=false;
-		for(Way testWay:wayConfig){
+		for(OSMWay testWay:wayConfig){
 			if(!testWay.getUser().equals(prevWay.getUser())){
 				different=true;
 				break;
@@ -255,7 +255,7 @@ public class BuildDatabaseTest {
 	@Test
 	public void UidFieldsShouldNotBeTheSameInAllEntries(){
 		Boolean different=false;
-		for(Node testNode:nodeConfig){
+		for(OSMNode testNode:nodeConfig){
 			if(!testNode.getUid().equals(prevNode.getUid())){
 				different=true;
 				break;
@@ -265,7 +265,7 @@ public class BuildDatabaseTest {
 		}
 		assertTrue(different);
 		different=false;
-		for(Way testWay:wayConfig){
+		for(OSMWay testWay:wayConfig){
 			if(!testWay.getUid().equals(prevWay.getUid())){
 				different=true;
 				break;
@@ -279,7 +279,7 @@ public class BuildDatabaseTest {
 	@Test
 	public void LatitudeFieldsShouldNotBeTheSameInAllEntries(){
 		Boolean different=false;
-		for(Node testNode:nodeConfig){
+		for(OSMNode testNode:nodeConfig){
 			if(testNode.getLatitude()!=(prevNode.getLatitude())){
 				different=true;
 				break;
@@ -293,7 +293,7 @@ public class BuildDatabaseTest {
 	@Test
 	public void LongitudeFieldsShouldNotBeTheSameInAllEntries(){
 		Boolean different=false;
-		for(Node testNode:nodeConfig){
+		for(OSMNode testNode:nodeConfig){
 			if(testNode.getLongitude()!=(prevNode.getLongitude())){
 				different=true;
 				break;
@@ -307,7 +307,7 @@ public class BuildDatabaseTest {
 	@Test
 	public void KeyAndValuePairsShouldNotBeTheSameInAllEntries(){
 		Boolean different=false;
-		for(Way testway:wayConfig){
+		for(OSMWay testway:wayConfig){
 			if(!testway.getKeyValuePairs().equals(prevWay.getKeyValuePairs())){
 				different=true;
 				break;

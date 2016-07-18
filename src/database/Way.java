@@ -1,45 +1,54 @@
 package database;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+//import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Map.Entry;
-import java.util.Set;
 
 /**
- * Builds Ways.
- * A Way contains the fields: id, visible, version, changeset, timestamp, user, uid, nodeRelations, key, value
+ * Holds all the required fields used to build Ways containing Nodes
  * @author Jostein Kristiansen(jok13)
- *@see database.Field
+ *@see database.OSMNode
+ *@see database.OSMWay
  */
 
-public class Way extends Field{
+/*abstract*//*Can't instantiate an abstract class*/ interface Way extends Comparator<Way>{
+	
+	/**
+	 * @return the id
+	 */
+	String getId();
+	/**
+	 * @param id the id to set
+	 */
+	void setId(String id);
+	
+	/**
+	 * Replaces the current list of Node-Relations with the list it receives
+	 * @param nodeRelations the nodeRelations to set
+	 */
+	void setNodeRelations(List<Node> nodeRelations);
 
 	/**
-	 * List of nodes, referring to nodes in the Array of Nodes in {@link database.BuildDatabase#getNodes()}
+	 * 
+	 * @return The complete list of Node-Relations in this Way
 	 */
-	private List<Node> nodeRelations=new ArrayList<Node>();
-	private HashMap<String, String> keyValuePairs=new HashMap<String,String>();
-
-	public List<Node> getNodeRelations() {
-		return nodeRelations;
-	}
-	public void setNodeRelation(Node node) {
-		this.nodeRelations.add(node);
-	}
-	//TODO Write unit tests for this
-	public void addKeyValuePair(String key, String value){
-		keyValuePairs.put(key, value);
-	}
-	//TODO Write unit test for this
-	public Set<Entry<String, String>> getKeyValuePairs() {
-		return keyValuePairs.entrySet();
-	}
-
+	List<OSMNode> getNodeRelations();
+	
+	/**
+	 * Adds a single Node to the list of Node-Relations inside this Way
+	 * @param node The Node to add
+	 */
+	void addNodeRelation(Node node);
+	
+	/**
+	 * Removes the Node specified by the input
+	 * TODO Every implementation of this method should remove all occurrences of the Node in question
+	 * @param node The Node to remove
+	 */
+	void removeNodeRelation(Node node);
+	
 	@Override
-	  public String toString() {
-	    return "Way [id=" + id + ", visible=" + visible + ", version="
-	        + version + ", changeset=" + changeset + ", timestamp=" + timestamp
-	        + ", user=" + user +", uid=" + uid + "]";
-	  }
+	public default int compare(Way w1, Way w2) {
+		return w1.getId().compareTo(w2.getId());
+	}
 }

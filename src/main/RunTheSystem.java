@@ -1,7 +1,7 @@
 package main;
 
 import database.BuildDatabase;
-import database.Node;
+import database.OSMNode;
 import database.SearchDatabase;
 import route.AStar;
 
@@ -16,11 +16,11 @@ public class RunTheSystem {
 		BuildDatabase.readConfig("map.osm");
 
 		try{
-			for(Node step:AStar.search(SearchDatabase.findClosestNode(args[0], args[1]), SearchDatabase.findClosestNode(args[2],args[3]))){
+			for(OSMNode step:AStar.search(SearchDatabase.findClosestNode(args[0], args[1]), SearchDatabase.findClosestNode(args[2],args[3]))){
 				System.out.println(step);
 			}
 		}catch(NumberFormatException e){//TODO Is never really reached when args is double. Any missing input is 0 by default
-			System.out.println("One or more elements in the input were not doubles");
+			System.out.println("One or more elements in the input were not of type: double");
 			
 			try{
 			System.out.println("start Node:" + SearchDatabase.findClosestNode(args[0], args[1]));

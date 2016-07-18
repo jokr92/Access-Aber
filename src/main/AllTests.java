@@ -5,8 +5,10 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 import database.BuildDatabaseTest;
-import database.FieldTest;
+import database.ComplexityAnalysisTest;
 import database.NodeTest;
+import database.OSMNodeTest;
+import database.OSMWayTest;
 import database.SearchDatabaseTest;
 import database.WayTest;
 import route.AStarTest;
@@ -17,7 +19,7 @@ import route.AStarTest;
  *
  */
 @RunWith(Suite.class)
-@SuiteClasses({FieldTest.class, NodeTest.class, WayTest.class, AStarTest.class, SearchDatabaseTest.class, BuildDatabaseTest.class, RunTheSystemTest.class})
+@SuiteClasses({NodeTest.class, OSMNodeTest.class, WayTest.class, OSMWayTest.class, AStarTest.class, SearchDatabaseTest.class, BuildDatabaseTest.class, ComplexityAnalysisTest.class, RunTheSystemTest.class})
 public class AllTests {
 
 }

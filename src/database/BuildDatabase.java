@@ -23,20 +23,20 @@ import static database.FieldTags.*;
  * @author Vogella
  * Source: www.vogella.com/tutorials/JavaXML/article.html
  * License: www.eclipse.org/legal/epl-v10.html
- *@see database.Field
  *@see database.Node
- *@see database.Way
+ *@see database.OSMNode
+ *@see database.OSMWay
  */
 public class BuildDatabase{
 	
-	private static List<Node> nodes = new ArrayList<Node>();
-    private static List<Way>  ways  = new ArrayList<Way> ();
+	private static List<OSMNode> nodes = new ArrayList<OSMNode>();
+    private static List<OSMWay>  ways  = new ArrayList<OSMWay> ();
 
     /**
      * 
      * @return The complete list of Nodes in {@link #nodes}
      */
-    public static List<Node> getNodes() {
+    public static List<OSMNode> getNodes() {
 		return nodes;
 	}
 
@@ -44,7 +44,7 @@ public class BuildDatabase{
      * Changes the contents of {@link #nodes} to the contents of the input
      * @param nodes The list of Nodes to mirror the list of {@link #nodes} from
      */
-	private static void setNodes(List<Node> nodes) {
+	private static void setNodes(List<OSMNode> nodes) {
 		BuildDatabase.nodes = nodes;
 	}
 
@@ -52,7 +52,7 @@ public class BuildDatabase{
 	 * 
 	 * @return The complete list of Nodes in {@link #ways}
 	 */
-	public static List<Way> getWays() {
+	public static List<OSMWay> getWays() {
 		return ways;
 	}
 
@@ -60,14 +60,14 @@ public class BuildDatabase{
 	 * Changes the contents of {@link #ways} to the contents of the input
 	 * @param ways The list of Ways to mirror the list of {@link #ways} from
 	 */
-	private static void setWays(List<Way> ways) {
+	private static void setWays(List<OSMWay> ways) {
 		BuildDatabase.ways = ways;
 	}
 
 @SuppressWarnings({ "unchecked" })
   public static void readConfig(String filename) {
-	List<Node> tempNodes = new ArrayList<Node>();
-	List<Way> tempWays = new ArrayList<Way>();
+	List<OSMNode> tempNodes = new ArrayList<OSMNode>();
+	List<OSMWay> tempWays = new ArrayList<OSMWay>();
 	StartElement startElement;
 	String name;
 	Attribute attribute;
@@ -78,8 +78,8 @@ public class BuildDatabase{
       // Setup a new eventReader
       InputStream in = new FileInputStream(filename);
       XMLEventReader eventReader = inputFactory.createXMLEventReader(in);
-      Node node = null;
-      Way way = null;
+      OSMNode node = null;
+      OSMWay way = null;
       
       // read the XML document
       while (eventReader.hasNext()) {
@@ -89,7 +89,7 @@ public class BuildDatabase{
           startElement = event.asStartElement();
           // If we have a Node element, we create a new Node
           if (startElement.getName().getLocalPart().equals(NODE_START.getString())) {
-            node = new Node();
+            node = new OSMNode();
             // We read the attributes from this tag and add them to our object
             attributes = startElement.getAttributes();
             while (attributes.hasNext()) {
@@ -118,7 +118,7 @@ public class BuildDatabase{
             tempNodes.add(node);
           }
           else if(startElement.getName().getLocalPart().equals(WAY_START.getString())) {//TODO Very similar to the above. Can they be refactored and merged?
-            way = new Way();
+            way = new OSMWay();
             // We read the attributes from this tag and add them to our object
             attributes = startElement.getAttributes();
             while (attributes.hasNext()) {
@@ -154,9 +154,9 @@ public class BuildDatabase{
 	                    //Adds a Node to this Way by creating a pointer to it in the nodes List
 	                    if (name.equals(WAY_ND_REF.getString())) {
 	                    	String attributeValue=attribute.getValue();
-	                    	for(Node nodeI:tempNodes){
+	                    	for(OSMNode nodeI:tempNodes){
 	                    		if(nodeI.getId().equals(attributeValue)){
-	                    			way.setNodeRelation(nodeI);
+	                    			way.addNodeRelation(nodeI);
 	                    			break;
 	                    		}
 	                    	}
