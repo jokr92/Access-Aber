@@ -10,7 +10,7 @@ import java.util.Comparator;
  * License: www.eclipse.org/legal/epl-v10.html
  * @see database.Node
  */
-public class OSMNode implements Node, Comparator<Node>{
+public class OSMNode implements DistanceMetricNode{
 
 	/**
 	 * TODO This data should probably be kept elsewhere, but I am in a rush to get A* to work, so I'll keep it here for now
@@ -122,38 +122,6 @@ public class OSMNode implements Node, Comparator<Node>{
 		this.uid = uid;
 	}
 
-	/**
-	 * TODO This functionality should probably be moved elsewhere
-	 * @see {@link #distanceTravelled}
-	 */
-	public double getDistanceTravelled(){
-		return distanceTravelled;
-	}
-
-	/**
-	 * TODO This functionality should probably be moved elsewhere
-	 * @see {@link #distanceTravelled}
-	 */
-	public void setDistanceTravelled(double distanceTravelled){
-		this.distanceTravelled = distanceTravelled;
-	}
-	
-	/**
-	 * TODO This functionality should probably be moved elsewhere
-	 * @see {@link #goalDistance}
-	 */
-	public double getDistanceToGoal(){
-		return goalDistance;
-	}
-	
-	/**
-	 * TODO This functionality should probably be moved elsewhere
-	 * @see {@link #goalDistance}
-	 */
-	public void setGoalDistance(double goalDistance){
-		this.goalDistance=goalDistance;
-	}
-
 	@Override
 	public double getLatitude() {
 		return lat;
@@ -179,5 +147,41 @@ public class OSMNode implements Node, Comparator<Node>{
 		return "Node [id=" + id + ", visible=" + visible + ", version="
 				+ version + ", changeset=" + changeset + ", timestamp=" + timestamp
 				+ ", user=" + user +", uid=" + uid + ", lat=" + lat + ", lon=" + lon + "]";
+	}
+
+	@Override
+	/**
+	 * TODO Should I move this functionality elsewhere?
+	 * @see {@link #distanceTravelled}
+	 */
+	public double getDistanceTravelled(){
+		return distanceTravelled;
+	}
+	
+	@Override
+	/**
+	 * TODO Should I move this functionality elsewhere?
+	 * @see {@link #distanceTravelled}
+	 */
+	public void setDistanceTravelled(double distanceTravelled){
+		this.distanceTravelled = distanceTravelled;
+	}
+
+	@Override
+	/**
+	 * TODO Should I move this functionality elsewhere?
+	 * @see {@link #distanceTravelled}
+	 */
+	public double getDistanceToGoal(){
+		return goalDistance;
+	}
+
+	@Override
+	/**
+	 * TODO Should I move this functionality elsewhere?
+	 * @see {@link #distanceTravelled}
+	 */
+	public void setGoalDistance(double goalDistance){
+		this.goalDistance=goalDistance;
 	}
 } 

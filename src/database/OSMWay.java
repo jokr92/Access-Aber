@@ -115,6 +115,7 @@ public class OSMWay implements Way{
 	public void addKeyValuePair(String key, String value){
 		keyValuePairs.put(key, value);
 	}
+	@Override
 	//TODO Write unit test for this
 	public Set<Entry<String, Object>> getKeyValuePairs() {
 		return keyValuePairs.entrySet();

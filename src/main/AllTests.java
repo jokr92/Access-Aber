@@ -6,6 +6,7 @@ import org.junit.runners.Suite.SuiteClasses;
 
 import database.BuildDatabaseTest;
 import database.ComplexityAnalysisTest;
+import database.DistanceMetricNodeTest;
 import database.NodeTest;
 import database.OSMNodeTest;
 import database.OSMWayTest;
@@ -19,7 +20,7 @@ import route.AStarTest;
  *
  */
 @RunWith(Suite.class)
-@SuiteClasses({NodeTest.class, OSMNodeTest.class, WayTest.class, OSMWayTest.class, AStarTest.class, SearchDatabaseTest.class, BuildDatabaseTest.class, ComplexityAnalysisTest.class, RunTheSystemTest.class})
+@SuiteClasses({NodeTest.class, OSMNodeTest.class, WayTest.class, OSMWayTest.class, AStarTest.class, SearchDatabaseTest.class, BuildDatabaseTest.class, ComplexityAnalysisTest.class, DistanceMetricNodeTest.class, RunTheSystemTest.class})
 public class AllTests {
 
 }

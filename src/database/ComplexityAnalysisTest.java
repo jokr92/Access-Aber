@@ -10,11 +10,11 @@ import org.junit.Test;
 
 public class ComplexityAnalysisTest {
 
-	static List<OSMNode> nodeDBComplete;
-	static List<OSMNode> nodeDBFiltered;
+	static List<Node> nodeDBComplete;
+	static List<Node> nodeDBFiltered;
 
-	static List<OSMWay> wayDBComplete;
-	static List<OSMWay> wayDBFiltered;
+	static List<Way> wayDBComplete;
+	static List<Way> wayDBFiltered;
 
 	@BeforeClass
 	public static void PopulateLists(){

@@ -20,10 +20,19 @@ public class SearchDatabase{
 	 * @param nodeID The ID of the node to search for
 	 * @return The node if found, null otherwise.
 	 */
-	public static OSMNode searchForNode(final String nodeID){
-		for(OSMNode node:BuildDatabase.getNodes()){
+	public static Node searchForNode(final String nodeID){
+		for(Node node:BuildDatabase.getNodes()){
 			if (node.getId().equals(nodeID)){
 				return node;
+			}
+		}
+		return null;
+	}
+	
+	public static Way searchForWay(final String wayID){
+		for(Way way:BuildDatabase.getWays()){
+			if(way.getId().equals(wayID)){
+				return way;
 			}
 		}
 		return null;
@@ -34,11 +43,11 @@ public class SearchDatabase{
 	 * @param nodeToFind The ID of the node to search for
 	 * @return An unordered list of every Way that contains this Node
 	 */
-	public static List<OSMWay> getWaysContainingNode(final String nodeToFind){
-		List<OSMWay> matches = new ArrayList<OSMWay>();
+	public static List<Way> getWaysContainingNode(final String nodeToFind){
+		List<Way> matches = new ArrayList<Way>();
 		
-		for(OSMWay way:BuildDatabase.getWays()){
-			for(OSMNode node:way.getNodeRelations()){
+		for(Way way:BuildDatabase.getWays()){
+			for(Node node:way.getNodeRelations()){
 				if(node.getId().equals(nodeToFind)){
 					matches.add(way);
 					//matches.addAll(way.getNodeRelations());//returns all nodes in this way
@@ -56,9 +65,9 @@ public class SearchDatabase{
 	 * @param wayList List of Ways to run the filter on.
 	 * @return A list of nodes that can be used for navigation.
 	 */
-	public static List<OSMWay> filterAccessibleWays(final List<OSMWay> wayList){
-		List<OSMWay> navigatableWays = new ArrayList<OSMWay>();
-		for(OSMWay way:wayList){
+	public static List<Way> filterAccessibleWays(final List<Way> wayList){
+		List<Way> navigatableWays = new ArrayList<Way>();
+		for(Way way:wayList){
 			try{
 				//Only adds a Way to the list if it is a highway(eg. a road, path, etc.), and it is not stairs
 			for(Entry<String, Object> dbPair:way.getKeyValuePairs()){
@@ -84,9 +93,9 @@ public class SearchDatabase{
 	 * @param wayList List of Ways to run the filter on.
 	 * @return A list of Nodes that can be used for navigation.
 	 */
-	public static List<OSMNode> filterAccessibleNodes(final List<OSMWay> wayList){
-		List<OSMNode> navigatableNodes = new ArrayList<OSMNode>();
-		for(OSMWay way:filterAccessibleWays(wayList)){
+	public static List<Node> filterAccessibleNodes(final List<Way> wayList){
+		List<Node> navigatableNodes = new ArrayList<Node>();
+		for(Way way:filterAccessibleWays(wayList)){
 				//Only adds a Node to the list if it is part of a highway(eg. a road, path, etc.), and it is not stairs
 						navigatableNodes.addAll(way.getNodeRelations());			
 		}
@@ -100,11 +109,11 @@ public class SearchDatabase{
 	 * @param lon degrees min -180, max 180
 	 * @return The Node closest to the coordinates specified in the input
 	 */
-	public static OSMNode findClosestNode(double lat, double lon){
-		OSMNode closestNode=null;
+	public static Node findClosestNode(double lat, double lon){
+		Node closestNode=null;
 		double shortestDistance=Double.POSITIVE_INFINITY;
 		double currentDistance=Double.POSITIVE_INFINITY;
-		for(OSMNode node:BuildDatabase.getNodes()){
+		for(Node node:BuildDatabase.getNodes()){
 			currentDistance=AStar.distanceBetweenPoints(node.getLatitude(), node.getLongitude(), lat, lon);
 			if(currentDistance<shortestDistance){
 				closestNode=node;

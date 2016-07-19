@@ -9,7 +9,7 @@ import java.util.Comparator;
  *@see database.OSMWay
  */
 
-/*abstract*//*Can't instantiate an abstract class*/ interface Node extends Comparator<Node>{
+public /*abstract*//*Can't instantiate an abstract class*/ interface Node extends Comparator<Node>{
 
 	String getId();
 	

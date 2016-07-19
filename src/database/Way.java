@@ -3,6 +3,8 @@ package database;
 //import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
+import java.util.Map.Entry;
 
 /**
  * Holds all the required fields used to build Ways containing Nodes
@@ -11,7 +13,7 @@ import java.util.List;
  *@see database.OSMWay
  */
 
-/*abstract*//*Can't instantiate an abstract class*/ interface Way extends Comparator<Way>{
+public /*abstract*//*Can't instantiate an abstract class*/ interface Way extends Comparator<Way>{
 	
 	/**
 	 * @return the id
@@ -46,6 +48,8 @@ import java.util.List;
 	 * @param node The Node to remove
 	 */
 	void removeNodeRelation(Node node);
+	
+	Set<Entry<String, Object>> getKeyValuePairs();
 	
 	@Override
 	public default int compare(Way w1, Way w2) {
