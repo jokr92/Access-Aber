@@ -17,6 +17,7 @@ import javax.xml.stream.events.XMLEvent;
 
 import static database.FieldTags.*;
 /**
+ * TODO Only works with data from OSM. This doesn't seem correct
  * Populates two lists of Objects.
  * One list contains all Nodes in the provided database.
  * The other list contains all Ways in the provided database.
@@ -58,10 +59,10 @@ public class BuildDatabase{
 
 	/**
 	 * Changes the contents of {@link #ways} to the contents of the input
-	 * @param ways The list of Ways to mirror the list of {@link #ways} from
+	 * @param tempWays The list of Ways to mirror the list of {@link #ways} from
 	 */
-	private static void setWays(List<OSMWay> ways) {
-		BuildDatabase.ways = ways;
+	private static void setWays(List<OSMWay> tempWays) {
+		BuildDatabase.ways = tempWays;
 	}
 
 @SuppressWarnings({ "unchecked" })

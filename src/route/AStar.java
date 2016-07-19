@@ -8,9 +8,10 @@ import java.util.PriorityQueue;
 
 import database.BuildDatabase;
 import database.DistanceComparator;
-import database.OSMNode;
+import database.Node;
+import database.DistanceMetricNode;
 import database.SearchDatabase;
-import database.OSMWay;
+import database.Way;
 /**
  * Uses the A* algorithm to find a path from one {@link #startNode} to a {@link #goalNode}, via the nodes connected to the start node.
  * Expands the nodes closest to the {@link #goalNode} first, using a priority queue.
@@ -23,11 +24,11 @@ public class AStar {
 	/**
 	 * The initial node
 	 */
-	private static OSMNode startNode;
+	private static DistanceMetricNode startNode;
 	/**
 	 * The desired, final node
 	 */
-	private static OSMNode goalNode;
+	private static DistanceMetricNode goalNode;
 
 	/**
 	 * The sum of the distances between all Nodes in a path
@@ -38,10 +39,10 @@ public class AStar {
 	 * For organising the order of the nodes to be expanded - reverse order
 	 * TODO Would a linked-list or heap be better here? I've read that it works well with queues... This is a priority-queue though
 	 */
-	private static List<OSMNode> queueLis = new ArrayList<OSMNode>();
+	private static List<Node> queueLis = new ArrayList<Node>();
 
-	static final Comparator<OSMNode> c = new DistanceComparator();
-	static PriorityQueue<OSMNode> PATIENTQueue = new PriorityQueue<OSMNode>(/*(BuildDatabase.getNodes().size()/2) ,*/ c);
+	static final Comparator<DistanceMetricNode> c = new DistanceComparator();
+	static PriorityQueue<DistanceMetricNode> PATIENTQueue = new PriorityQueue<DistanceMetricNode>(/*(BuildDatabase.getNodes().size()/2) ,*/ c);
 
 
 	/**
@@ -53,7 +54,7 @@ public class AStar {
 	/**
 	 * For handling the children of expanded nodes before they are passed into the queueList
 	 */
-	private static List<OSMNode> childList = new ArrayList<OSMNode>();
+	private static List<DistanceMetricNode> childList = new ArrayList<DistanceMetricNode>();
 	/**
 	 * For keeping track of which parent node was expanded to reach a child node.
 	 * Formatted like this: child(to),parent(from)
@@ -61,19 +62,19 @@ public class AStar {
 	 */
 	private static List<String> prevNode = new ArrayList<String>();
 
-	public static OSMNode getStartNode() {
+	public static Node getStartNode() {
 		return startNode;
 	}
 
-	public static void setStartNode(OSMNode startNode) {
+	public static void setStartNode(DistanceMetricNode startNode) {
 		AStar.startNode = startNode;
 	}
 
-	public static OSMNode getGoalNode() {
+	public static Node getGoalNode() {
 		return goalNode;
 	}
 
-	public static void setGoalNode(OSMNode goalNode) {
+	public static void setGoalNode(DistanceMetricNode goalNode) {
 		AStar.goalNode = goalNode;
 	}
 
@@ -83,25 +84,29 @@ public class AStar {
 	 * @param goalNd {@link #goalNode}
 	 * @return The nodes expanded to reach the goal node from the start node - in reverse order {@link #getPath(List, String, String)}
 	 */
-	public static List<OSMNode> search (OSMNode startNd, OSMNode goalNd){
+	public static List<DistanceMetricNode> search (DistanceMetricNode startNd, DistanceMetricNode goalNd){
 		setStartNode(startNd);
 		setGoalNode(goalNd);
 
-		List<OSMNode> path = new ArrayList<OSMNode>();
+		List<DistanceMetricNode> path = new ArrayList<DistanceMetricNode>();
 
-		OSMNode currentNode=startNode;
+		DistanceMetricNode currentNode=startNode;
 		currentNode.setDistanceTravelled(0);
 
-		PATIENTQueue.addAll(getNavigatableConnectedNodes(currentNode.getId()));
+		
+		for(Node node:getNavigatableConnectedNodes(currentNode.getId())){
+			//Is it safe to cast like this?
+			PATIENTQueue.add((DistanceMetricNode) node);
+		}
 
 		visitedNodes.add(currentNode.getId());
 
 		/* pq.removeAll(visitedNodes) would also work here,
 		 * but then I'd need to iterate over the list again on order to fill prevNode
 		 * */
-		Iterator<OSMNode> i = PATIENTQueue.iterator();
+		Iterator<DistanceMetricNode> i = PATIENTQueue.iterator();
 		while(i.hasNext()){
-			OSMNode node = i.next();
+			DistanceMetricNode node = i.next();
 			if(visitedNodes.contains(node.getId())){
 				i.remove();//So that we do not search for it again
 			}else{
@@ -128,14 +133,15 @@ public class AStar {
 			
 			//TODO Also adds the parent itself as a child... Currently (1 second / 2x) faster than filtering it out
 			//childList.addAll(getNavigatableConnectedNodes(currentNode.getId()));
-			for(OSMNode child:getNavigatableConnectedNodes(currentNode.getId())){
+			for(Node child:getNavigatableConnectedNodes(currentNode.getId())){
 				if(!(child.equals(currentNode)))
-					childList.add(child);
+					//TODO is it ok to cast like this?
+					childList.add((DistanceMetricNode) child);
 			}
 
-				Iterator<OSMNode> j = childList.iterator();
+				Iterator<DistanceMetricNode> j = childList.iterator();
 				while(j.hasNext()){
-					OSMNode node = j.next();
+					DistanceMetricNode node = j.next();
 
 					if(node.equals(currentNode)||visitedNodes.contains(node.getId())||PATIENTQueue.contains(node)){
 						j.remove();//Faster to do it here than in the queueArray, as that array is most likely much larger
@@ -145,7 +151,7 @@ public class AStar {
 					}
 				}
 
-				for(OSMNode node:childList){
+				for(DistanceMetricNode node:childList){
 					PATIENTQueue.add(node);
 					prevNode.add(node.getId()+","+currentNode.getId());
 				}
@@ -177,7 +183,7 @@ public class AStar {
 	 * @return A list of sorted nodes, where the nodes with the shortest distance to the goal are put last
 	 * @throws NullPointerException
 	 */
-	static List<OSMNode> sortByDistance(List<OSMNode> sortedNodes, List<OSMNode> unsortedNodes) throws NullPointerException{
+	static List<DistanceMetricNode> sortByDistance(List<DistanceMetricNode> sortedNodes, List<DistanceMetricNode> unsortedNodes) throws NullPointerException{
 
 		double unsortedNodeDistance;
 
@@ -189,7 +195,7 @@ public class AStar {
 			unsortedNodes.remove(unsortedNodes.size()-1);
 		}
 
-		for(OSMNode unsortedNode:unsortedNodes){//next unsorted node
+		for(DistanceMetricNode unsortedNode:unsortedNodes){//next unsorted node
 			if(unsortedNode.getDistanceToGoal()<=0){
 				unsortedNode.setGoalDistance(AStar.distanceBetweenPoints(unsortedNode.getLatitude(), unsortedNode.getLongitude(), goalNode.getLatitude(), goalNode.getLongitude()));
 			}
@@ -250,18 +256,18 @@ public class AStar {
 	 * @param goalNd {@link #goalNode}
 	 * @return A sequence of the nodes that represent the path from the start node to the goal node, in reverse order
 	 */
-	private static List<OSMNode> getPath(List<String> expandedNodes,OSMNode startNd, OSMNode goalNd){
+	private static List<DistanceMetricNode> getPath(List<String> expandedNodes,DistanceMetricNode startNd, DistanceMetricNode goalNd){
 		goalNode=goalNd;
 		startNode=startNd;
 
-		List<OSMNode>path = new ArrayList<OSMNode>();
+		List<DistanceMetricNode>path = new ArrayList<DistanceMetricNode>();
 		path.add(goalNode);
 		String previousNode=goalNode.getId();//splitPath(expandedNodes.get(expandedNodes.size()-1),1);//To register the goal node which should be the last node expanded
 
 		for(int i=expandedNodes.size()-1;i>=0;i--){
 			if(splitPath(expandedNodes.get(i),0).equals(previousNode)){
 				previousNode=splitPath(expandedNodes.get(i),1);
-				path.add(SearchDatabase.searchForNode(previousNode));
+				path.add((DistanceMetricNode) SearchDatabase.searchForNode(previousNode));
 				if(splitPath(expandedNodes.get(i),1).equals(startNode.getId())){
 					//System.out.println("startNode found");
 					break;
@@ -278,18 +284,18 @@ public class AStar {
 	 * @return The children of the parent. I.e every Node in a Way related to this Node
 	 * @see database.SearchDatabase #FilterAccessibleWays(List)
 	 */
-	static List<OSMNode> getNavigatableConnectedNodes(String parentNode){
-		List<OSMWay> wayList=SearchDatabase.getWaysContainingNode(parentNode);
-		List<OSMNode>nodeList=SearchDatabase.filterAccessibleNodes(wayList);//This can remove a Way containing the goal; the code below deals with this
+	static List<Node> getNavigatableConnectedNodes(String parentNode){
+		List<Way> wayList=SearchDatabase.getWaysContainingNode(parentNode);
+		List<Node>nodeList=SearchDatabase.filterAccessibleNodes(wayList);//This can remove a Way containing the goal; the code below deals with this
 
 		//Node pNode=SearchDatabase.searchForNode(parentNode);
 
 		//TODO This makes sure that every Node in a Way with a connection to the goal is returned regardless of their suitability for navigation.
 		//TODO Should only Nodes in suitable Ways be returned, or is this okay?
-		for(OSMWay way:wayList){
+		for(Way way:wayList){
 			//Makes sure that the list of Nodes fit for navigation contains the goal if it has been found in one or more Ways
 			if(way.getNodeRelations().contains(goalNode)&&!nodeList.containsAll(way.getNodeRelations())){
-				for(OSMNode node:way.getNodeRelations()){
+				for(Node node:way.getNodeRelations()){
 					if(!nodeList.contains(node)){
 						nodeList.add(node);
 					}

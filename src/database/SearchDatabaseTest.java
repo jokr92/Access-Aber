@@ -18,19 +18,26 @@ public class SearchDatabaseTest {
 		}
 	}
 	
-	/**
-	 * The method searchForNode in the class SearchDatabase only searches for nodes at the moment.
-	 * TODO Should the method be able to search for more than just nodes?
-	 */
 	@Test
-	public void fileShouldLoad(){
+	public void fileShouldLoadNodes(){
 		assertNull(SearchDatabase.searchForNode("262041360"));//this is a Way
-		assertTrue(SearchDatabase.searchForNode("3274334109")!=null);
-		assertTrue(SearchDatabase.searchForNode("3274334109")!=null);
+		assertNotNull(SearchDatabase.searchForNode("3274334109"));
+		assertNotNull(SearchDatabase.searchForNode("3274334109"));
 		assertNull(SearchDatabase.searchForNode("<node id=\"2997275611\""));
 		assertNull(SearchDatabase.searchForNode("osm"));
 		assertNull(SearchDatabase.searchForNode("ThisIsNotANode"));
 		assertNull(SearchDatabase.searchForNode("1"));//To see whether it finds exact or just similar matches
+	}
+	
+	@Test
+	public void fileShouldLoadWays(){
+		assertNotNull(SearchDatabase.searchForWay("262041360"));//this is a Way
+		assertNull(SearchDatabase.searchForWay("3274334109"));//This is a Node
+		assertNull(SearchDatabase.searchForWay("3274334109"));
+		assertNull(SearchDatabase.searchForWay("<way id=\"217282207\""));
+		assertNull(SearchDatabase.searchForWay("osm"));
+		assertNull(SearchDatabase.searchForWay("ThisIsNotAWay"));
+		assertNull(SearchDatabase.searchForWay("1"));//To see whether it finds exact or just similar matches
 	}
 	
 	@Test
@@ -41,28 +48,29 @@ public class SearchDatabaseTest {
 	
 	@Test
 	public void ShouldFindRelationsBetweenNodesAndExpandTheRelations(){
-		List<OSMWay> testList = new ArrayList<OSMWay>(SearchDatabase.getWaysContainingNode("1078822336"));
-		for(OSMWay way:testList){
+		List<Way> testList = new ArrayList<Way>(SearchDatabase.getWaysContainingNode("1078822336"));
+		for(Way way:testList){
 			assertFalse(way.getNodeRelations().isEmpty());
 		}
 	}
 	
+	//TODO This test doesn't really test any methods - it looks like it only tests itself...
 	@Test
 	public void ShouldExpandRelationsBetweenNodesUntilASpecificNodeIsFound(){
-		OSMNode startNode=SearchDatabase.searchForNode("2947828308");//"1078822336";
-		OSMNode goalNode=SearchDatabase.searchForNode("2947828315");
-		OSMNode currentNode=null;
+		Node startNode=(Node) SearchDatabase.searchForNode("2947828308");//"1078822336";
+		Node goalNode=(Node) SearchDatabase.searchForNode("2947828315");
+		Node currentNode=null;
 		boolean found=false;
 		
-		List<OSMNode> queueList = new ArrayList<OSMNode>();//For organising the order of the nodes to be expanded
+		List<Node> queueList = new ArrayList<Node>();//For organising the order of the nodes to be expanded
 		List<String> visitedNodes = new ArrayList<String>();//For preventing revisiting of nodes, potentially ending in a loop
-		List<OSMNode> importList = new ArrayList<OSMNode>();//For handling imported nodes before they are passed into the queueArray
+		List<Node> importList = new ArrayList<Node>();//For handling imported nodes before they are passed into the queueArray
 		
 		queueList=(SearchDatabase.filterAccessibleNodes(SearchDatabase.getWaysContainingNode(startNode.getId())));
 		visitedNodes.add(startNode.getId());
-		Iterator<OSMNode> i = queueList.iterator();
+		Iterator<Node> i = queueList.iterator();
 		while(i.hasNext()){
-			OSMNode node = i.next();
+			Node node = i.next();
 			if(visitedNodes.contains(node.getId())){
 				i.remove();//So that we do not search for it again
 			}
@@ -78,7 +86,7 @@ public class SearchDatabaseTest {
 				queueList.remove(0);
 				visitedNodes.add(currentNode.getId());
 				
-						for(OSMWay way:SearchDatabase.getWaysContainingNode(currentNode.getId())){
+						for(Way way:SearchDatabase.getWaysContainingNode(currentNode.getId())){
 							if(way.getNodeRelations().contains(goalNode)){//TODO Does this also find very similar nodes? ie is 1 the same as 11, 21 etc?
 								found=true;
 								visitedNodes.add(goalNode.getId());
@@ -88,9 +96,9 @@ public class SearchDatabaseTest {
 						}
 				
 				if(found==false){
-					Iterator<OSMNode> j = importList.iterator();
+					Iterator<Node> j = importList.iterator();
 					while(j.hasNext()){
-						OSMNode node = j.next();
+						Node node = j.next();
 						if(visitedNodes.contains(node.getId())){
 							j.remove();//Faster to do it here than in the queueArray, as that array is most likely much larger
 
@@ -109,7 +117,7 @@ public class SearchDatabaseTest {
 	public void FilterShouldRemoveAnyWayThatIsNotMeantForNavigation(){
 		long nodesInAllWays=0;
 		long nodesInFilteredWays=0;
-		for(OSMWay way:BuildDatabase.getWays()){
+		for(Way way:BuildDatabase.getWays()){
 			nodesInAllWays=nodesInAllWays+way.getNodeRelations().size();
 		}
 		nodesInFilteredWays=SearchDatabase.filterAccessibleWays(BuildDatabase.getWays()).size();
@@ -120,7 +128,7 @@ public class SearchDatabaseTest {
 	
 	@Test
 	public void ShouldFindNodeSpecifiedByExactCoordinates(){
-		OSMNode testNode = BuildDatabase.getNodes().get(BuildDatabase.getNodes().size()/2);
+		Node testNode = BuildDatabase.getNodes().get(BuildDatabase.getNodes().size()/2);
 		double lat=testNode.getLatitude();
 		double lon=testNode.getLongitude();
 		

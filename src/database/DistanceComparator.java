@@ -2,10 +2,10 @@ package database;
 
 import java.util.Comparator;
 
-public class DistanceComparator implements Comparator<OSMNode> {
+public class DistanceComparator implements Comparator<DistanceMetricNode> {
 
 	@Override
-	public int compare(OSMNode n1, OSMNode n2) {
+	public int compare(DistanceMetricNode n1, DistanceMetricNode n2) {
 		if(n1.getDistanceTravelled()+n1.getDistanceToGoal() > n2.getDistanceTravelled()+n2.getDistanceToGoal()){
 			return 1;
 		}else if(n1.getDistanceTravelled()+n1.getDistanceToGoal() < n2.getDistanceTravelled()+n2.getDistanceToGoal()){

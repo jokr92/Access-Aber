@@ -19,7 +19,7 @@ public class RunTheSystem {
 			for(OSMNode step:AStar.search(SearchDatabase.findClosestNode(args[0], args[1]), SearchDatabase.findClosestNode(args[2],args[3]))){
 				System.out.println(step);
 			}
-		}catch(NumberFormatException e){//TODO Is never really reached when args is double. Any missing input is 0 by default
+		}catch(NumberFormatException e){//Is never really reached when args is double. Any missing input is 0 by default
 			System.out.println("One or more elements in the input were not of type: double");
 			
 			try{
