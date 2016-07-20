@@ -138,6 +138,7 @@ public class OSMWay implements Way{
 	}
 	@Override
 	public void setNodeRelations(List<Node> nodeRelations) {
+		this.nodeRelations.clear();
 		for(Node n:nodeRelations){
 			this.addNodeRelation(n);
 		}

@@ -12,15 +12,15 @@ import java.util.Comparator;
 public /*abstract*//*Can't instantiate an abstract class*/ interface Node extends Comparator<Node>{
 
 	String getId();
-	
+
 	void setId(String id);
-	
+
 	double getLatitude();
-	
+
 	void setLatitude(double lat);
 
 	double getLongitude();
-	
+
 	void setLongitude(double lon);
 
 	@Override

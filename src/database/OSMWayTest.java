@@ -21,8 +21,8 @@ public class OSMWayTest {
 	
 	@Test
 	public void ShouldReplaceNodeRelationsWithNewList(){
-		List<OSMNode> nodeRelations1=new ArrayList<OSMNode>();
-		List<OSMNode> nodeRelations2=new ArrayList<OSMNode>();
+		List<Node> nodeRelations1=new ArrayList<Node>();
+		List<Node> nodeRelations2=new ArrayList<Node>();
 		OSMNode node1 = new OSMNode();
 		OSMNode node2 = new OSMNode();
 		
@@ -32,12 +32,10 @@ public class OSMWayTest {
 		
 		assertTrue(testWay.getNodeRelations().isEmpty());
 		
-		//testWay.setNodeRelations(nodeRelations1);
-		fail();
+		testWay.setNodeRelations(nodeRelations1);
 		assertTrue(testWay.getNodeRelations().equals(nodeRelations1));
 		
-		//testWay.setNodeRelations(nodeRelations2);
-		fail();
+		testWay.setNodeRelations(nodeRelations2);
 		assertFalse(testWay.getNodeRelations().equals(nodeRelations1));
 		assertTrue(testWay.getNodeRelations().equals(nodeRelations2));
 	}

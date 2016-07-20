@@ -6,7 +6,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
- * 
+ * TODO All these tests assume we are working with OSMNodes/Ways; This doesn't seem very robust
  * @author Jostein Kristiansen(jok13)
  *@see database.BuildDatabase
  */

@@ -8,25 +8,25 @@ public class ComplexityAnalysis {
 	private static long numWays;
 	private static long numConnections;
 
-	public static long getNumNodes(final List<OSMNode> nodes){
+	public static long getNumNodes(final List<Node> nodeDBComplete){
 
-		numNodes=nodes.size();
+		numNodes=nodeDBComplete.size();
 
 		return numNodes;
 	}
 	
 
-	public static long getNumWays(final List<OSMWay> ways){
+	public static long getNumWays(final List<Way> ways){
 
 		numWays=ways.size();
 
 		return numWays;
 	}
 
-	public static long getNumConnections(final List<OSMWay> ways){
+	public static long getNumConnections(final List<Way> ways){
 		long totNumNodes=0;
 
-		for(OSMWay w:ways){
+		for(Way w:ways){
 			for(int i=0;i<w.getNodeRelations().size();i++){
 				totNumNodes++;
 			}
