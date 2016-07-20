@@ -1,7 +1,7 @@
 package main;
 
 import database.BuildDatabase;
-import database.OSMNode;
+import database.DistanceMetricNode;
 import database.SearchDatabase;
 import route.AStar;
 
@@ -16,14 +16,18 @@ public class RunTheSystem {
 		BuildDatabase.readConfig("map.osm");
 
 		try{
-			for(OSMNode step:AStar.search(SearchDatabase.findClosestNode(args[0], args[1]), SearchDatabase.findClosestNode(args[2],args[3]))){
+			//TODO Is this a safe cast? Does this try-catch statement deal with casting-errors?
+			DistanceMetricNode startNode = (DistanceMetricNode) SearchDatabase.findClosestNode(args[0], args[1]);
+			DistanceMetricNode goalNode = (DistanceMetricNode) SearchDatabase.findClosestNode(args[2],args[3]);
+
+			for(DistanceMetricNode step:AStar.search(startNode, goalNode)){
 				System.out.println(step);
 			}
 		}catch(NumberFormatException e){//Is never really reached when args is double. Any missing input is 0 by default
 			System.out.println("One or more elements in the input were not of type: double");
-			
+
 			try{
-			System.out.println("start Node:" + SearchDatabase.findClosestNode(args[0], args[1]));
+				System.out.println("start Node:" + SearchDatabase.findClosestNode(args[0], args[1]));
 			}catch(NumberFormatException s){
 				System.out.println("No start Node could be found. Please check input");
 			}

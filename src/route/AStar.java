@@ -5,8 +5,6 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.PriorityQueue;
-
-import database.BuildDatabase;
 import database.DistanceComparator;
 import database.Node;
 import database.DistanceMetricNode;
@@ -62,7 +60,7 @@ public class AStar {
 	 */
 	private static List<String> prevNode = new ArrayList<String>();
 
-	public static Node getStartNode() {
+	public static DistanceMetricNode getStartNode() {
 		return startNode;
 	}
 
@@ -70,7 +68,7 @@ public class AStar {
 		AStar.startNode = startNode;
 	}
 
-	public static Node getGoalNode() {
+	public static DistanceMetricNode getGoalNode() {
 		return goalNode;
 	}
 
@@ -93,7 +91,7 @@ public class AStar {
 		DistanceMetricNode currentNode=startNode;
 		currentNode.setDistanceTravelled(0);
 
-		
+
 		for(Node node:getNavigatableConnectedNodes(currentNode.getId())){
 			//Is it safe to cast like this?
 			PATIENTQueue.add((DistanceMetricNode) node);
@@ -130,14 +128,14 @@ public class AStar {
 				//prevNode.add(goalNode.getId()+","+currentNode.getId());//This would make the goalNode the parent of itself
 				break;
 			}else{
-			
-			//TODO Also adds the parent itself as a child... Currently (1 second / 2x) faster than filtering it out
-			//childList.addAll(getNavigatableConnectedNodes(currentNode.getId()));
-			for(Node child:getNavigatableConnectedNodes(currentNode.getId())){
-				if(!(child.equals(currentNode)))
-					//TODO is it ok to cast like this?
-					childList.add((DistanceMetricNode) child);
-			}
+
+				//TODO Also adds the parent itself as a child... Currently (1 second / 2x) faster than filtering it out
+				//childList.addAll(getNavigatableConnectedNodes(currentNode.getId()));
+				for(Node child:getNavigatableConnectedNodes(currentNode.getId())){
+					if(!(child.equals(currentNode)))
+						//TODO is it ok to cast like this?
+						childList.add((DistanceMetricNode) child);
+				}
 
 				Iterator<DistanceMetricNode> j = childList.iterator();
 				while(j.hasNext()){
@@ -155,7 +153,7 @@ public class AStar {
 					PATIENTQueue.add(node);
 					prevNode.add(node.getId()+","+currentNode.getId());
 				}
-				
+
 				/*
 				 * This data has been passed on to the queueList, so it is no longer needed,
 				 * but it might be best to not shrink the size of this list,
@@ -163,8 +161,8 @@ public class AStar {
 				 * .clear() provides this functionality.
 				 */
 				childList.clear();
+			}
 		}
-	}
 		if(totalPathDistance<Double.POSITIVE_INFINITY){
 			path=getPath(prevNode,startNode,goalNode);
 		}

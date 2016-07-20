@@ -1,7 +1,5 @@
 package database;
 
-import java.util.Comparator;
-
 /**
  * Builds Nodes.
  * An OSM-Node contains the fields: id, visible, version, changeset, timestamp, user, uid, lat, long
@@ -16,7 +14,7 @@ public class OSMNode implements DistanceMetricNode{
 	 * TODO This data should probably be kept elsewhere, but I am in a rush to get A* to work, so I'll keep it here for now
 	 */
 	private double distanceTravelled, goalDistance;
-	
+
 	private String id;
 	private boolean visible;
 	private String version;
@@ -26,7 +24,7 @@ public class OSMNode implements DistanceMetricNode{
 	private String uid;
 	private double lat;
 	private double lon;
-	
+
 	@Override
 	public String getId() {
 		return id;
@@ -35,7 +33,7 @@ public class OSMNode implements DistanceMetricNode{
 	@Override
 	public void setId(String id) {
 		this.id=id;
-		
+
 	}
 
 	/**
@@ -157,7 +155,7 @@ public class OSMNode implements DistanceMetricNode{
 	public double getDistanceTravelled(){
 		return distanceTravelled;
 	}
-	
+
 	@Override
 	/**
 	 * TODO Should I move this functionality elsewhere?

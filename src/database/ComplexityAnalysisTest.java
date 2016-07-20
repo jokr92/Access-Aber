@@ -2,6 +2,7 @@ package database;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.BeforeClass;
@@ -10,11 +11,11 @@ import org.junit.Test;
 
 public class ComplexityAnalysisTest {
 
-	static List<Node> nodeDBComplete;
-	static List<Node> nodeDBFiltered;
+	static List<Node> nodeDBComplete = new ArrayList<Node>();
+	static List<Node> nodeDBFiltered = new ArrayList<Node>();
 
-	static List<Way> wayDBComplete;
-	static List<Way> wayDBFiltered;
+	static List<Way> wayDBComplete = new ArrayList<Way>();
+	static List<Way> wayDBFiltered = new ArrayList<Way>();
 
 	@BeforeClass
 	public static void PopulateLists(){
@@ -23,11 +24,11 @@ public class ComplexityAnalysisTest {
 		}
 		ComplexityAnalysis.reset();
 
-		nodeDBComplete=BuildDatabase.getNodes();
-		nodeDBFiltered=SearchDatabase.filterAccessibleNodes(BuildDatabase.getWays());
+		wayDBComplete.addAll(BuildDatabase.getWays());
+		wayDBFiltered.addAll(SearchDatabase.filterAccessibleWays(wayDBComplete));
 
-		wayDBComplete=BuildDatabase.getWays();
-		wayDBFiltered=SearchDatabase.filterAccessibleWays(BuildDatabase.getWays());
+		nodeDBComplete.addAll(BuildDatabase.getNodes());
+		nodeDBFiltered.addAll(SearchDatabase.filterAccessibleNodes(wayDBComplete));
 	}
 
 	@Test
