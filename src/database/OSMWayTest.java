@@ -72,6 +72,11 @@ public class OSMWayTest {
 	}
 
 	@Test
+	/**
+	 * TODO Why is this test so unnecessarily slow when it is run via 'AllTests' ?
+	 * It takes ~50% (0.9sec) of the total runtime(~2sec)
+	 * TODO This test is also slightly slower than the rest of the tests in this class
+	 */
 	public void GetAndSetVisibleShouldReturnAResult() {
 		assertFalse(testWay.isVisible());
 		testWay.setVisible(true);

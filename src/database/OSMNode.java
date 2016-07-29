@@ -16,6 +16,7 @@ public class OSMNode implements DistanceMetricNode{
 	private double distanceTravelled, goalDistance;
 
 	private String id;
+	private int localId;
 	private boolean visible;
 	private String version;
 	private String timestamp;
@@ -181,5 +182,16 @@ public class OSMNode implements DistanceMetricNode{
 	 */
 	public void setGoalDistance(double goalDistance){
 		this.goalDistance=goalDistance;
+	}
+
+	@Override
+	public int getlocalId() {
+		return localId;
+	}
+
+	@Override
+	public void setLocalId(int localID) {
+		this.localId=localID;
+		
 	}
 } 

@@ -16,6 +16,20 @@ import java.util.Map.Entry;
 public /*abstract*//*Can't instantiate an abstract class*/ interface Way extends Comparator<Way>{
 	
 	/**
+	 * Represents this Way's position in the list of Ways
+	 * Think of it as this Way's unique local key
+	 * @return this Way's key
+	 */
+	int getlocalId();
+	
+	/**
+	 * Changes this Way's local key
+	 * Should move any Way already occupying this index in the list of Ways
+	 * @param localID the key to assign to this Way. Should move any conflicting Way to a different index.
+	 */
+	void setLocalId(int localID);
+	
+	/**
 	 * @return the id
 	 */
 	String getId();
