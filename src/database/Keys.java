@@ -11,10 +11,18 @@ public enum Keys {
 	WHEELCHAIR("wheelchair","yes"),
 	WHEELCHAIR_LIM("wheelchair","limited"),
 	WHEELCHAIR_DES("wheelchair","designated"),
+	
 	CROSSING("highway","crossing"),
-	FOOTWAY("highway","footway"),//Some footways seem to span multiple layers ("ramp"?); Example: k="layer" v="-1"
+	/*
+	 * Some footways seem to span multiple layers ("ramp"?); Example: k="layer" v="-1"
+	 */
+	FOOTWAY("highway","footway"),
 	PEDESTRIAN("highway","pedestrian"),
-	SERVICE_ROAD("highway","service"),//I think this is a road meant for vehicles, not pedestrians.//TODO Some junit tests fail if this is removed. Fix them
+	/*
+	 * Generally for access to a building, service station, beach, campsite, industrial estate, business park, etc.
+	 * also commonly used for access to parking, driveways, and alleys.
+	 */
+	SERVICE_ROAD("highway","service"),
 	//PATH("highway","path"),//Are these always accessible?
 	PARKING("amenity","parking"),
 	//PARKING_DISABLED("capacity:disabled",null),//Is this actually disabled-parking? Does the above: "PARKING" cover this?
@@ -22,18 +30,18 @@ public enum Keys {
 	//BRIDGE("building","bridge"),//Are the bridges always accessible?
 	PARKING_AISLE("service","parking_aisle");
 	
-	String k, v;
+	String key, value;
 	
-	Keys(String k, String v){
-		this.k=k;
-		this.v=v;
+	Keys(String key, String value){
+		this.key=key;
+		this.value=value;
 	}
 	
 	String getKey(){
-		return k;
+		return key;
 	}
 	String getValue(){
-		return v;
+		return value;
 	}
 	
 	/*

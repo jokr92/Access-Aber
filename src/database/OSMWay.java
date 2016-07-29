@@ -26,6 +26,7 @@ public class OSMWay implements Way{
 	protected List<OSMNode> nodeRelations=new ArrayList<OSMNode>();
 
 	protected String id;
+	private int localId;
 	private boolean visible;
 	private String changeset;
 	private String timestamp;
@@ -112,7 +113,7 @@ public class OSMWay implements Way{
 		this.keyValuePairs = keyValuePairs;
 	}
 	//TODO Write unit tests for this
-	public void addKeyValuePair(String key, String value){
+	public void addKeyValuePair(String key, Object value){
 		keyValuePairs.put(key, value);
 	}
 	@Override
@@ -165,5 +166,13 @@ public class OSMWay implements Way{
 				j.remove();
 			}
 		}
+	}
+	@Override
+	public int getlocalId() {
+		return localId;
+	}
+	@Override
+	public void setLocalId(int localID) {
+		this.localId=localID;
 	}
 }

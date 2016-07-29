@@ -1,5 +1,6 @@
 package database;
 
+import java.util.ArrayList;
 import java.util.List;
 import static org.junit.Assert.*;
 import org.junit.BeforeClass;
@@ -13,26 +14,29 @@ import org.junit.Test;
 
 public class BuildDatabaseTest {
 	
-	static List<OSMNode> nodeConfig;
-	static List<OSMWay> wayConfig;
+	static List<OSMNode> nodeConfig = new ArrayList<OSMNode>();
+	static List<OSMWay> wayConfig = new ArrayList<OSMWay>();
 	
 	static OSMNode prevNode = new OSMNode();
 	static OSMWay prevWay = new OSMWay();
 		
 	@BeforeClass
 	public static void PopulateLists(){
-		if(BuildDatabase.getNodes().isEmpty()||BuildDatabase.getWays().isEmpty()){
+		if(BuildDatabase.getNodes()==null||BuildDatabase.getWays()==null){
 			BuildDatabase.readConfig("map.osm");
 		}
-		nodeConfig = BuildDatabase.getNodes();
-		wayConfig = BuildDatabase.getWays();
+		for(OSMNode n:BuildDatabase.getNodes()){
+		nodeConfig.add(n);
+		}
+		for(OSMWay w:BuildDatabase.getWays()){
+		wayConfig.add(w);
+		}
 		prevNode = nodeConfig.get(0);
 		prevWay = wayConfig.get(0);
 	}
 	
 	@Test
 	public void NodeAndWayListsShouldBePopulated(){
-		List<OSMWay> wayConfig = BuildDatabase.getWays();
 		assertFalse(nodeConfig.isEmpty());
 		//System.out.println(nodeConfig.size());
 		assertFalse(wayConfig.isEmpty());
@@ -40,8 +44,22 @@ public class BuildDatabaseTest {
 	}
 	
 	@Test
+	public void NoEntryShouldBeNull(){
+		for(Node n:BuildDatabase.getNodes()){
+			if(n==null){
+				fail("This Node-entry is null");
+			}
+		}
+		
+		for(Way w:BuildDatabase.getWays()){
+			if(w==null){
+				fail("This Way-entry is null");
+			}
+		}
+	}
+	
+	@Test
 	public void AllNodeFieldsShouldBePopulated(){
-		List<OSMNode> nodeConfig = BuildDatabase.getNodes();
 		assertTrue(nodeConfig.get(0).getId()!=null);
 		assertTrue(nodeConfig.get(0).isVisible());
 		assertTrue(nodeConfig.get(0).getVersion()!=null);
@@ -317,5 +335,4 @@ public class BuildDatabaseTest {
 		}
 		assertTrue(different);
 	}
-
 }

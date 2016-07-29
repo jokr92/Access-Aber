@@ -3,7 +3,6 @@ package database;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Before;
@@ -17,43 +16,44 @@ public class SearchDatabaseTest {
 
 	@BeforeClass
 	public static void PopulateLists(){
-		if(BuildDatabase.getNodes().isEmpty()||BuildDatabase.getWays().isEmpty()){
+		if(BuildDatabase.getNodes()==null||BuildDatabase.getWays()==null){
 			BuildDatabase.readConfig("map.osm");
 		}
 	}
 
 	@Before
 	public void refreshNodesAndWays(){
-		if(!(DBNodes.equals(BuildDatabase.getNodes()))){
+		//Handle Nodes
+		if(!(DBNodes.toArray().equals(BuildDatabase.getNodes()))){
+			//TODO This if-statement is always !false... fix it
 			DBNodes.clear();
-			DBNodes.addAll(BuildDatabase.getNodes());
+			for(Node n:BuildDatabase.getNodes()){
+				DBNodes.add(n);
+			}
 		}
-		if(!(DBWays.equals(BuildDatabase.getWays()))){
+		//Handle Ways
+		if(!(DBWays.toArray().equals(BuildDatabase.getWays()))){
 			DBWays.clear();
-			DBWays.addAll(BuildDatabase.getWays());
+			for(Way w:BuildDatabase.getWays()){
+				DBWays.add(w);
+			}
 		}
 	}
 
 	@Test
 	public void fileShouldLoadNodes(){
-		assertNull(SearchDatabase.searchForNode("262041360"));//this is a Way
-		assertNotNull(SearchDatabase.searchForNode("3274334109"));
-		assertNotNull(SearchDatabase.searchForNode("3274334109"));
-		assertNull(SearchDatabase.searchForNode("<node id=\"2997275611\""));
-		assertNull(SearchDatabase.searchForNode("osm"));
-		assertNull(SearchDatabase.searchForNode("ThisIsNotANode"));
-		assertNull(SearchDatabase.searchForNode("1"));//To see whether it finds exact or just similar matches
+		assertNull(SearchDatabase.searchForNode(Integer.MAX_VALUE));//this number is way too high
+		assertNull(SearchDatabase.searchForNode(-1));//this number is too small
+		assertNotNull(SearchDatabase.searchForNode(0));
+		assertNotNull(SearchDatabase.searchForNode(BuildDatabase.getNodes().length-1));
 	}
 
 	@Test
 	public void fileShouldLoadWays(){
-		assertNotNull(SearchDatabase.searchForWay("262041360"));//this is a Way
-		assertNull(SearchDatabase.searchForWay("3274334109"));//This is a Node
-		assertNull(SearchDatabase.searchForWay("3274334109"));
-		assertNull(SearchDatabase.searchForWay("<way id=\"217282207\""));
-		assertNull(SearchDatabase.searchForWay("osm"));
-		assertNull(SearchDatabase.searchForWay("ThisIsNotAWay"));
-		assertNull(SearchDatabase.searchForWay("1"));//To see whether it finds exact or just similar matches
+		assertNull(SearchDatabase.searchForWay(Integer.MAX_VALUE));//this index is way too high
+		assertNull(SearchDatabase.searchForWay(-1));//this number is too small
+		assertNotNull(SearchDatabase.searchForWay(0));
+		assertNotNull(SearchDatabase.searchForWay(BuildDatabase.getWays().length-1));
 	}
 
 	@Test
@@ -70,68 +70,8 @@ public class SearchDatabaseTest {
 		}
 	}
 
-	//TODO This test doesn't really test any methods - it looks like it only tests itself...
 	@Test
-	public void ShouldExpandRelationsBetweenNodesUntilASpecificNodeIsFound(){
-		Node startNode=(Node) SearchDatabase.searchForNode("2947828308");//"1078822336";
-		Node goalNode=(Node) SearchDatabase.searchForNode("2947828315");
-		Node currentNode=null;
-		boolean found=false;
-
-		List<Node> queueList = new ArrayList<Node>();//For organising the order of the nodes to be expanded
-		List<String> visitedNodes = new ArrayList<String>();//For preventing revisiting of nodes, potentially ending in a loop
-		List<Node> importList = new ArrayList<Node>();//For handling imported nodes before they are passed into the queueArray
-
-		queueList=(SearchDatabase.filterAccessibleNodes(SearchDatabase.getWaysContainingNode(startNode.getId())));
-		visitedNodes.add(startNode.getId());
-		Iterator<Node> i = queueList.iterator();
-		while(i.hasNext()){
-			Node node = i.next();
-			if(visitedNodes.contains(node.getId())){
-				i.remove();//So that we do not search for it again
-			}
-		}
-
-		if(queueList.contains(goalNode)){//In case the goal can be reached directly from the current position
-			found=true;
-			visitedNodes.add(goalNode.getId());
-		}
-		else{
-			while(found==false && queueList.isEmpty()==false){
-				//System.out.println(queueList.size());//This list grows insanely quickly!
-				currentNode=queueList.get(0);
-				queueList.remove(0);
-				visitedNodes.add(currentNode.getId());
-
-				for(Way way:SearchDatabase.getWaysContainingNode(currentNode.getId())){
-					if(way.getNodeRelations().contains(goalNode)){//TODO Does this also find very similar nodes? ie is 1 the same as 11, 21 etc?
-						found=true;
-						visitedNodes.add(goalNode.getId());
-						break;
-					}
-					importList.addAll(way.getNodeRelations());
-				}
-
-				if(found==false){
-					Iterator<Node> j = importList.iterator();
-					while(j.hasNext()){
-						Node node = j.next();
-						if(visitedNodes.contains(node.getId())){
-							j.remove();//Faster to do it here than in the queueArray, as that array is most likely much larger
-
-						}
-					}
-					queueList.addAll(importList);
-					importList.clear();//This data has been passed on to the queueArray, so it is no longer needed
-				}
-			}
-		}
-		assertFalse(visitedNodes.isEmpty());
-		assertTrue(found);
-	}
-
-	@Test
-	public void FilterShouldRemoveAnyWayThatIsNotMeantForNavigation(){
+	public void FilterShouldRemoveAnyWaysNotSuitableForNavigation(){
 		long nodesInAllWays=0;
 		long nodesInFilteredWays=0;
 		for(Way way:DBWays){
@@ -142,10 +82,23 @@ public class SearchDatabaseTest {
 		assertTrue(nodesInFilteredWays!=0);
 		assertTrue(nodesInFilteredWays<nodesInAllWays);
 	}
+	
+	@Test
+	public void FilterShouldRemoveAnyNodesNotSuitableForNavigation(){
+		long numTotalNodes=0;
+		long numFilteredNodes=0;
+		for(Way way:DBWays){
+			numTotalNodes=numTotalNodes+way.getNodeRelations().size();
+		}
+		numFilteredNodes=SearchDatabase.filterAccessibleNodes(DBWays).size();
+		
+		assertTrue(numFilteredNodes!=0);
+		assertTrue(numFilteredNodes<numTotalNodes);
+	}
 
 	@Test
 	public void ShouldFindNodeSpecifiedByExactCoordinates(){
-		Node testNode = BuildDatabase.getNodes().get(BuildDatabase.getNodes().size()/2);
+		Node testNode = BuildDatabase.getNodes()[BuildDatabase.getNodes().length/2];
 		double lat=testNode.getLatitude();
 		double lon=testNode.getLongitude();
 

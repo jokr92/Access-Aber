@@ -15,27 +15,31 @@ import route.AStar;
 public class SearchDatabase{
 	
 	/**
-	 * Searches for a specified node in {@link database.BuildDatabase#getNodes()}.
-	 * TODO Should {@link database.BuildDatabase#getNodes()} be sorted? It might speed up searches
-	 * @param nodeID The ID of the node to search for
-	 * @return The node if found, null otherwise.
+	 * Searches for a specified Node in {@link database.BuildDatabase#getNodes()}.
+	 * @param nodeKey The key of the Node to search for
+	 * @return The Node if found, null otherwise.
 	 */
-	public static Node searchForNode(final String nodeID){
-		for(Node node:BuildDatabase.getNodes()){
-			if (node.getId().equals(nodeID)){
-				return node;
-			}
+	public static Node searchForNode(final int nodeKey){
+		try{
+		return BuildDatabase.getNodes()[nodeKey];
+		}catch(ArrayIndexOutOfBoundsException e){
+			//TODO Is it a bit silly to catch a NPE instead of just avoiding it?
+			return null;
 		}
-		return null;
 	}
 	
-	public static Way searchForWay(final String wayID){
-		for(Way way:BuildDatabase.getWays()){
-			if(way.getId().equals(wayID)){
-				return way;
-			}
+	/**
+	 * Searches for a specified Way in {@link database.BuildDatabase#getWays()}.
+	 * @param wayKey The key of the Way to search for
+	 * @return The Way if found, null otherwise.
+	 */
+	public static Way searchForWay(final int wayKey){
+		try{
+		return BuildDatabase.getWays()[wayKey];
+		}catch(ArrayIndexOutOfBoundsException e){
+			//TODO Is it a bit silly to catch a NPE instead of just avoiding it?
+			return null;
 		}
-		return null;
 	}
 
 	/**
