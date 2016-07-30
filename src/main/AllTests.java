@@ -20,7 +20,7 @@ import route.AStarTest;
  *
  */
 @RunWith(Suite.class)
-@SuiteClasses({RunTheSystemTest.class, NodeTest.class, OSMNodeTest.class, WayTest.class, OSMWayTest.class, AStarTest.class, SearchDatabaseTest.class, BuildDatabaseTest.class, ComplexityAnalysisTest.class, DistanceMetricNodeTest.class})
+@SuiteClasses({NodeTest.class, OSMNodeTest.class, WayTest.class, OSMWayTest.class, AStarTest.class, SearchDatabaseTest.class, BuildDatabaseTest.class, ComplexityAnalysisTest.class, DistanceMetricNodeTest.class, RunTheSystemTest.class})
 public class AllTests {
 
 }

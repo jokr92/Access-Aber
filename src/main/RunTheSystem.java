@@ -15,13 +15,14 @@ public class RunTheSystem {
 	 */
 	public static void main(double[] args) {
 		BuildDatabase.readConfig("map.osm");
+		AStar aStar = new AStar();
 		
 		try{
 			//TODO Is this a safe cast? Does this try-catch statement deal with casting-errors?
 			DistanceMetricNode startNode = (DistanceMetricNode) SearchDatabase.findClosestNode(args[0], args[1]);
 			DistanceMetricNode goalNode = (DistanceMetricNode) SearchDatabase.findClosestNode(args[2],args[3]);
 
-			for(Node step:AStar.search(startNode, goalNode)){
+			for(Node step:aStar.search(startNode, goalNode)){
 				System.out.println(step);
 			}
 		}catch(NumberFormatException e){//Is never really reached when args is double. Any missing input is 0 by default

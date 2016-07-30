@@ -11,6 +11,7 @@ import org.junit.Test;
 import database.BuildDatabase;
 import database.DistanceMetricNode;
 import database.Node;
+import database.OSMNode;
 import database.SearchDatabase;
 /**
  * 
@@ -18,7 +19,7 @@ import database.SearchDatabase;
  *@see route.AStar
  */
 public class AStarTest {
-	
+
 	static DistanceMetricNode startNode;
 	static DistanceMetricNode goalNode;
 
@@ -30,7 +31,7 @@ public class AStarTest {
 
 		startNode=(DistanceMetricNode) SearchDatabase.searchForNode(1);
 		goalNode=(DistanceMetricNode) SearchDatabase.searchForNode(20);
-		
+
 		AStar.setStartNode(startNode);
 		AStar.setGoalNode(goalNode);
 	}
@@ -52,7 +53,7 @@ public class AStarTest {
 		List<DistanceMetricNode> unsortedTestNodes = new ArrayList<DistanceMetricNode>();
 		List<DistanceMetricNode> sortedTestNodes = new ArrayList<DistanceMetricNode>();
 
-		for(Node n:AStar.getNavigatableConnectedNodes(startNode.getId())){
+		for(Node n:AStar.getNavigatableConnectedNodes(startNode)){
 			//TODO Is it safe to cast like this?
 			unsortedTestNodes.add((DistanceMetricNode) n);
 		}
@@ -68,17 +69,12 @@ public class AStarTest {
 	}
 
 	@Test
-	/**
-	 * TODO Skips a step when printing the route in AStar.getPath(). Why?
-	 * It is the exact same as "ShouldOnlyAddNodesToRouteOnce()", but the issue is only here... WHY?
-	 * start:1 goal:20
-	 * 305025164-305024276-/304928999/-295134062
-	 */
 	public void ShouldFindRouteFromOneNodeToAnother(){
+		AStar aStar=new AStar();
 		List<Node> path = new ArrayList<Node>();
-		
-		path=AStar.search(startNode, goalNode);
-		
+
+		path=aStar.search(startNode, goalNode);
+
 		assertFalse(path.isEmpty());
 		assertTrue(path.size()>2);//i.e contains more Nodes than just the start and goal nodes
 		assertTrue(path.get(0).equals(goalNode));
@@ -87,9 +83,10 @@ public class AStarTest {
 
 	@Test
 	public void ShouldOnlyAddNodesToRouteOnce(){
+		AStar aStar=new AStar();
 		List<Node> path = new ArrayList<Node>();
-		
-		path=AStar.search(startNode, goalNode);
+
+		path=aStar.search(startNode, goalNode);
 
 		if(path.size()>1){
 			for(int i=0;i<path.size();i++){
@@ -103,5 +100,33 @@ public class AStarTest {
 		else{
 			fail("No Nodes in this route");
 		}
+	}
+	
+	@Test
+	/**
+	 * This test expands every node connected to the start node in the search-space.
+	 * Run-time may rise significantly the more nodes there are in the search-space.
+	 */
+	public void ShouldNotFindPathToUnconnectedNode(){
+		AStar aStar=new AStar();
+		List<Node> path = new ArrayList<Node>();
+		
+		OSMNode gNode=new OSMNode();
+
+		path=aStar.search(startNode, gNode);
+		
+		assertTrue(path.isEmpty());
+	}
+	
+	@Test
+	public void ShouldNotFindPathFromUnconnectedNode(){
+		AStar aStar=new AStar();
+		List<Node> path = new ArrayList<Node>();
+		
+		OSMNode sNode=new OSMNode();
+
+		path=aStar.search(sNode, goalNode);
+		
+		assertTrue(path.isEmpty());
 	}
 }
