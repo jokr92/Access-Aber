@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -22,6 +23,7 @@ public class AStarTest {
 
 	static DistanceMetricNode startNode;
 	static DistanceMetricNode goalNode;
+	AStar aStar;
 
 	@BeforeClass
 	public static void PopulateLists(){
@@ -31,21 +33,25 @@ public class AStarTest {
 
 		startNode=(DistanceMetricNode) SearchDatabase.searchForNode(1);
 		goalNode=(DistanceMetricNode) SearchDatabase.searchForNode(20);
-
+	}
+	
+	@Before
+	public void initialiseAstar(){
+		aStar = new AStar();
 		AStar.setStartNode(startNode);
 		AStar.setGoalNode(goalNode);
 	}
 
 	@Test
 	public void shouldGetDistanceBetweenTwoPoints(){
-		assertTrue(AStar.distanceBetweenPoints(3.2, 2, 1, 4.1)!=4.3);
-		assertTrue(AStar.distanceBetweenPoints(3.2, 2, 1, 4.1)!=0);
-		assertTrue(AStar.distanceBetweenPoints(1, 4.1, 3.2, 2)!=4.3);
-		assertTrue(AStar.distanceBetweenPoints(1, 4.1, 3.2, 2)!=0);
+		assertTrue(Search.distanceBetweenPoints(3.2, 2, 1, 4.1)!=4.3);
+		assertTrue(Search.distanceBetweenPoints(3.2, 2, 1, 4.1)!=0);
+		assertTrue(Search.distanceBetweenPoints(1, 4.1, 3.2, 2)!=4.3);
+		assertTrue(Search.distanceBetweenPoints(1, 4.1, 3.2, 2)!=0);
 
 		/*Makes sure that all distances are positive(CRUCIAL FOR PATH-COST CALCULATIONS)*/
-		assertTrue(AStar.distanceBetweenPoints(1, 1, 1, 1)>0);
-		assertTrue(AStar.distanceBetweenPoints(-4, -3, -2, -1)>0);
+		assertTrue(Search.distanceBetweenPoints(1, 1, 1, 1)>0);
+		assertTrue(Search.distanceBetweenPoints(-4, -3, -2, -1)>0);
 	}
 
 	@Test
@@ -53,7 +59,7 @@ public class AStarTest {
 		List<DistanceMetricNode> unsortedTestNodes = new ArrayList<DistanceMetricNode>();
 		List<DistanceMetricNode> sortedTestNodes = new ArrayList<DistanceMetricNode>();
 
-		for(Node n:AStar.getNavigatableConnectedNodes(startNode)){
+		for(Node n:SearchDatabase.getNavigatableConnectedNodes(startNode)){
 			//TODO Is it safe to cast like this?
 			unsortedTestNodes.add((DistanceMetricNode) n);
 		}
@@ -70,10 +76,9 @@ public class AStarTest {
 
 	@Test
 	public void ShouldFindRouteFromOneNodeToAnother(){
-		AStar aStar=new AStar();
 		List<Node> path = new ArrayList<Node>();
 
-		path=aStar.search(startNode, goalNode);
+		path=aStar.findPath(startNode, goalNode);
 
 		assertFalse(path.isEmpty());
 		assertTrue(path.size()>2);//i.e contains more Nodes than just the start and goal nodes
@@ -83,10 +88,9 @@ public class AStarTest {
 
 	@Test
 	public void ShouldOnlyAddNodesToRouteOnce(){
-		AStar aStar=new AStar();
 		List<Node> path = new ArrayList<Node>();
 
-		path=aStar.search(startNode, goalNode);
+		path=aStar.findPath(startNode, goalNode);
 
 		if(path.size()>1){
 			for(int i=0;i<path.size();i++){
@@ -108,24 +112,22 @@ public class AStarTest {
 	 * Run-time may rise significantly the more nodes there are in the search-space.
 	 */
 	public void ShouldNotFindPathToUnconnectedNode(){
-		AStar aStar=new AStar();
 		List<Node> path = new ArrayList<Node>();
 		
 		OSMNode gNode=new OSMNode();
 
-		path=aStar.search(startNode, gNode);
+		path=aStar.findPath(startNode, gNode);
 		
 		assertTrue(path.isEmpty());
 	}
 	
 	@Test
 	public void ShouldNotFindPathFromUnconnectedNode(){
-		AStar aStar=new AStar();
 		List<Node> path = new ArrayList<Node>();
 		
 		OSMNode sNode=new OSMNode();
 
-		path=aStar.search(sNode, goalNode);
+		path=aStar.findPath(sNode, goalNode);
 		
 		assertTrue(path.isEmpty());
 	}

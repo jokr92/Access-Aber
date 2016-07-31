@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 
-import route.AStar;
+import route.Search;
 
 /**
  * Makes it possible to search through the databases in {@link database.BuildDatabase} for specific entries, and filter out the entries that are unfit for navigation before they are used for pathfinding
@@ -118,12 +118,31 @@ public class SearchDatabase{
 		double shortestDistance=Double.POSITIVE_INFINITY;
 		double currentDistance=Double.POSITIVE_INFINITY;
 		for(Node node:BuildDatabase.getNodes()){
-			currentDistance=AStar.distanceBetweenPoints(node.getLatitude(), node.getLongitude(), lat, lon);
+			currentDistance=Search.distanceBetweenPoints(node.getLatitude(), node.getLongitude(), lat, lon);
 			if(currentDistance<shortestDistance){
 				closestNode=node;
 				shortestDistance=currentDistance;
 			}
 		}
 		return closestNode;
+	}
+	
+	/**
+	 * Searches for the Nodes connected to the input, and returns only the Nodes fit for navigation, and the Nodes connected to the goal(regardless) - if found
+	 * @param parentNode Node to expand (find references to)
+	 * @return The children of the parent. I.e every Node in a Way related to this Node
+	 * @see database.SearchDatabase #FilterAccessibleWays(List)
+	 */
+	public static List<Node> getNavigatableConnectedNodes(Node parentNode){
+		List<Way> wayList=getWaysContainingNode(parentNode.getId());
+		List<Node>nodeList= new ArrayList<Node>();//This can remove a Way containing the goal... Do I want this?
+
+		for(Node n:filterAccessibleNodes(wayList)){
+			if(n!=parentNode){
+				nodeList.add(n);
+			}
+		}
+
+		return nodeList;
 	}
 }

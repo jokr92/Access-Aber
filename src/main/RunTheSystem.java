@@ -22,7 +22,7 @@ public class RunTheSystem {
 			DistanceMetricNode startNode = (DistanceMetricNode) SearchDatabase.findClosestNode(args[0], args[1]);
 			DistanceMetricNode goalNode = (DistanceMetricNode) SearchDatabase.findClosestNode(args[2],args[3]);
 
-			for(Node step:aStar.search(startNode, goalNode)){
+			for(Node step:aStar.findPath(startNode, goalNode)){
 				System.out.println(step);
 			}
 		}catch(NumberFormatException e){//Is never really reached when args is double. Any missing input is 0 by default

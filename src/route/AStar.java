@@ -1,19 +1,12 @@
 package route;
 
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.PriorityQueue;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
-import database.DistanceComparator;
 import database.DistanceMetricNode;
 import database.Node;
 import database.SearchDatabase;
-import database.Way;
 
 /**
  * Uses the A* algorithm to find a path from one {@link #startNode} to a {@link #goalNode}, via the nodes connected to the start node.
@@ -22,109 +15,40 @@ import database.Way;
  * @author Jostein Kristiansen(jok13)
  *@see database.BuildDatabase
  */
-public class AStar {
+public class AStar extends InformedSearch{
 
-	/**
-	 * The initial node
-	 */
-	private static DistanceMetricNode startNode;
-	/**
-	 * The desired, final node
-	 */
-	private static DistanceMetricNode goalNode;
-
-	static final Comparator<DistanceMetricNode> c = new DistanceComparator();
-	/**
-	 * For organising the order of the nodes to be expanded
-	 */
-	private PriorityQueue<DistanceMetricNode> priorityQueue = new PriorityQueue<DistanceMetricNode>(c);
-
-
-	/**
-	 * For preventing revisiting of nodes, potentially ending in a loop.
-	 * TODO EMPTY String: 40Bytes - Pointer: 32/64 bit
-	 * TODO change to something other than ArrayList
-	 * If this list stored a pointer to the Node instead of just its id, would that increase performance? Probably
-	 */
-	private List<Node> visitedNodes = new ArrayList<Node>();
-	/**
-	 * For handling the children of expanded nodes before they are passed into the queueList
-	 * TODO Change to something other than ArrayList
-	 */
-	private List<DistanceMetricNode> childList = new ArrayList<DistanceMetricNode>();
-	/**
-	 * For keeping track of which parent node was expanded to reach a child node.
-	 * Formatted like this: child(to),parent(from)
-	 * TODO hashmap? parent is unique key, child is value?
-	 */
-	private Map<DistanceMetricNode,DistanceMetricNode> prevNode = new HashMap<DistanceMetricNode, DistanceMetricNode>();
-
-	protected static DistanceMetricNode getStartNode() {
-		return startNode;
-	}
-
-	protected static void setStartNode(DistanceMetricNode startNode) {
-		AStar.startNode = startNode;
-	}
-
-	protected static DistanceMetricNode getGoalNode() {
-		return goalNode;
-	}
-
-	protected static void setGoalNode(DistanceMetricNode goalNode) {
-		AStar.goalNode = goalNode;
-	}
-
-	/**
-	 * Expands the start node and the following child nodes until the goal node can be found
-	 * @param startNd {@link #startNode}
-	 * @param goalNd {@link #goalNode}
-	 * @return The nodes expanded to reach the goal node from the start node - in reverse order; see {@link #getPath(Map, DistanceMetricNode, DistanceMetricNode)}
-	 */
-	public List<Node> search (DistanceMetricNode startNd, DistanceMetricNode goalNd){
+	@Override
+	public List<Node> findPath (Node startNd, Node goalNd){
 		
 		setStartNode(startNd);
 		setGoalNode(goalNd);
-		
 
 		/**
-		 * The sum of the distances between all Nodes in a path
+		 * For handling the children of expanded nodes before they are passed into the queueList
+		 * TODO Change to something other than ArrayList
 		 */
-		double totalPathDistance=Double.POSITIVE_INFINITY;
+		List<DistanceMetricNode> childList = new ArrayList<DistanceMetricNode>();
 
-		List<Node> path = new ArrayList<Node>();
-
-		DistanceMetricNode currentNode=startNode;
+		DistanceMetricNode currentNode=(DistanceMetricNode) getStartNode();
 		currentNode.setDistanceTravelled(0);
 
+		expansionList.put(getStartNode(),null);//Because startNode is the root
 
-		for(Node node:getNavigatableConnectedNodes(currentNode)){
-			if(node!=currentNode){
+		for(Node node:SearchDatabase.getNavigatableConnectedNodes(getStartNode())){
+			if(node!=getStartNode()){
 				//Is it safe to cast like this?
+
+			((DistanceMetricNode) node).setDistanceTravelled(Search.distanceBetweenPoints(getStartNode().getLatitude(),getStartNode().getLongitude(),node.getLatitude(),node.getLongitude()));
 			priorityQueue.add((DistanceMetricNode) node);
-			}
-		}
-
-		visitedNodes.add(currentNode);
-
-		/* pq.removeAll(visitedNodes) would also work here,
-		 * but then I'd need to iterate over the list again in order to fill prevNode
-		 * */
-		Iterator<DistanceMetricNode> i = priorityQueue.iterator();
-		while(i.hasNext()){
-			DistanceMetricNode node = i.next();
-			if(visitedNodes.contains(node.getId())){
-				i.remove();//So that we do not search for it again
-			}else{
-				prevNode.put(node,startNode);
-				node.setDistanceTravelled(distanceBetweenPoints(startNode.getLatitude(),startNode.getLongitude(),node.getLatitude(),node.getLongitude()));
+			expansionList.putIfAbsent(node,getStartNode());
 			}
 		}
 
 		while(priorityQueue.isEmpty()==false){
 
 			currentNode=priorityQueue.poll();//To pop the last element in this list.
-			visitedNodes.add(currentNode);//The list can get quite large, so popping the first element would require moving lots of elements one position forwards in the list
+											//The list can get quite large,
+											//so popping the first element would require moving lots of elements one position forwards in the list
 
 			if(currentNode.getId().equals(goalNd.getId())){
 				/* If currentNode==goalNode, then there can not be any shorter path to the goalNode,
@@ -135,9 +59,8 @@ public class AStar {
 				break;
 			}else{
 
-				//TODO Also adds the parent itself as a child... Currently (1 second / 2x) faster than filtering it out
-				for(Node child:getNavigatableConnectedNodes(currentNode)){
-					if(!(child.equals(currentNode))){
+				for(Node child:SearchDatabase.getNavigatableConnectedNodes(currentNode)){
+					if(child!=currentNode){
 						//TODO is it ok to cast like this?
 						childList.add((DistanceMetricNode) child);
 					}
@@ -147,36 +70,35 @@ public class AStar {
 				while(j.hasNext()){
 					DistanceMetricNode node = j.next();
 
-					if(node.getId().equals(currentNode.getId())||visitedNodes.contains(node)||priorityQueue.contains(node)){
-						j.remove();//Faster to remove the children here than in the other lists
+					if(!(node.equals(getStartNode()))&&expansionList.putIfAbsent(node,currentNode)==null){
+						node.setDistanceTravelled(currentNode.getDistanceTravelled()+Search.distanceBetweenPoints(currentNode.getLatitude(),currentNode.getLongitude(),node.getLatitude(),node.getLongitude()));
+						node.setGoalDistance(Search.distanceBetweenPoints(currentNode.getLatitude(),currentNode.getLongitude(),goalNd.getLatitude(),goalNd.getLongitude()));
+					
+						priorityQueue.add(node);
 					}else{
-						node.setDistanceTravelled(currentNode.getDistanceTravelled()+distanceBetweenPoints(currentNode.getLatitude(),currentNode.getLongitude(),node.getLatitude(),node.getLongitude()));
-						node.setGoalDistance(distanceBetweenPoints(currentNode.getLatitude(),currentNode.getLongitude(),goalNd.getLatitude(),goalNd.getLongitude()));
-					}
-				}
+						j.remove();//It is faster to remove the children here than in the other lists
 
-				for(DistanceMetricNode node:childList){
-					priorityQueue.add(node);
-					prevNode.putIfAbsent(node,currentNode);
+					}
 				}
 
 				/*
 				 * This data has been passed on to the queueList, so it is no longer needed,
 				 * but it might be best to not shrink the size of this list,
 				 * as that might result in excessive resizing in the future -
-				 * .clear() provides this functionality.
+				 * .clear() does not shrink the list.
 				 */
 				childList.clear();
 			}
 		}
 		if(totalPathDistance<Double.POSITIVE_INFINITY){
-			path=getPath(prevNode,startNode,goalNode);
+			path=getPath(expansionList,getStartNode(),getGoalNode());
 		}
 
 		return path;
 	}
 
 	/**
+	 * TODO Not really used anymore
 	 * TODO Make sure that traveled distance is also taken into account here. distance=traveledDistance+distanceToGoalNode. Otherwise, this is greedy Best-First search, not A*
 	 * **INSERTION SORT**
 	 * Sorts a list of nodes by measuring the distance between each unsorted node and a goal node,
@@ -193,14 +115,14 @@ public class AStar {
 
 		if(sortedNodes.isEmpty()&&!unsortedNodes.isEmpty()){
 			if(unsortedNodes.get(unsortedNodes.size()-1).getDistanceToGoal()<=0){
-				unsortedNodes.get(unsortedNodes.size()-1).setGoalDistance(AStar.distanceBetweenPoints(unsortedNodes.get(unsortedNodes.size()-1).getLatitude(), unsortedNodes.get(unsortedNodes.size()-1).getLongitude(), goalNode.getLatitude(), goalNode.getLongitude()));
+				unsortedNodes.get(unsortedNodes.size()-1).setGoalDistance(Search.distanceBetweenPoints(unsortedNodes.get(unsortedNodes.size()-1).getLatitude(), unsortedNodes.get(unsortedNodes.size()-1).getLongitude(), getGoalNode().getLatitude(), getGoalNode().getLongitude()));
 			}
 			sortedNodes.add(unsortedNodes.remove(unsortedNodes.size()-1));//to pop the last element of the list. Moves fewer (none) elements in larger lists 
 		}
 
 		for(DistanceMetricNode unsortedNode:unsortedNodes){//next unsorted node
 			if(unsortedNode.getDistanceToGoal()<=0){
-				unsortedNode.setGoalDistance(AStar.distanceBetweenPoints(unsortedNode.getLatitude(), unsortedNode.getLongitude(), goalNode.getLatitude(), goalNode.getLongitude()));
+				unsortedNode.setGoalDistance(Search.distanceBetweenPoints(unsortedNode.getLatitude(), unsortedNode.getLongitude(), getGoalNode().getLatitude(), getGoalNode().getLongitude()));
 			}
 			unsortedNodeDistance=(unsortedNode.getDistanceTravelled()+unsortedNode.getDistanceToGoal());
 			for(int x=sortedNodes.size()-1; x>=0;x--){//next sorted node
@@ -215,76 +137,5 @@ public class AStar {
 
 		}
 		return sortedNodes;
-	}
-
-	/**
-	 * TODO BigDecimal might provide better accuracy in these calculations
-	 * Finds the distance between two nodes by comparing their latitude and longitude
-	 * @param latitude1 The latitude of the first node
-	 * @param longitude1 The longitude of the first node
-	 * @param latitude2 The latitude of the second node
-	 * @param longitude2 The longitude of the second node
-	 * @return The distance between the two nodes
-	 */
-	public static double distanceBetweenPoints(double latitude1, double longitude1, double latitude2, double longitude2){
-
-		//Distance=squareRoot((x1-y1)^2 + (x2-y2)^2)
-		double distance = Math.sqrt(Math.pow(latitude1-latitude2,2)+ Math.pow(longitude1-longitude2,2));
-
-		/*This ensures that all distances are >0 (CRUCIAL FOR PATH-COST CALCULATIONS),
-		 * but some accuracy is lost when dealing with nodes really close to each other.
-		 * UPDATE(21.July.2016): These calculations seem to work now - at least with the path I have tested everything on. -
-		 * - finding the distance from a node to itself will still return >0 (as it should)
-		 */
-		return Math.max(distance, Double.MIN_VALUE);
-	}
-
-	/**
-	 * Goes through the list of expanded nodes from the back to the front, and returns the complete path from the goal node to the start node
-	 * @param prevNode2 List of expanded nodes and which node they were expanded from
-	 * @param startNd {@link #startNode}
-	 * @param goalNd {@link #goalNode}
-	 * @return A sequence of the nodes that represent the path from the start node to the goal node, in reverse order
-	 */
-	private static List<Node> getPath(Map<DistanceMetricNode, DistanceMetricNode> visitedList,DistanceMetricNode startNd, DistanceMetricNode goalNd){
-		setGoalNode(goalNd);
-		setStartNode(startNd);
-
-		List<Node>path = new ArrayList<Node>();
-		Node previousNode=goalNode;//splitPath(expandedNodes.get(expandedNodes.size()-1),1);//To register the goal node which should be the last node expanded
-
-		//TODO Iterating through the list in reverse order would probably speed things up, as it would prevent the revisiting of parent-child pairs
-		while(previousNode!=null){
-			//System.out.println("\nfrom: "+previousNode.getId());
-			path.add(previousNode);
-			previousNode=visitedList.remove(previousNode);
-			//System.out.println("to: "+previousNode.getId());
-		}
-
-		if(!(path.get(path.size()-1)==startNode)){
-			//In case we were unable to find a complete path back to the start-node from the goal-node
-			return null;
-		}
-
-		return path;
-	}
-
-	/**
-	 * Searches for the Nodes connected to the input, and returns only the Nodes fit for navigation, and the Nodes connected to the goal(regardless) - if found
-	 * @param parentNode Node to expand (find references to)
-	 * @return The children of the parent. I.e every Node in a Way related to this Node
-	 * @see database.SearchDatabase #FilterAccessibleWays(List)
-	 */
-	protected static List<Node> getNavigatableConnectedNodes(Node parentNode){
-		List<Way> wayList=SearchDatabase.getWaysContainingNode(parentNode.getId());
-		List<Node>nodeList= new ArrayList<Node>();//This can remove a Way containing the goal; the code below deals with this
-
-		for(Node n:SearchDatabase.filterAccessibleNodes(wayList)){
-			if(n!=parentNode){
-				nodeList.add(n);
-			}
-		}
-
-		return nodeList;
 	}
 }
