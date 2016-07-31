@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.PriorityQueue;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import database.DistanceComparator;
 import database.DistanceMetricNode;
@@ -32,16 +33,11 @@ public class AStar {
 	 */
 	private static DistanceMetricNode goalNode;
 
-	/**
-	 * The sum of the distances between all Nodes in a path
-	 */
-	private static double totalPathDistance=Double.POSITIVE_INFINITY;
-
 	static final Comparator<DistanceMetricNode> c = new DistanceComparator();
 	/**
 	 * For organising the order of the nodes to be expanded
 	 */
-	static PriorityQueue<DistanceMetricNode> priorityQueue = new PriorityQueue<DistanceMetricNode>(/*(BuildDatabase.getNodes().size()/2) ,*/ c);
+	private PriorityQueue<DistanceMetricNode> priorityQueue = new PriorityQueue<DistanceMetricNode>(c);
 
 
 	/**
@@ -50,18 +46,18 @@ public class AStar {
 	 * TODO change to something other than ArrayList
 	 * If this list stored a pointer to the Node instead of just its id, would that increase performance? Probably
 	 */
-	private static List<Node> visitedNodes = new ArrayList<Node>();
+	private List<Node> visitedNodes = new ArrayList<Node>();
 	/**
 	 * For handling the children of expanded nodes before they are passed into the queueList
 	 * TODO Change to something other than ArrayList
 	 */
-	private static List<DistanceMetricNode> childList = new ArrayList<DistanceMetricNode>();
+	private List<DistanceMetricNode> childList = new ArrayList<DistanceMetricNode>();
 	/**
 	 * For keeping track of which parent node was expanded to reach a child node.
 	 * Formatted like this: child(to),parent(from)
 	 * TODO hashmap? parent is unique key, child is value?
 	 */
-	private static Map<DistanceMetricNode,DistanceMetricNode> prevNode = new HashMap<DistanceMetricNode, DistanceMetricNode>();
+	private Map<DistanceMetricNode,DistanceMetricNode> prevNode = new HashMap<DistanceMetricNode, DistanceMetricNode>();
 
 	protected static DistanceMetricNode getStartNode() {
 		return startNode;
@@ -85,9 +81,16 @@ public class AStar {
 	 * @param goalNd {@link #goalNode}
 	 * @return The nodes expanded to reach the goal node from the start node - in reverse order; see {@link #getPath(Map, DistanceMetricNode, DistanceMetricNode)}
 	 */
-	public static List<Node> search (DistanceMetricNode startNd, DistanceMetricNode goalNd){
+	public List<Node> search (DistanceMetricNode startNd, DistanceMetricNode goalNd){
+		
 		setStartNode(startNd);
 		setGoalNode(goalNd);
+		
+
+		/**
+		 * The sum of the distances between all Nodes in a path
+		 */
+		double totalPathDistance=Double.POSITIVE_INFINITY;
 
 		List<Node> path = new ArrayList<Node>();
 
@@ -95,9 +98,11 @@ public class AStar {
 		currentNode.setDistanceTravelled(0);
 
 
-		for(Node node:getNavigatableConnectedNodes(currentNode.getId())){
-			//Is it safe to cast like this?
+		for(Node node:getNavigatableConnectedNodes(currentNode)){
+			if(node!=currentNode){
+				//Is it safe to cast like this?
 			priorityQueue.add((DistanceMetricNode) node);
+			}
 		}
 
 		visitedNodes.add(currentNode);
@@ -131,7 +136,7 @@ public class AStar {
 			}else{
 
 				//TODO Also adds the parent itself as a child... Currently (1 second / 2x) faster than filtering it out
-				for(Node child:getNavigatableConnectedNodes(currentNode.getId())){
+				for(Node child:getNavigatableConnectedNodes(currentNode)){
 					if(!(child.equals(currentNode))){
 						//TODO is it ok to cast like this?
 						childList.add((DistanceMetricNode) child);
@@ -142,8 +147,8 @@ public class AStar {
 				while(j.hasNext()){
 					DistanceMetricNode node = j.next();
 
-					if(node.getId().equals(currentNode.getId())||visitedNodes.contains(node.getId())||priorityQueue.contains(node)){
-						j.remove();//Faster to do it here than in the queueArray, as that array is most likely much larger
+					if(node.getId().equals(currentNode.getId())||visitedNodes.contains(node)||priorityQueue.contains(node)){
+						j.remove();//Faster to remove the children here than in the other lists
 					}else{
 						node.setDistanceTravelled(currentNode.getDistanceTravelled()+distanceBetweenPoints(currentNode.getLatitude(),currentNode.getLongitude(),node.getLatitude(),node.getLongitude()));
 						node.setGoalDistance(distanceBetweenPoints(currentNode.getLatitude(),currentNode.getLongitude(),goalNd.getLatitude(),goalNd.getLongitude()));
@@ -223,7 +228,8 @@ public class AStar {
 	 */
 	public static double distanceBetweenPoints(double latitude1, double longitude1, double latitude2, double longitude2){
 
-		double distance = Math.sqrt(Math.pow(Math.abs(latitude1-latitude2),2)+ Math.pow(Math.abs(longitude1-longitude2),2));
+		//Distance=squareRoot((x1-y1)^2 + (x2-y2)^2)
+		double distance = Math.sqrt(Math.pow(latitude1-latitude2,2)+ Math.pow(longitude1-longitude2,2));
 
 		/*This ensures that all distances are >0 (CRUCIAL FOR PATH-COST CALCULATIONS),
 		 * but some accuracy is lost when dealing with nodes really close to each other.
@@ -240,28 +246,23 @@ public class AStar {
 	 * @param goalNd {@link #goalNode}
 	 * @return A sequence of the nodes that represent the path from the start node to the goal node, in reverse order
 	 */
-	protected static List<Node> getPath(Map<DistanceMetricNode, DistanceMetricNode> visitedList,DistanceMetricNode startNd, DistanceMetricNode goalNd){
+	private static List<Node> getPath(Map<DistanceMetricNode, DistanceMetricNode> visitedList,DistanceMetricNode startNd, DistanceMetricNode goalNd){
 		setGoalNode(goalNd);
 		setStartNode(startNd);
 
 		List<Node>path = new ArrayList<Node>();
-		path.add(goalNode);
 		Node previousNode=goalNode;//splitPath(expandedNodes.get(expandedNodes.size()-1),1);//To register the goal node which should be the last node expanded
 
-		while(!(previousNode.equals(startNode))){
+		//TODO Iterating through the list in reverse order would probably speed things up, as it would prevent the revisiting of parent-child pairs
+		while(previousNode!=null){
 			//System.out.println("\nfrom: "+previousNode.getId());
-			previousNode=SearchDatabase.searchForNode(visitedList.get(previousNode).getlocalId());
-			//System.out.println("to: "+previousNode.getId());
-
-			if(previousNode.equals(null)){
-				//just to be safe
-				break;
-			}
 			path.add(previousNode);
+			previousNode=visitedList.remove(previousNode);
+			//System.out.println("to: "+previousNode.getId());
 		}
 
-		if(!(path.get(path.size()-1).equals(startNode))){
-			//If we were unable to find a complete path
+		if(!(path.get(path.size()-1)==startNode)){
+			//In case we were unable to find a complete path back to the start-node from the goal-node
 			return null;
 		}
 
@@ -274,28 +275,15 @@ public class AStar {
 	 * @return The children of the parent. I.e every Node in a Way related to this Node
 	 * @see database.SearchDatabase #FilterAccessibleWays(List)
 	 */
-	protected static List<Node> getNavigatableConnectedNodes(String parentNode){
-		List<Way> wayList=SearchDatabase.getWaysContainingNode(parentNode);
-		List<Node>nodeList=SearchDatabase.filterAccessibleNodes(wayList);//This can remove a Way containing the goal; the code below deals with this
+	protected static List<Node> getNavigatableConnectedNodes(Node parentNode){
+		List<Way> wayList=SearchDatabase.getWaysContainingNode(parentNode.getId());
+		List<Node>nodeList= new ArrayList<Node>();//This can remove a Way containing the goal; the code below deals with this
 
-		//Node pNode=SearchDatabase.searchForNode(parentNode);
-
-		//TODO This makes sure that every Node in a Way with a connection to the goal is returned regardless of their suitability for navigation.
-		//TODO Should only Nodes in suitable Ways be returned, or is this okay?
-		for(Way way:wayList){
-			//Makes sure that the list of Nodes fit for navigation contains the goal if it has been found in one or more Ways
-			if(way.getNodeRelations().contains(goalNode)&&!nodeList.containsAll(way.getNodeRelations())){
-				for(Node node:way.getNodeRelations()){
-					if(!nodeList.contains(node)){
-						nodeList.add(node);
-					}
-				}
+		for(Node n:SearchDatabase.filterAccessibleNodes(wayList)){
+			if(n!=parentNode){
+				nodeList.add(n);
 			}
 		}
-
-		//The following seems like a slow (>O(n)) way of ensuring that the parent node isn't returned
-		//Adds an additional second to the runtime of AllTests (O(t*2)) - This makes this process incredibly unnecessary 
-		//nodeList.removeIf(pNode::equals);
 
 		return nodeList;
 	}
