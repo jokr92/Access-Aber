@@ -5,6 +5,7 @@ import database.DistanceMetricNode;
 import database.Node;
 import database.SearchDatabase;
 import route.AStar;
+import route.Search;
 
 public class RunTheSystem {
 
@@ -21,8 +22,11 @@ public class RunTheSystem {
 			//TODO Is this a safe cast? Does this try-catch statement deal with casting-errors?
 			DistanceMetricNode startNode = (DistanceMetricNode) SearchDatabase.findClosestNode(args[0], args[1]);
 			DistanceMetricNode goalNode = (DistanceMetricNode) SearchDatabase.findClosestNode(args[2],args[3]);
+			
+			aStar.setStartNode(startNode);
+			aStar.setGoalNode(goalNode);
 
-			for(Node step:aStar.search(startNode, goalNode)){
+			for(Node step:aStar.findPath()){
 				System.out.println(step);
 			}
 		}catch(NumberFormatException e){//Is never really reached when args is double. Any missing input is 0 by default

@@ -12,17 +12,19 @@ public class OSMNode implements DistanceMetricNode{
 
 	/**
 	 * TODO This data should probably be kept elsewhere, but I am in a rush to get A* to work, so I'll keep it here for now
+	 * If it is stored here, then a node can only be used in one pathfinding-algorithm at a time at a time
 	 */
-	private double distanceTravelled, goalDistance;
+	private double distanceTravelled = Double.POSITIVE_INFINITY;
+	private double goalDistance = Double.POSITIVE_INFINITY;
 
 	private String id;
 	private int localId;
-	private boolean visible;
-	private String version;
-	private String timestamp;
-	private String changeset;
-	private String user;
-	private String uid;
+//	private boolean visible;
+//	private String version;
+//	private String timestamp;
+//	private String changeset;
+//	private String user;
+//	private String uid;
 	private double lat;
 	private double lon;
 
@@ -37,89 +39,89 @@ public class OSMNode implements DistanceMetricNode{
 
 	}
 
-	/**
-	 * @return the visible
-	 */
-	public boolean isVisible() {
-		return visible;
-	}
+//	/**
+//	 * @return the visible
+//	 */
+//	public boolean isVisible() {
+//		return visible;
+//	}
 
-	/**
-	 * @param visible the visible to set
-	 */
-	public void setVisible(boolean visible) {
-		this.visible = visible;
-	}
+//	/**
+//	 * @param visible the visible to set
+//	 */
+//	public void setVisible(boolean visible) {
+//		this.visible = visible;
+//	}
 
-	/**
-	 * @return the version
-	 */
-	public String getVersion() {
-		return version;
-	}
+//	/**
+//	 * @return the version
+//	 */
+//	public String getVersion() {
+//		return version;
+//	}
 
-	/**
-	 * @param version the version to set
-	 */
-	public void setVersion(String version) {
-		this.version = version;
-	}
+//	/**
+//	 * @param version the version to set
+//	 */
+//	public void setVersion(String version) {
+//		this.version = version;
+//	}
 
-	/**
-	 * @return the timestamp
-	 */
-	public String getTimestamp() {
-		return timestamp;
-	}
+//	/**
+//	 * @return the timestamp
+//	 */
+//	public String getTimestamp() {
+//		return timestamp;
+//	}
 
-	/**
-	 * @param timestamp the timestamp to set
-	 */
-	public void setTimestamp(String timestamp) {
-		this.timestamp = timestamp;
-	}
+//	/**
+//	 * @param timestamp the timestamp to set
+//	 */
+//	public void setTimestamp(String timestamp) {
+//		this.timestamp = timestamp;
+//	}
 
-	/**
-	 * @return the changeset
-	 */
-	public String getChangeset() {
-		return changeset;
-	}
+//	/**
+//	 * @return the changeset
+//	 */
+//	public String getChangeset() {
+//		return changeset;
+//	}
 
-	/**
-	 * @param changeset the changeset to set
-	 */
-	public void setChangeset(String changeset) {
-		this.changeset = changeset;
-	}
+//	/**
+//	 * @param changeset the changeset to set
+//	 */
+//	public void setChangeset(String changeset) {
+//		this.changeset = changeset;
+//	}
 
-	/**
-	 * @return the user
-	 */
-	public String getUser() {
-		return user;
-	}
+//	/**
+//	 * @return the user
+//	 */
+//	public String getUser() {
+//		return user;
+//	}
 
-	/**
-	 * @param user the user to set
-	 */
-	public void setUser(String user) {
-		this.user = user;
-	}
+//	/**
+//	 * @param user the user to set
+//	 */
+//	public void setUser(String user) {
+//		this.user = user;
+//	}
 
-	/**
-	 * @return the uid
-	 */
-	public String getUid() {
-		return uid;
-	}
+//	/**
+//	 * @return the uid
+//	 */
+//	public String getUid() {
+//		return uid;
+//	}
 
-	/**
-	 * @param uid the uid to set
-	 */
-	public void setUid(String uid) {
-		this.uid = uid;
-	}
+//	/**
+//	 * @param uid the uid to set
+//	 */
+//	public void setUid(String uid) {
+//		this.uid = uid;
+//	}
 
 	@Override
 	public double getLatitude() {
@@ -140,17 +142,10 @@ public class OSMNode implements DistanceMetricNode{
 	public void setLongitude(double lon) {
 		this.lon=lon;
 	}
-
-	@Override
-	public String toString() {
-		return "Node [id=" + id + ", visible=" + visible + ", version="
-				+ version + ", changeset=" + changeset + ", timestamp=" + timestamp
-				+ ", user=" + user +", uid=" + uid + ", lat=" + lat + ", lon=" + lon + "]";
-	}
-
+	
 	@Override
 	/**
-	 * TODO Should I move this functionality elsewhere?
+	 * TODO Should I move this functionality elsewhere? If it is stored here, then a node can only be used in one pathfinding-algorithm at a time
 	 * @see {@link #distanceTravelled}
 	 */
 	public double getDistanceTravelled(){
@@ -159,7 +154,7 @@ public class OSMNode implements DistanceMetricNode{
 
 	@Override
 	/**
-	 * TODO Should I move this functionality elsewhere?
+	 * TODO Should I move this functionality elsewhere? If it is stored here, then a node can only be used in one pathfinding-algorithm at a time
 	 * @see {@link #distanceTravelled}
 	 */
 	public void setDistanceTravelled(double distanceTravelled){
@@ -168,7 +163,7 @@ public class OSMNode implements DistanceMetricNode{
 
 	@Override
 	/**
-	 * TODO Should I move this functionality elsewhere?
+	 * TODO Should I move this functionality elsewhere? If it is stored here, then a node can only be used in one pathfinding-algorithm at a time
 	 * @see {@link #distanceTravelled}
 	 */
 	public double getDistanceToGoal(){
@@ -177,7 +172,7 @@ public class OSMNode implements DistanceMetricNode{
 
 	@Override
 	/**
-	 * TODO Should I move this functionality elsewhere?
+	 * TODO Should I move this functionality elsewhere? If it is stored here, then a node can only be used in one pathfinding-algorithm at a time
 	 * @see {@link #distanceTravelled}
 	 */
 	public void setGoalDistance(double goalDistance){
@@ -194,4 +189,10 @@ public class OSMNode implements DistanceMetricNode{
 		this.localId=localID;
 		
 	}
+	
+	@Override
+	public String toString() {
+		return "Node [id=" + getId() + ", lat=" + getLatitude() + ", lon=" + getLongitude() + "]";
+	}
+
 } 
