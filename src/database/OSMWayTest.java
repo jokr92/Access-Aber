@@ -71,52 +71,52 @@ public class OSMWayTest {
 		assertTrue(testWay.getId().equals("123"));
 	}
 
-	@Test
-	/**
-	 * TODO Why is this test so unnecessarily slow when it is run via 'AllTests' ?
-	 * It takes ~50% (0.9sec) of the total runtime(~2sec)
-	 * TODO This test is also slightly slower than the rest of the tests in this class
-	 */
-	public void GetAndSetVisibleShouldReturnAResult() {
-		assertFalse(testWay.isVisible());
-		testWay.setVisible(true);
-		assertTrue(testWay.isVisible());
-	}
+//	@Test
+//	/**
+//	 * TODO Why is this test so unnecessarily slow when it is run via 'AllTests' ?
+//	 * It takes ~50% (0.9sec) of the total runtime(~2sec)
+//	 * TODO This test is also slightly slower than the rest of the tests in this class
+//	 */
+//	public void GetAndSetVisibleShouldReturnAResult() {
+//		assertFalse(testWay.isVisible());
+//		testWay.setVisible(true);
+//		assertTrue(testWay.isVisible());
+//	}
 	
-	@Test
-	public void GetAndSetVersionShouldReturnAResult() {
-		assertNull(testWay.getVersion());
-		testWay.setVersion("ver");
-		assertTrue(testWay.getVersion().equals("ver"));
-	}
+//	@Test
+//	public void GetAndSetVersionShouldReturnAResult() {
+//		assertNull(testWay.getVersion());
+//		testWay.setVersion("ver");
+//		assertTrue(testWay.getVersion().equals("ver"));
+//	}
 	
-	@Test
-	public void GetAndSetChangesetShouldReturnAResult() {
-		assertNull(testWay.getChangeset());
-		testWay.setChangeset("Chng");
-		assertTrue(testWay.getChangeset().equals("Chng"));
-	}
+//	@Test
+//	public void GetAndSetChangesetShouldReturnAResult() {
+//		assertNull(testWay.getChangeset());
+//		testWay.setChangeset("Chng");
+//		assertTrue(testWay.getChangeset().equals("Chng"));
+//	}
 	
-	@Test
-	public void GetAndSetTimestampShouldReturnAResult() {
-		assertNull(testWay.getTimestamp());
-		testWay.setTimestamp("time");
-		assertTrue(testWay.getTimestamp().equals("time"));
-	}
+//	@Test
+//	public void GetAndSetTimestampShouldReturnAResult() {
+//		assertNull(testWay.getTimestamp());
+//		testWay.setTimestamp("time");
+//		assertTrue(testWay.getTimestamp().equals("time"));
+//	}
 
-	@Test
-	public void GetAndSetUserShouldReturnAResult() {
-		assertNull(testWay.getUser());
-		testWay.setUser("Jostein");
-		assertTrue(testWay.getUser().equals("Jostein"));
-	}
+//	@Test
+//	public void GetAndSetUserShouldReturnAResult() {
+//		assertNull(testWay.getUser());
+//		testWay.setUser("Jostein");
+//		assertTrue(testWay.getUser().equals("Jostein"));
+//	}
 
-	@Test
-	public void GetAndSetUidShouldReturnAResult() {
-		assertNull(testWay.getUid());
-		testWay.setUid("jok13");
-		assertTrue(testWay.getUid().equals("jok13"));
-	}
+//	@Test
+//	public void GetAndSetUidShouldReturnAResult() {
+//		assertNull(testWay.getUid());
+//		testWay.setUid("jok13");
+//		assertTrue(testWay.getUid().equals("jok13"));
+//	}
 	
 	@Test
 	public void testToString() {

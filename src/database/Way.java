@@ -2,7 +2,9 @@ package database;
 
 //import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
@@ -48,7 +50,7 @@ public /*abstract*//*Can't instantiate an abstract class*/ interface Way extends
 	 * 
 	 * @return The complete list of Node-Relations in this Way
 	 */
-	List<OSMNode> getNodeRelations();
+	List<Node> getNodeRelations();
 	
 	/**
 	 * Adds a single Node to the list of Node-Relations inside this Way
@@ -63,6 +65,8 @@ public /*abstract*//*Can't instantiate an abstract class*/ interface Way extends
 	 */
 	void removeNodeRelation(Node node);
 	
+	void setKeyValuePairs(Map<String, Object> keyValuePairs);
+	void addKeyValuePair(String key, Object value);
 	Set<Entry<String, Object>> getKeyValuePairs();
 	
 	@Override

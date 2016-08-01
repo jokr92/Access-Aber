@@ -117,6 +117,7 @@ public class SearchDatabase{
 		Node closestNode=null;
 		double shortestDistance=Double.POSITIVE_INFINITY;
 		double currentDistance=Double.POSITIVE_INFINITY;
+		
 		for(Node node:BuildDatabase.getNodes()){
 			currentDistance=Search.distanceBetweenPoints(node.getLatitude(), node.getLongitude(), lat, lon);
 			if(currentDistance<shortestDistance){

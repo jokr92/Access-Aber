@@ -9,13 +9,7 @@ package database;
 public enum FieldTags {
 	
 	ID("id"),
-	VISIBLE("visible"),
-	VERSION("version"),
-	CHANGESET("changeset"),//TODO Is this one needed?
-	TIMESTAMP("timestamp"),
-	USER("user"),//TODO Is this one needed? Am I allowed to use it?
-	UID("uid"),//TODO Is this one needed? Am I allowed to use it?
-	
+
 	NODE_LATITUDE("lat"),
 	NODE_LONGITUDE("lon"),
 	

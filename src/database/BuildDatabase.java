@@ -30,14 +30,14 @@ import static database.FieldTags.*;
  */
 public class BuildDatabase{
 
-	private static OSMNode[] nodes;
-	private static OSMWay[] ways;
+	private static Node[] nodes;
+	private static Way[] ways;
 
 	/**
 	 * 
 	 * @return The complete list of Nodes in {@link #nodes}
 	 */
-	public static OSMNode[] getNodes() {
+	public static Node[] getNodes() {
 		return nodes;
 	}
 
@@ -45,8 +45,8 @@ public class BuildDatabase{
 	 * Changes the contents of {@link #nodes} to the contents of the input
 	 * @param nodes The list of Nodes to mirror the list of {@link #nodes} from
 	 */
-	private static void setNodes(List<OSMNode> tempNodes) {
-		BuildDatabase.nodes = new OSMNode[tempNodes.size()];
+	private static void setNodes(List<Node> tempNodes) {
+		BuildDatabase.nodes = new Node[tempNodes.size()];
 		for(int i=tempNodes.size()-1;i>=0;i--){
 			nodes[i]=tempNodes.remove(i);
 		}
@@ -56,7 +56,7 @@ public class BuildDatabase{
 	 * 
 	 * @return The complete list of Nodes in {@link #ways}
 	 */
-	public static OSMWay[] getWays() {
+	public static Way[] getWays() {
 		return ways;
 	}
 
@@ -64,8 +64,8 @@ public class BuildDatabase{
 	 * Changes the contents of {@link #ways} to the contents of the input
 	 * @param tempWays The list of Ways to mirror the list of {@link #ways} from
 	 */
-	private static void setWays(List<OSMWay> tempWays) {
-		ways=new OSMWay[tempWays.size()];
+	private static void setWays(List<Way> tempWays) {
+		ways=new Way[tempWays.size()];
 		for(int i=tempWays.size()-1;i>=0;i--){
 			ways[i]=tempWays.remove(i);
 		}
@@ -73,8 +73,8 @@ public class BuildDatabase{
 
 	@SuppressWarnings({ "unchecked" })
 	public static void readConfig(String filename) {
-		List<OSMNode> tempNodes = new ArrayList<OSMNode>();
-		List<OSMWay> tempWays = new ArrayList<OSMWay>();
+		List<Node> tempNodes = new ArrayList<Node>();
+		List<Way> tempWays = new ArrayList<Way>();
 		StartElement startElement;
 		String name;
 		Attribute attribute;
@@ -87,8 +87,8 @@ public class BuildDatabase{
 			// Setup a new eventReader
 			InputStream in = new FileInputStream(filename);
 			XMLEventReader eventReader = inputFactory.createXMLEventReader(in);
-			OSMNode node = null;
-			OSMWay way = null;
+			Node node;
+			Way way;
 
 			// read the XML document
 			while (eventReader.hasNext()) {
@@ -98,7 +98,7 @@ public class BuildDatabase{
 					startElement = event.asStartElement();
 					// If we have a Node element, we create a new Node
 					if (startElement.getName().getLocalPart().equals(NODE_START.getString())) {
-						node = new OSMNode();
+						node = new OSMNode();//TODO This should probably be more generic (i.e. Node instead of OSMNode)
 						// We read the attributes from this tag and add them to our object
 						attributes = startElement.getAttributes();
 						while (attributes.hasNext()) {
@@ -106,29 +106,18 @@ public class BuildDatabase{
 							name=attribute.getName().toString();
 							if (name.equals(ID.getString())) {
 								node.setId(attribute.getValue());
-							}else if (name.equals(VISIBLE.getString())){
-								node.setVisible(Boolean.parseBoolean(attribute.getValue()));
-							}else if (name.equals(VERSION.getString())){
-								node.setVersion(attribute.getValue());
-							}else if (name.equals(CHANGESET.getString())){
-								node.setChangeset(attribute.getValue());
-							}else if (name.equals(TIMESTAMP.getString())){
-								node.setTimestamp(attribute.getValue());
-							}else if (name.equals(USER.getString())){
-								node.setUser(attribute.getValue());
-							}else if (name.equals(UID.getString())){
-								node.setUid(attribute.getValue());
 							}else if (name.equals(NODE_LATITUDE.getString())){
 								node.setLatitude(Double.parseDouble(attribute.getValue()));
 							}else if (name.equals(NODE_LONGITUDE.getString())){
 								node.setLongitude(Double.parseDouble(attribute.getValue()));
 							}
+							//break;
 						}
 						node.setLocalId(nodeCounter++);
 						tempNodes.add(node);
 					}
 					else if(startElement.getName().getLocalPart().equals(WAY_START.getString())) {//TODO Very similar to the above. Can they be refactored and merged?
-						way = new OSMWay();
+						way = new OSMWay();//TODO I should probably make the Ways I add more generic (i.e. Way instead of OSMWay)
 						// We read the attributes from this tag and add them to our object
 						attributes = startElement.getAttributes();
 						while (attributes.hasNext()) {
@@ -136,18 +125,7 @@ public class BuildDatabase{
 							name = attribute.getName().toString();
 							if (name.equals(ID.getString())) {
 								way.setId(attribute.getValue());
-							}else if (name.equals(VISIBLE.getString())){
-								way.setVisible(Boolean.parseBoolean(attribute.getValue()));
-							}else if (name.equals(VERSION.getString())){
-								way.setVersion(attribute.getValue());
-							}else if (name.equals(CHANGESET.getString())){
-								way.setChangeset(attribute.getValue());
-							}else if (name.equals(TIMESTAMP.getString())){
-								way.setTimestamp(attribute.getValue());
-							}else if (name.equals(USER.getString())){
-								way.setUser(attribute.getValue());
-							}else if (name.equals(UID.getString())){
-								way.setUid(attribute.getValue());
+								break;
 							}
 						}
 						while(eventReader.hasNext()){
