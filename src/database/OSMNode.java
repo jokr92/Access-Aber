@@ -8,14 +8,7 @@ package database;
  * License: www.eclipse.org/legal/epl-v10.html
  * @see database.Node
  */
-public class OSMNode implements DistanceMetricNode{
-
-	/**
-	 * TODO This data should probably be kept elsewhere, but I am in a rush to get A* to work, so I'll keep it here for now
-	 * If it is stored here, then a node can only be used in one pathfinding-algorithm at a time at a time
-	 */
-	private double distanceTravelled = Double.POSITIVE_INFINITY;
-	private double goalDistance = Double.POSITIVE_INFINITY;
+public class OSMNode implements Node{
 
 	private String id;
 	private int localId;
@@ -143,42 +136,6 @@ public class OSMNode implements DistanceMetricNode{
 		this.lon=lon;
 	}
 	
-	@Override
-	/**
-	 * TODO Should I move this functionality elsewhere? If it is stored here, then a node can only be used in one pathfinding-algorithm at a time
-	 * @see {@link #distanceTravelled}
-	 */
-	public double getDistanceTravelled(){
-		return distanceTravelled;
-	}
-
-	@Override
-	/**
-	 * TODO Should I move this functionality elsewhere? If it is stored here, then a node can only be used in one pathfinding-algorithm at a time
-	 * @see {@link #distanceTravelled}
-	 */
-	public void setDistanceTravelled(double distanceTravelled){
-		this.distanceTravelled = distanceTravelled;
-	}
-
-	@Override
-	/**
-	 * TODO Should I move this functionality elsewhere? If it is stored here, then a node can only be used in one pathfinding-algorithm at a time
-	 * @see {@link #distanceTravelled}
-	 */
-	public double getDistanceToGoal(){
-		return goalDistance;
-	}
-
-	@Override
-	/**
-	 * TODO Should I move this functionality elsewhere? If it is stored here, then a node can only be used in one pathfinding-algorithm at a time
-	 * @see {@link #distanceTravelled}
-	 */
-	public void setGoalDistance(double goalDistance){
-		this.goalDistance=goalDistance;
-	}
-
 	@Override
 	public int getlocalId() {
 		return localId;
