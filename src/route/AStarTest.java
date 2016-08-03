@@ -10,7 +10,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import database.BuildDatabase;
-import database.DistanceMetricNode;
 import database.Node;
 import database.OSMNode;
 import database.SearchDatabase;
@@ -21,8 +20,8 @@ import database.SearchDatabase;
  */
 public class AStarTest {
 
-	static DistanceMetricNode startNode;
-	static DistanceMetricNode goalNode;
+	static Node startNode;
+	static Node goalNode;
 	AStar aStar;
 
 	@BeforeClass
@@ -31,10 +30,10 @@ public class AStarTest {
 			BuildDatabase.readConfig("map.osm");
 		}
 
-		startNode=(DistanceMetricNode) SearchDatabase.searchForNode(1);
-		goalNode=(DistanceMetricNode) SearchDatabase.searchForNode(20);
+		startNode=SearchDatabase.searchForNode(1);
+		goalNode=SearchDatabase.searchForNode(20);
 	}
-	
+
 	@Before
 	public void initialiseAstar(){
 		aStar = new AStar();
@@ -62,25 +61,25 @@ public class AStarTest {
 		assertTrue(Search.distanceBetweenPoints(n1,n2)>0);
 	}
 
-//	@Test
-//	public void ShouldExpandTheStartNodeAndSortTheResultingChildrenByTheirProximityToTheGoalNode(){
-//		List<DistanceMetricNode> unsortedTestNodes = new ArrayList<DistanceMetricNode>();
-//		List<DistanceMetricNode> sortedTestNodes = new ArrayList<DistanceMetricNode>();
-//
-//		for(Node n:SearchDatabase.getNavigatableConnectedNodes(startNode)){
-//			//TODO Is it safe to cast like this?
-//			unsortedTestNodes.add((DistanceMetricNode) n);
-//		}
-//
-//		sortedTestNodes=AStar.sortByDistance(sortedTestNodes,unsortedTestNodes);
-//		for(int i=sortedTestNodes.size()-1;i>0;i--){
-//			assertTrue((sortedTestNodes.get(i).getDistanceTravelled()+sortedTestNodes.get(i).getDistanceToGoal())
-//					<=(sortedTestNodes.get(i).getDistanceTravelled()+sortedTestNodes.get(i).getDistanceToGoal()));
-//			/*First Node*///System.out.println("\n"+i+": "+AStar.distanceBetweenPoints(sortedTestNodes.get(i).getLatitude(), sortedTestNodes.get(i).getLongitude(), AStar.getGoalNode().getLatitude(), AStar.getGoalNode().getLongitude()));
-//			/*Next Node*///System.out.println(i+": "+AStar.distanceBetweenPoints(sortedTestNodes.get(i-1).getLatitude(), sortedTestNodes.get(i-1).getLongitude(), AStar.getGoalNode().getLatitude(), AStar.getGoalNode().getLongitude()));
-//
-//		}
-//	}
+	//	@Test
+	//	public void ShouldExpandTheStartNodeAndSortTheResultingChildrenByTheirProximityToTheGoalNode(){
+	//		List<DistanceMetricNode> unsortedTestNodes = new ArrayList<DistanceMetricNode>();
+	//		List<DistanceMetricNode> sortedTestNodes = new ArrayList<DistanceMetricNode>();
+	//
+	//		for(Node n:SearchDatabase.getNavigatableConnectedNodes(startNode)){
+	//			//TODO Is it safe to cast like this?
+	//			unsortedTestNodes.add((DistanceMetricNode) n);
+	//		}
+	//
+	//		sortedTestNodes=AStar.sortByDistance(sortedTestNodes,unsortedTestNodes);
+	//		for(int i=sortedTestNodes.size()-1;i>0;i--){
+	//			assertTrue((sortedTestNodes.get(i).getDistanceTravelled()+sortedTestNodes.get(i).getDistanceToGoal())
+	//					<=(sortedTestNodes.get(i).getDistanceTravelled()+sortedTestNodes.get(i).getDistanceToGoal()));
+	//			/*First Node*///System.out.println("\n"+i+": "+AStar.distanceBetweenPoints(sortedTestNodes.get(i).getLatitude(), sortedTestNodes.get(i).getLongitude(), AStar.getGoalNode().getLatitude(), AStar.getGoalNode().getLongitude()));
+	//			/*Next Node*///System.out.println(i+": "+AStar.distanceBetweenPoints(sortedTestNodes.get(i-1).getLatitude(), sortedTestNodes.get(i-1).getLongitude(), AStar.getGoalNode().getLatitude(), AStar.getGoalNode().getLongitude()));
+	//
+	//		}
+	//	}
 
 	@Test
 	public void ShouldFindRouteFromOneNodeToAnother(){
@@ -113,7 +112,7 @@ public class AStarTest {
 			fail("No Nodes in this route");
 		}
 	}
-	
+
 	@Test
 	/**
 	 * This test expands every node connected to the start node in the search-space.
@@ -121,52 +120,52 @@ public class AStarTest {
 	 */
 	public void ShouldNotFindPathToUnconnectedNode(){
 		List<Node> path = new ArrayList<Node>();
-		
+
 		OSMNode gNode=new OSMNode();
 		aStar.setGoalNode(gNode);
 
 		path=aStar.findPath();
-		
+
 		assertTrue(path.isEmpty());
 	}
-	
+
 	@Test
 	public void ShouldNotFindPathFromUnconnectedNode(){
 		List<Node> path = new ArrayList<Node>();
-		
+
 		OSMNode sNode=new OSMNode();
 		aStar.setStartNode(sNode);
 
 		path=aStar.findPath();
-		
+
 		assertTrue(path.isEmpty());
 	}
-	
+
 	@Test
 	public void pathsShouldBeTheSameLengthGoingInEitherDirection(){
 		List<Node> path1 = new ArrayList<Node>();
 		List<Node> path2 = new ArrayList<Node>();
 
-		AStar sbsb = new AStar();
-		sbsb.setStartNode(startNode);
-		sbsb.setGoalNode(startNode);
 		path1=aStar.findPath();
-		
+
 		//This makes path2 the reverse of path1
-		//Node tempNode = aStar.getStartNode();
-		//aStar.setStartNode(aStar.getGoalNode());
-		//aStar.setGoalNode(tempNode);
-		
-		path2=sbsb.findPath();
-		
+		AStar otherAStar = new AStar();
+		otherAStar.setStartNode(aStar.getGoalNode());
+		otherAStar.setGoalNode(aStar.getStartNode());
+		path2=otherAStar.findPath();
+
 		System.out.println("\nAStarTest: pathsShouldBeTheSameLengthGoingInEitherDirection");
 		for(int i=0;i<path2.size();i++){
 			System.out.println(path1.get(i).getId() +" "+ path2.get(i).getId());
 		}
-		
+
 		assertTrue(path1!=null);
 		assertTrue(path2!=null);
 		assertTrue(path1.size()==path2.size());
-		assertTrue(path1.equals(path2));
+		assertEquals(aStar.getPathCost(aStar.getGoalNode()),otherAStar.getPathCost(otherAStar.getGoalNode()),0);
+		//Makes sure that path2 is path1 backwards (or in reverse if you will)
+		for(int i=0;i<path1.size();i++){
+			assertTrue(path1.get(i).equals(path2.get((path2.size()-1)-i)));
+		}
 	}
 }

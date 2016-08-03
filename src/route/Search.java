@@ -37,6 +37,13 @@ public abstract class Search {
 	
 	/***************************FIELDS***************************/
 	/***************************METHODS***************************/
+	
+	/**
+	 * Expands the start node and the following child nodes until the goal node can be found.
+	 * {@link #setStartNode(Node)} and {@link #setGoalNode(Node)} should be called before this method.
+	 * @return The nodes expanded to reach the goal node from the start node - in reverse order; see {@link #getPath(Map, DistanceMetricNode, DistanceMetricNode)}
+	 */
+	public abstract List<Node> findPath ();
 
 	/**
 	 * 
@@ -80,13 +87,6 @@ public abstract class Search {
 			//TODO This does not reset any searches in progress though...
 		}
 	}
-
-	/**
-	 * Expands the start node and the following child nodes until the goal node can be found.
-	 * {@link #setStartNode(Node)} and {@link #setGoalNode(Node)} should be called before this method.
-	 * @return The nodes expanded to reach the goal node from the start node - in reverse order; see {@link #getPath(Map, DistanceMetricNode, DistanceMetricNode)}
-	 */
-	public abstract List<Node> findPath ();
 
 	/**
 	 * TODO BigDecimal might provide better accuracy in these calculations.
