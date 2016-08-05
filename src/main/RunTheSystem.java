@@ -24,6 +24,7 @@ public class RunTheSystem {
 			aStar.setStartNode(startNode);
 			aStar.setGoalNode(goalNode);
 
+			System.out.println("This is your path:");
 			for(Node step:aStar.findPath()){
 				System.out.println(step);
 			}

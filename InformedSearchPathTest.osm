@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<osm version="0.6" generator="CGImap 0.3.3 (13317 thorn-01.openstreetmap.org)" copyright="OpenStreetMap and contributors" attribution="http://www.openstreetmap.org/copyright" license="http://opendatacommons.org/licenses/odbl/1-0/">
+ <bounds minlat="-1.0" minlon="-1.0" maxlat="1.0" maxlon="1.0"/>
+ <!--startNode-->
+ <node id="1" lat="0.0" lon="0.0"/>
+ <!--good path-->
+  <node id="2" lat="-0.9" lon="-0.9"/>
+ <node id="3" lat="-0.5" lon="-0.5"/>
+ <node id="4" lat="0.1" lon="0.1"/>
+ <node id="5" lat="0.3" lon="0.3"/>
+ <!--/goodPath-->
+ <!--goalNode-->
+ <node id="6" lat="0.5" lon="0.5"/>
+ <!--bad path-->
+ <node id="7" lat="0.4" lon="0.4"/>
+ <node id="8" lat="-1.0" lon="-1.0"/>
+ <!--/bad path-->
+ <!--dead end-->
+ <node id="9" lat="1.0" lon="1.0"/>
+ <node id="10" lat="0.6" lon="0.0"/>
+ <node id="11" lat="0.0" lon="0.6"/>
+ <node id="12" lat="-1.0" lon="1.0"/>
+ <node id="13" lat="1.0" lon="-1.0"/>
+ <!--/dead end-->
+ 
+ <!--direct but unsuitable path-->
+ <way id="1">
+  <nd ref="1"/>
+  <nd ref="5"/>
+  <nd ref="6"/>
+  <tag k="highway" v="steps"/>
+  <tag k="wheelchair" v="no"/>
+ </way>
+ <!--start longest distance path-->
+ <!--first Node is very close to the goal-->
+ <!--fewer steps-->
+ <way id="2">
+  <nd ref="1"/>
+  <nd ref="9"/>
+  <nd ref="7"/>
+  <tag k="highway" v="footway"/>
+  <!--cont longest distance path-->
+ </way>
+  <way id="3">
+  <nd ref="13"/>
+  <nd ref="8"/>
+  <nd ref="7"/>
+  <nd ref="12"/>
+  <tag k="highway" v="footway"/>
+ </way>
+   <!--end longest distance path-->
+  <way id="4">
+  <nd ref="8"/>
+  <nd ref="6"/>
+  <tag k="highway" v="footway"/>
+ </way>
+ <!--start least distance path-->
+ <!--first Node is far away from the goal-->
+ <!--Also contains more steps-->
+  <way id="5">
+  <nd ref="2"/>
+  <nd ref="1"/>
+  <nd ref="9"/>
+  <tag k="highway" v="footway"/>
+ </way>
+ <!--cont least distance path-->
+  <way id="6">
+  <nd ref="12"/>
+  <nd ref="2"/>
+  <nd ref="3"/>
+  <nd ref="13"/>
+  <tag k="highway" v="footway"/>
+ </way>
+ <!--cont least distance path-->
+  <way id="7">
+  <nd ref="3"/>
+  <nd ref="4"/>
+  <tag k="highway" v="footway"/>
+ </way>
+ <!--cont least distance path-->
+  <way id="8">
+  <nd ref="4"/>
+  <nd ref="5"/>
+  <tag k="highway" v="footway"/>
+ </way>
+ <!--end least distance path-->
+ <way id="9">
+  <nd ref="5"/>
+  <nd ref="6"/>
+  <tag k="highway" v="footway"/>
+ </way>
+ <!--start dead end-->
+ <way id="10">
+  <nd ref="9"/>
+  <nd ref="10"/>
+  <tag k="highway" v="footway"/>
+ </way>
+ <!--cont dead end-->
+ <way id="11">
+  <nd ref="10"/>
+  <nd ref="11"/>
+  <tag k="highway" v="footway"/>
+ </way>
+ <!--cont dead end-->
+ <way id="11">
+  <nd ref="13"/>
+  <nd ref="11"/>
+  <nd ref="12"/>
+  <tag k="highway" v="footway"/>
+ </way>
+ <!--end dead end-->
+ </osm>

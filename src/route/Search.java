@@ -116,8 +116,9 @@ public abstract class Search {
 	 * @param node2 The second Node
 	 * @return The distance between the two nodes
 	 */
-	public static double distanceBetweenPoints(Node node1, Node node2){
-		return distanceBetweenPoints(node1.getLatitude(),node1.getLongitude(),node2.getLatitude(),node2.getLongitude());
+	protected static double distanceBetweenPoints(Node node1, Node node2){
+		double dist=distanceBetweenPoints(node1.getLatitude(),node1.getLongitude(),node2.getLatitude(),node2.getLongitude());
+		return dist;
 	}
 
 	/**

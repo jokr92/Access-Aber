@@ -1,8 +1,7 @@
 package route;
 
-import java.util.LinkedList;
+import java.util.ArrayDeque;
 import java.util.List;
-import java.util.Queue;
 
 import database.Node;
 import database.SearchDatabase;
@@ -11,11 +10,11 @@ import database.SearchDatabase;
  * @author Jostein
  *
  */
-public class DFS extends Search {
+public class DepthFirstSearch extends Search {
 
 	@Override
 	public List<Node> findPath() {
-		Queue<Node> stack = new LinkedList<Node>();
+		ArrayDeque<Node> stack = new ArrayDeque<Node>();
 
 		Node currentNode;
 
@@ -23,14 +22,14 @@ public class DFS extends Search {
 
 		for(Node node:SearchDatabase.getNavigatableConnectedNodes(getStartNode())){
 			if(node!=getStartNode()){
-				stack.offer(node);
+				stack.offerLast(node);
 				expansionList.putIfAbsent(node,getStartNode());
 			}
 		}
 
 		while(!stack.isEmpty()){
 
-			currentNode = stack.poll();
+			currentNode = stack.pollLast();
 
 			if(currentNode.equals(getGoalNode())){
 				break;
@@ -40,7 +39,7 @@ public class DFS extends Search {
 					if(!(child.equals(getStartNode()))
 							&& child!=currentNode
 							&& expansionList.putIfAbsent(child,currentNode)==null){
-						stack.offer(child);
+						stack.offerLast(child);
 					}
 				}
 			}
