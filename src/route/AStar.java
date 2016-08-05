@@ -1,6 +1,8 @@
 package route;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.PriorityQueue;
 
 import database.Node;
 import database.SearchDatabase;
@@ -13,6 +15,24 @@ import database.SearchDatabase;
  *@see database.BuildDatabase
  */
 public class AStar extends InformedSearch{
+	
+	/**
+	 * For organizing the order of the nodes to be expanded
+	 * TODO Aren't these comparisons backwards? pathCost+goalDistance should be minimized, not maximized
+	 */
+	PriorityQueue<Node> priorityQueue = new PriorityQueue<Node>(new Comparator<Node>() {
+        public int compare(Node n1, Node n2) {
+        	if(getPathCost(n1)+getGoalDistance(n1) > getPathCost(n2)+getGoalDistance(n2)){
+    			return 1;
+    		}else if(getPathCost(n1)+getGoalDistance(n1) < getPathCost(n2)+getGoalDistance(n2)){
+    			return -1;
+    		}else{
+    			//TODO The interface 'Node' can break distance-ties
+    			//with what? the ID? That's not related to distance at all...
+    			return 0;
+    			}
+        }
+    });
 
 	@Override
 	public List<Node> findPath (){
@@ -44,19 +64,19 @@ public class AStar extends InformedSearch{
 				 * (Assuming my implementation of AStar is correct)
 				 */
 	
-				Node goalParent=expansionList.get(currentNode);
+				Node goalParent=expansionList.get(currentNode);//returns the parent of the goalNode
 				updatePathCost(currentNode,(getPathCost(goalParent)+distanceBetweenPoints(currentNode,goalParent)));
-				System.out.println(getPathCost(currentNode));
 				break;
 			}else{
 
 				for(Node child:SearchDatabase.getNavigatableConnectedNodes(currentNode)){
 					if(child!=currentNode && child!=getStartNode()){
 						//if(child.currentMinEstimatedCost>child.distance(parent)+parent.get(distanceTravelled)+child.distance(goalNode)){expansionList.put(child,parent);child.setDistanceTravelled();child.setGoalDistance(same if updated, different if new)}
-						if(getEstimatedMinimalCost(child)>(getPathCost(currentNode)+Search.distanceBetweenPoints(currentNode,child))){
+						if(getEstimatedMinimalCost(child)>(getPathCost(currentNode)+Search.distanceBetweenPoints(currentNode,child)+Search.distanceBetweenPoints(child,getGoalNode()))){
 							updatePathCost(child,getPathCost(currentNode)+Search.distanceBetweenPoints(currentNode,child));
 							updateGoalDistance(child,Search.distanceBetweenPoints(child,getGoalNode()));
 							expansionList.put(child, currentNode);
+							priorityQueue.remove(child);//To ensure that the Node only appears once in the queue
 							priorityQueue.add(child);
 						}else{
 							//If this Node has not been encountered yet
@@ -66,6 +86,7 @@ public class AStar extends InformedSearch{
 						}
 					}
 					//Distance from Node<305025164> to Node<295134062>:
+					//0.002514673702126127
 					//0.002514673702126127
 					//0.002514673702126127
 					//0.002514673702126127

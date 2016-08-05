@@ -1,9 +1,7 @@
 package route;
 
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.PriorityQueue;
 
 import database.Node;
 
@@ -20,39 +18,22 @@ abstract class InformedSearch extends Search {
 	 */
 	private Map<Node, Double> goalDistance = new HashMap<Node, Double>();
 	
-	//static final Comparator<Node> distanceComparator = new DistanceComparator();
-
-	/**
-	 * For organising the order of the nodes to be expanded
-	 */
-	//PriorityQueue<Node> priorityQueue = new PriorityQueue<Node>(distanceComparator);
 	
-	PriorityQueue<Node> priorityQueue = new PriorityQueue<Node>(10, new Comparator<Node>() {
-        public int compare(Node n1, Node n2) {
-        	if(pathCost.get(n1)+goalDistance.get(n1) > pathCost.get(n2)+goalDistance.get(n2)){
-    			return 1;
-    		}else if(pathCost.get(n1)+goalDistance.get(n1) < pathCost.get(n2)+goalDistance.get(n2)){
-    			return -1;
-    		}else{
-    			//TODO The interface 'Node' can break distance-ties
-    			//with what? the ID? That's not related to distance at all...
-    			return 0;
-    			}
-        }
-    });
 	
 	void updatePathCost(Node n,double cost){
 		pathCost.put(n, cost);
 	}
 	double getPathCost(Node n){
-		return pathCost.getOrDefault(n,Double.POSITIVE_INFINITY);
+		double cost=pathCost.getOrDefault(n,Double.POSITIVE_INFINITY);
+		return cost;
 	}
 	
 	void updateGoalDistance(Node n, double distance){
 		goalDistance.put(n, distance);
 	}
 	double getGoalDistance(Node n){
-		return goalDistance.getOrDefault(n,Double.POSITIVE_INFINITY);
+		double dist=goalDistance.getOrDefault(n,Double.POSITIVE_INFINITY);
+		return dist;
 	}
 	
 	/**
@@ -62,6 +43,8 @@ abstract class InformedSearch extends Search {
 	 * @return the smallest possible path-cost from this Node to the goalNode
 	 */
 	double getEstimatedMinimalCost(Node n){
-		return (getPathCost(n)+getGoalDistance(n));
+		double cost=getPathCost(n);
+		double dist=getGoalDistance(n);
+		return (cost+dist);
 	}
 }

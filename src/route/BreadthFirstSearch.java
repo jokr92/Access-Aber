@@ -1,18 +1,17 @@
 package route;
 
-import java.util.LinkedList;
+import java.util.ArrayDeque;
 import java.util.List;
-import java.util.Queue;
 
 import database.Node;
 import database.SearchDatabase;
 
-public class BFS extends Search{
+public class BreadthFirstSearch extends Search{
 
 	@Override
 	public List<Node> findPath() {
 
-		Queue<Node> queue = new LinkedList<Node>();
+		ArrayDeque<Node> queue = new ArrayDeque<Node>();
 
 		Node currentNode;
 
@@ -20,14 +19,14 @@ public class BFS extends Search{
 
 		for(Node node:SearchDatabase.getNavigatableConnectedNodes(getStartNode())){
 			if(node!=getStartNode()){
-				queue.offer(node);
+				queue.offerLast(node);
 				expansionList.putIfAbsent(node,getStartNode());
 			}
 		}
 
 		while(!queue.isEmpty()){
 
-			currentNode = queue.poll();
+			currentNode = queue.pollFirst();
 
 			if(currentNode.equals(getGoalNode())){
 				break;
@@ -37,7 +36,7 @@ public class BFS extends Search{
 					if(!(child.equals(getStartNode()))
 							&& child!=currentNode
 							&& expansionList.putIfAbsent(child,currentNode)==null){
-						queue.offer(child);
+						queue.offerLast(child);
 					}
 				}
 			}
