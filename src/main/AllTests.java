@@ -23,7 +23,11 @@ import route.SearchFunctionalityTest;
  *
  */
 @RunWith(Suite.class)
-@SuiteClasses({NodeTest.class, OSMNodeTest.class, WayTest.class, OSMWayTest.class, AStarTest.class, GreedyBestFirstTest.class, BreadthFirstSearchTest.class, DepthFirstSearchTest.class, SearchDatabaseTest.class, BuildDatabaseTest.class, ComplexityAnalysisTest.class, RunTheSystemTest.class, SearchFunctionalityTest.class})
+@SuiteClasses({NodeTest.class, OSMNodeTest.class, WayTest.class, OSMWayTest.class, AStarTest.class,
+	GreedyBestFirstTest.class, BreadthFirstSearchTest.class, DepthFirstSearchTest.class, SearchDatabaseTest.class,
+	BuildDatabaseTest.class, ComplexityAnalysisTest.class, RunTheSystemTest.class,
+	/*This test should be run last, as it changes the contents of BuildDatabase (which all of the other tests rely on)*/
+	SearchFunctionalityTest.class})
 public class AllTests {
 
 }

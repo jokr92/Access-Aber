@@ -28,7 +28,8 @@ public enum Keys {
 	//PARKING_DISABLED("capacity:disabled",null),//Is this actually disabled-parking? Does the above: "PARKING" cover this?
 	//DOCTORS("amenity","doctors"),//Should this be included? The building itself might not be accessible
 	//BRIDGE("building","bridge"),//Are the bridges always accessible?
-	PARKING_AISLE("service","parking_aisle");
+	PARKING_AISLE("service","parking_aisle"),
+	SQUARE("place","square");//Is this the same as the Plaza in Aber?
 	
 	String key, value;
 	
