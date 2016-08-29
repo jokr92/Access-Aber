@@ -1,11 +1,14 @@
 package route;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import database.Node;
+import database.SearchDatabase;
+import database.Way;
 /**
  * Top-level class used when implementing a new search-algorithm
  * @author Jostein
@@ -23,21 +26,21 @@ public abstract class Search {
 	 * The desired, final node.
 	 */
 	private Node goalNode;
-	
+
 	/**
 	 * For keeping track of which parent node was expanded to reach a child node.
 	 * Formatted like this: child(to),parent(from).
 	 */
 	protected Map<Node, Node> expansionList = new HashMap<Node, Node>();
-	
+
 	/**
 	 * The actual path followed by the search-algorithm, from parent to child - in reverse order.
 	 */
 	protected List<Node> path = new ArrayList<Node>();
-	
+
 	/***************************FIELDS***************************/
 	/***************************METHODS***************************/
-	
+
 	/**
 	 * Expands the start node and the following child nodes until the goal node can be found.
 	 * {@link #setStartNode(Node)} and {@link #setGoalNode(Node)} should be called before this method.
@@ -109,7 +112,7 @@ public abstract class Search {
 		 */
 		return Math.max(distance, Double.MIN_VALUE);
 	}
-	
+
 	/**
 	 * Finds the distance between two nodes by comparing their latitude and longitude.
 	 * @param node1 The first Node
@@ -122,31 +125,74 @@ public abstract class Search {
 	}
 
 	/**
-	 * Goes through the list of expanded nodes from the back to the front, and returns the complete path from the goal node to the start node, or null if a complete path does not exist.
-	 * @param prevNode2 List of expanded nodes and which node they were expanded from
-	 * @param startNd {@link #startNode}
-	 * @param goalNd {@link #goalNode}
-	 * @return A sequence of the nodes that represent the path from the start node to the goal node - in reverse order - or null if a path could not be found 
+	 * Goes through the list of expanded nodes from the back to the front, and returns the complete path from the start node to the goal node, or null if a complete path does not exist.
+	 * @param expansionList List of expanded nodes and which node they were expanded from
+	 * @param startNode {@link #startNode}
+	 * @param goalNode {@link #goalNode}
+	 * @return A sequence of the nodes that represent the path from the start node to the goal node - or null if a path could not be found 
 	 */
-	protected List<Node> getPath(Map<Node, Node> expansionList,Node startNode, Node goalNode){
+	protected List<Node> getPath(Map<Node, Node> expansionList,Node startNode, Node goalNode) throws ArrayIndexOutOfBoundsException{
 
 		List<Node>path = new ArrayList<Node>();
-		Node previousNode=goalNode;
+		Node childNode=goalNode;
+		Node parentNode;
 
-		while(previousNode!=null){
-			//System.out.println("\nChild: "+previousNode.getId());
+		while(childNode!=null){
+			path.add(childNode);
 			
-			path.add(previousNode);
-			//if the goalNode was never reached, previousNode will be set to null here, and this loop ends
-			previousNode=expansionList.remove(previousNode);
-			
-			//System.out.println("Parent: "+previousNode.getId());
+			parentNode=childNode;
+			//if the goalNode was never reached, childNode will be set to null here, and this loop ends
+			childNode=expansionList.remove(childNode);//assigns the value associated with this key - i.e its parent Node
+
+			if(childNode!=null){
+				/**********************Adds every Node between the parent and child-Node to the path**********************/
+				List<String> parentChild = new ArrayList<String>();
+				parentChild.add(parentNode.getExternalId());
+				parentChild.add(childNode.getExternalId());
+
+				double shortestDistance=Double.POSITIVE_INFINITY;
+				List<Node> shortestPath = new ArrayList<Node>();
+				for(Way way:SearchDatabase.getWaysContainingNode(parentChild)){
+					List<Node> intermediatePath = new ArrayList<Node>();
+					boolean parentFound=false, childFound=false;
+					for(Node node:way.getNodeRelations()){
+						
+						if(node==childNode){childFound=true;}
+						else if(node==parentNode){parentFound=true;}
+						
+						if(childFound^parentFound){
+							intermediatePath.add(node);
+						}else if(parentFound&&childFound){
+							intermediatePath.add(node);
+							
+							/**********************Checks whether this path is shorter than any previous path**********************/
+							double distance=0;
+							for(int i=1;i<intermediatePath.size();i++){
+								distance+=distanceBetweenPoints(intermediatePath.get(i-1),intermediatePath.get(i));
+							}
+							if(distance<shortestDistance&&distance>0){
+								shortestDistance=distance;
+								if(intermediatePath.get(0)==childNode){
+									Collections.reverse(intermediatePath);
+								}
+								shortestPath=intermediatePath;
+							}
+							break;//Because both the parent and child has been found, the following Nodes are irrelevant
+							}
+					}
+				}
+				path.remove(path.size()-1);
+				path.addAll(shortestPath);
+			}
 		}
 
 		if(!(path.get(path.size()-1)==startNode)){
 			//In case we were unable to find a complete path back to the start-node from the goal-node
 			path.clear();
-		}
+		}else{
+			//Makes sure that the Nodes in the path are returned in the correct order (i.e going from startNode to goalNode)
+			Collections.reverse(path);
+			}
 
 		return path;
 	}

@@ -13,7 +13,7 @@ import route.Search;
  */
 
 public class SearchDatabase{
-	
+
 	/**
 	 * Searches for a specified Node in {@link database.BuildDatabase#getNodes()}.
 	 * @param nodeKey The key of the Node to search for
@@ -21,13 +21,13 @@ public class SearchDatabase{
 	 */
 	public static Node searchForNode(final int nodeKey){
 		try{
-		return BuildDatabase.getNodes()[nodeKey];
+			return BuildDatabase.getNodes()[nodeKey];
 		}catch(ArrayIndexOutOfBoundsException e){
 			//TODO Is it a bit silly to catch a NPE instead of just avoiding it?
 			return null;
 		}
 	}
-	
+
 	/**
 	 * Searches for a specified Way in {@link database.BuildDatabase#getWays()}.
 	 * @param wayKey The key of the Way to search for
@@ -35,7 +35,7 @@ public class SearchDatabase{
 	 */
 	public static Way searchForWay(final int wayKey){
 		try{
-		return BuildDatabase.getWays()[wayKey];
+			return BuildDatabase.getWays()[wayKey];
 		}catch(ArrayIndexOutOfBoundsException e){
 			//TODO Is it a bit silly to catch a NPE instead of just avoiding it?
 			return null;
@@ -49,7 +49,7 @@ public class SearchDatabase{
 	 */
 	public static List<Way> getWaysContainingNode(final String nodeToFind){
 		List<Way> matches = new ArrayList<Way>();
-		
+
 		for(Way way:BuildDatabase.getWays()){
 			for(Node node:way.getNodeRelations()){
 				if(node.getExternalId().equals(nodeToFind)){
@@ -60,8 +60,33 @@ public class SearchDatabase{
 			}
 		}
 		return matches;
+	}
+
+	/**
+	 * Searches through the list {@link database.BuildDatabase#getWays()} for a specific set of nodes, and returns only the ways that contain all of them.
+	 * @param nodeToFind The IDs of the nodes to search for
+	 * @return An unordered list of every Way that contain the complete set of Nodes
+	 */
+	public static List<Way> getWaysContainingNode(final List<String> nodeToFind){
+		List<Way> matches = new ArrayList<Way>();
+
+		for(Way way:BuildDatabase.getWays()){
+			int matchCounter = 0;
+			for(Node node:way.getNodeRelations()){
+				if(nodeToFind.contains(node.getExternalId())){
+					matchCounter++;
+
+					if(matchCounter>=nodeToFind.size()){
+						matches.add(way);
+						//matches.addAll(way.getNodeRelations());//returns all nodes in this way
+						break;
+					}
+				}
+			}
 		}
-	
+		return matches;
+	}
+
 	/**
 	 *TODO Currently, the filter is: Key=highway && Value!=steps. Is it possible to create a better filter? Maybe it should be possible to cross open spaces like k=amenity v=parking?
 	 * Filters out the Ways that are not marked with a highway key (ie. any Way that is not a road, path, stair, etc.).
@@ -74,22 +99,42 @@ public class SearchDatabase{
 		for(Way way:wayList){
 			try{
 				//Only adds a Way to the list if it is a highway(eg. a road, path, etc.), and it is not stairs
-			for(Entry<String, Object> dbPair:way.getKeyValuePairs()){
-				for(Keys enumPair:Keys.values()){
-					if(dbPair.getKey().equals(enumPair.getKey())&&dbPair.getValue().equals(enumPair.getValue())){
-						navigatableWays.add(way);
-						break;
+				boolean accessible=false;
+				boolean inaccessible=false;
+				for(Entry<String, Object> dbPair:way.getKeyValuePairs()){
+					for(DisallowedKeys disallowedTag:DisallowedKeys.values()){
+						if(dbPair.getKey().equals(disallowedTag.getKey())&&dbPair.getValue().equals(disallowedTag.getValue())){
+							accessible=false;
+							inaccessible=true;
+							break;
 						}
-				}//else{System.out.println(way.getKey() +", "+way.getValue() + " is not suitable for navigation");}
-				
-			}
+					}
+					
+					if(inaccessible){
+						accessible=false;
+						System.out.println("Way "+way.getExternalId()+": "+dbPair.getKey() +"-"+ dbPair.getValue() + " is not suitable for navigation");
+						break;
+					}
+					
+					for(PermittedKeys permittedTag:PermittedKeys.values()){
+						if(dbPair.getKey().equals(permittedTag.getKey())&&dbPair.getValue().equals(permittedTag.getValue())){
+							accessible=true;
+							break;
+						}
+					}
+				}
+				if(accessible){
+					navigatableWays.add(way);
+					System.out.println("Way "+way.getExternalId()+": IS navigable");
+				}
 			}catch(NullPointerException e){
 				//in case a Key or Value is null; which can happen in the OSM database.
 			}
 		}
+		System.out.print("\n");
 		return navigatableWays;
 	}
-	
+
 	/**
 	 *TODO Currently, the filter is: Key=highway && Value!=steps. Is it possible to create a better filter? Maybe it should be possible to cross open spaces like k=amenity v=parking?
 	 * Filters out the Ways that are not marked with a highway key (ie. any Way that is not a road, path, stair, etc.).
@@ -100,12 +145,12 @@ public class SearchDatabase{
 	public static List<Node> filterAccessibleNodes(final List<Way> wayList){
 		List<Node> navigatableNodes = new ArrayList<Node>();
 		for(Way way:filterAccessibleWays(wayList)){
-				//Only adds a Node to the list if it is part of a highway(eg. a road, path, etc.), and it is not stairs
-						navigatableNodes.addAll(way.getNodeRelations());			
+			//Only adds a Node to the list if it is part of a highway(eg. a road, path, etc.), and it is not stairs
+			navigatableNodes.addAll(way.getNodeRelations());			
 		}
 		return navigatableNodes;
 	}
-	
+
 	/**
 	 * Searches through the database of Nodes {@link database.BuildDatabase #getNodes()} for the Node closest to the input coordinates
 	 * TODO The node found may not be accessible or connected to any other nodes; I should fix this
@@ -117,7 +162,7 @@ public class SearchDatabase{
 		Node closestNode=null;
 		double shortestDistance=Double.POSITIVE_INFINITY;
 		double currentDistance=Double.POSITIVE_INFINITY;
-		
+
 		for(Node node:BuildDatabase.getNodes()){
 			currentDistance=Search.distanceBetweenPoints(node.getLatitude(), node.getLongitude(), lat, lon);
 			if(currentDistance<shortestDistance){
@@ -127,7 +172,7 @@ public class SearchDatabase{
 		}
 		return closestNode;
 	}
-	
+
 	/**
 	 * Searches for the Nodes connected to the input, and returns only the Nodes fit for navigation, and the Nodes connected to the goal(regardless) - if found
 	 * @param parentNode Node to expand (find references to)
