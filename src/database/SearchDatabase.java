@@ -52,7 +52,7 @@ public class SearchDatabase{
 		
 		for(Way way:BuildDatabase.getWays()){
 			for(Node node:way.getNodeRelations()){
-				if(node.getId().equals(nodeToFind)){
+				if(node.getExternalId().equals(nodeToFind)){
 					matches.add(way);
 					//matches.addAll(way.getNodeRelations());//returns all nodes in this way
 					break;
@@ -135,7 +135,7 @@ public class SearchDatabase{
 	 * @see database.SearchDatabase #FilterAccessibleWays(List)
 	 */
 	public static List<Node> getNavigatableConnectedNodes(Node parentNode){
-		List<Way> wayList=getWaysContainingNode(parentNode.getId());
+		List<Way> wayList=getWaysContainingNode(parentNode.getExternalId());
 		List<Node>nodeList= new ArrayList<Node>();//This can remove a Way containing the goal... Do I want this?
 
 		for(Node n:filterAccessibleNodes(wayList)){

@@ -50,7 +50,7 @@ public class GreedyBestFirst extends InformedSearch{
 			currentNode = priorityQueue.poll();//To pop the most promising Node
 			priorityQueue.clear();//Only one child of a parent is expanded, so the others are discarded
 
-			if(currentNode.getId().equals(getGoalNode().getId())){
+			if(currentNode.getExternalId().equals(getGoalNode().getExternalId())){
 				/* If currentNode==goalNode, then there is no need to investigate other paths;
 				 * this algorithm is greedy after all
 				 */

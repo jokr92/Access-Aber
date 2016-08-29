@@ -60,7 +60,7 @@ public class BuildDatabaseTest {
 	
 	@Test
 	public void AllNodeFieldsShouldBePopulated(){
-		assertTrue(nodeConfig.get(0).getId()!=null);
+		assertTrue(nodeConfig.get(0).getExternalId()!=null);
 //		assertTrue(nodeConfig.get(0).isVisible());
 //		assertTrue(nodeConfig.get(0).getVersion()!=null);
 //		assertTrue(nodeConfig.get(0).getChangeset()!=null);
@@ -70,7 +70,7 @@ public class BuildDatabaseTest {
 		assertTrue(nodeConfig.get(0).getLatitude()>0||(nodeConfig.get(0).getLatitude()<0));
 		assertTrue(nodeConfig.get(0).getLongitude()>0||(nodeConfig.get(0).getLongitude()<0));
 		
-		assertTrue(nodeConfig.get(nodeConfig.size()/2).getId()!=null);
+		assertTrue(nodeConfig.get(nodeConfig.size()/2).getExternalId()!=null);
 //		assertTrue(nodeConfig.get(nodeConfig.size()/2).isVisible());
 //		assertTrue(nodeConfig.get(nodeConfig.size()/2).getVersion()!=null);
 //		assertTrue(nodeConfig.get(nodeConfig.size()/2).getChangeset()!=null);
@@ -80,7 +80,7 @@ public class BuildDatabaseTest {
 		assertTrue(nodeConfig.get(nodeConfig.size()/2).getLatitude()>0||(nodeConfig.get(0).getLatitude()<0));
 		assertTrue(nodeConfig.get(nodeConfig.size()/2).getLongitude()>0||(nodeConfig.get(0).getLongitude()<0));
 		
-		assertTrue(nodeConfig.get(nodeConfig.size()-1).getId()!=null);
+		assertTrue(nodeConfig.get(nodeConfig.size()-1).getExternalId()!=null);
 //		assertTrue(nodeConfig.get(nodeConfig.size()-1).isVisible());
 //		assertTrue(nodeConfig.get(nodeConfig.size()-1).getVersion()!=null);
 //		assertTrue(nodeConfig.get(nodeConfig.size()-1).getChangeset()!=null);
@@ -93,7 +93,7 @@ public class BuildDatabaseTest {
 	
 	@Test
 	public void AllWayFieldsShouldBePopulated(){
-		assertTrue(wayConfig.get(0).getId()!=null);
+		assertTrue(wayConfig.get(0).getExternalId()!=null);
 //		assertTrue(wayConfig.get(0).isVisible());
 //		assertTrue(wayConfig.get(0).getVersion()!=null);
 //		assertTrue(wayConfig.get(0).getChangeset()!=null);
@@ -103,7 +103,7 @@ public class BuildDatabaseTest {
 		assertFalse(wayConfig.get(0).getNodeRelations().isEmpty());
 		assertFalse(wayConfig.get(0).getKeyValuePairs().isEmpty());
 		
-		assertTrue(wayConfig.get(wayConfig.size()/2).getId()!=null);
+		assertTrue(wayConfig.get(wayConfig.size()/2).getExternalId()!=null);
 //		assertTrue(wayConfig.get(wayConfig.size()/2).isVisible());
 //		assertTrue(wayConfig.get(wayConfig.size()/2).getVersion()!=null);
 //		assertTrue(wayConfig.get(wayConfig.size()/2).getChangeset()!=null);
@@ -113,7 +113,7 @@ public class BuildDatabaseTest {
 		assertFalse(wayConfig.get(wayConfig.size()/2).getNodeRelations().isEmpty());
 		assertFalse(wayConfig.get(wayConfig.size()/2).getKeyValuePairs().isEmpty());
 		
-		assertTrue(wayConfig.get(wayConfig.size()-1).getId()!=null);
+		assertTrue(wayConfig.get(wayConfig.size()-1).getExternalId()!=null);
 //		assertTrue(wayConfig.get(wayConfig.size()-1).isVisible());
 //		assertTrue(wayConfig.get(wayConfig.size()-1).getVersion()!=null);
 //		assertTrue(wayConfig.get(wayConfig.size()-1).getChangeset()!=null);
@@ -128,7 +128,7 @@ public class BuildDatabaseTest {
 	public void IdFieldsShouldNotBeTheSameInAllEntries(){
 		Boolean different=false;
 		for(Node testNode:nodeConfig){
-			if(!testNode.getId().equals(prevNode.getId())){
+			if(!testNode.getExternalId().equals(prevNode.getExternalId())){
 				different=true;
 				break;
 			}
@@ -138,7 +138,7 @@ public class BuildDatabaseTest {
 		assertTrue(different);
 		different=false;
 		for(Way testWay:wayConfig){
-			if(!testWay.getId().equals(prevWay.getId())){
+			if(!testWay.getExternalId().equals(prevWay.getExternalId())){
 				different=true;
 				break;
 			}

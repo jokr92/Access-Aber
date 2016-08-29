@@ -58,7 +58,7 @@ public class AStar extends InformedSearch{
 			//The list can get quite large,
 			//so popping the first element would require moving lots of elements one position forwards in the list
 
-			if(currentNode.getId().equals(getGoalNode().getId())){
+			if(currentNode.getExternalId().equals(getGoalNode().getExternalId())){
 				/* If currentNode==goalNode, then there can not be any shorter path to the goalNode,
 				 * as all shorter paths are guaranteed have been explored.
 				 * (Assuming my implementation of AStar is correct)

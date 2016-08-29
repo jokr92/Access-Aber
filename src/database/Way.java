@@ -17,27 +17,29 @@ import java.util.Map.Entry;
 public /*abstract*//*Can't instantiate an abstract class*/ interface Way extends Comparator<Way>{
 	
 	/**
+	 * TODO Is this ever needed, or do I always use the external (OSM) ID?
 	 * Represents this Way's position in the list of Ways
 	 * Think of it as this Way's unique local key
 	 * @return this Way's key
 	 */
-	int getlocalId();
+	long getId();
 	
 	/**
+	 * TODO Is this ever needed, or do I always use the external (OSM) ID?
 	 * Changes this Way's local key
 	 * Should move any Way already occupying this index in the list of Ways
 	 * @param localID the key to assign to this Way. Should move any conflicting Way to a different index.
 	 */
-	void setLocalId(int localID);
+	void setId(long localID);
 	
 	/**
-	 * @return the id
+	 * @return this Way's external id
 	 */
-	String getId();
+	String getExternalId();
 	/**
-	 * @param id the id to set
+	 * @param id the external id to associate this Way with
 	 */
-	void setId(String id);
+	void setExternalId(String externalId);
 	
 	/**
 	 * Replaces the current list of Node-Relations with the list it receives
@@ -70,6 +72,6 @@ public /*abstract*//*Can't instantiate an abstract class*/ interface Way extends
 	
 	@Override
 	public default int compare(Way w1, Way w2) {
-		return w1.getId().compareTo(w2.getId());
+		return w1.getExternalId().compareTo(w2.getExternalId());
 	}
 }

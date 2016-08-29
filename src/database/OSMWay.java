@@ -26,8 +26,8 @@ public class OSMWay implements Way{
 	 */
 	protected List<Node> nodeRelations=new ArrayList<Node>();
 
-	protected String id;
-	private int localId;
+	protected String externalId;
+	private long localId;
 //	private boolean visible;
 //	private String changeset;
 //	private String timestamp;
@@ -117,26 +117,26 @@ public class OSMWay implements Way{
 	public void addKeyValuePair(String key, Object value){
 		keyValuePairs.put(key, value);
 	}
-	@Override
+	
 	//TODO Write unit test for this
 	public Set<Entry<String, Object>> getKeyValuePairs() {
 		return keyValuePairs.entrySet();
 	}
 
-	@Override
+	
 	public String toString() {
 		return "Way [id=" + getId() + "]";
 	}
-	@Override
-	public String getId() {
-		return id;
+	
+	public String getExternalId() {
+		return externalId;
 	}
-	@Override
-	public void setId(String id) {
-		this.id=id;
+	
+	public void setExternalId(String externalId) {
+		this.externalId=externalId;
 
 	}
-	@Override
+	
 	public void setNodeRelations(List<Node> nodeRelations) {
 		this.nodeRelations.clear();
 		for(Node n:nodeRelations){
@@ -144,18 +144,18 @@ public class OSMWay implements Way{
 		}
 
 	}
-	@Override
+	
 	public List<Node> getNodeRelations() {
 		return nodeRelations;
 	}
-	@Override
+	
 	/**
 	 * TODO Is this an unsafe cast?
 	 */
 	public void addNodeRelation(Node node) {
 		this.nodeRelations.add(node);
 	}
-	@Override
+	
 	public void removeNodeRelation(Node node) {
 		Iterator<Node> j = this.nodeRelations.iterator();
 		while(j.hasNext()){
@@ -166,12 +166,12 @@ public class OSMWay implements Way{
 			}
 		}
 	}
-	@Override
-	public int getlocalId() {
+	
+	public long getId() {
 		return localId;
 	}
-	@Override
-	public void setLocalId(int localID) {
+	
+	public void setId(long localID) {
 		this.localId=localID;
 	}
 }

@@ -65,10 +65,23 @@ public class OSMWayTest {
 	}
 
 	@Test
+	public void GetAndSetLocalIdShouldReturnAResult() {
+		testWay.setId(123);
+		assertTrue(testWay.getId()==123);
+	}
+	
+	@Test
+	public void ShouldAssignLargeValueToID(){
+		long t=Integer.MAX_VALUE;
+		testWay.setId(t+1);
+		assertTrue(testWay.getId()>=Integer.MAX_VALUE);
+	}
+	
+	@Test
 	public void GetAndSetIdShouldReturnAResult() {
-		assertNull(testWay.getId());
-		testWay.setId("123");
-		assertTrue(testWay.getId().equals("123"));
+		assertNull(testWay.getExternalId());
+		testWay.setExternalId("123");
+		assertTrue(testWay.getExternalId().equals("123"));
 	}
 
 //	@Test

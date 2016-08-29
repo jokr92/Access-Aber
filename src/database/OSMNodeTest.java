@@ -9,10 +9,23 @@ public class OSMNodeTest {
 	OSMNode testNode = new OSMNode();
 	
 	@Test
-	public void GetAndSetIdShouldReturnAResult() {
-		assertNull(testNode.getId());
-		testNode.setId("123");
-		assertTrue(testNode.getId().equals("123"));
+	public void GetAndSetLocalIdShouldReturnAResult() {
+		testNode.setId(123);
+		assertTrue(testNode.getId()==123);
+	}
+	
+	@Test
+	public void ShouldAssignLargeValueToID(){
+		long t=Integer.MAX_VALUE;
+		testNode.setId(t+1);
+		assertTrue(testNode.getId()>Integer.MAX_VALUE);
+	}
+	
+	@Test
+	public void GetAndSetExternalIdShouldReturnAResult() {
+		assertNull(testNode.getExternalId());
+		testNode.setExternalId("123");
+		assertTrue(testNode.getExternalId().equals("123"));
 	}
 	
 	@Test

@@ -105,7 +105,7 @@ public class BuildDatabase{
 							attribute = attributes.next();
 							name=attribute.getName().toString();
 							if (name.equals(ID.getString())) {
-								node.setId(attribute.getValue());
+								node.setExternalId(attribute.getValue());
 							}else if (name.equals(NODE_LATITUDE.getString())){
 								node.setLatitude(Double.parseDouble(attribute.getValue()));
 							}else if (name.equals(NODE_LONGITUDE.getString())){
@@ -113,7 +113,7 @@ public class BuildDatabase{
 							}
 							//break;
 						}
-						node.setLocalId(nodeCounter++);
+						node.setId(nodeCounter++);
 						tempNodes.add(node);
 					}
 					else if(startElement.getName().getLocalPart().equals(WAY_START.getString())) {//TODO Very similar to the above. Can they be refactored and merged?
@@ -124,7 +124,7 @@ public class BuildDatabase{
 							attribute = attributes.next();
 							name = attribute.getName().toString();
 							if (name.equals(ID.getString())) {
-								way.setId(attribute.getValue());
+								way.setExternalId(attribute.getValue());
 								break;
 							}
 						}
@@ -143,7 +143,7 @@ public class BuildDatabase{
 										if (name.equals(WAY_ND_REF.getString())) {
 											String attributeValue=attribute.getValue();
 											for(Node nodeI:tempNodes){
-												if(nodeI.getId().equals(attributeValue)){
+												if(nodeI.getExternalId().equals(attributeValue)){
 													//TODO MASSIVE BOTTLENECK HERE
 													way.addNodeRelation(nodeI);
 													break;
@@ -179,7 +179,7 @@ public class BuildDatabase{
 							else if (event.isEndElement()) {
 								EndElement endElement = event.asEndElement();
 								if (endElement.getName().getLocalPart().equals(WAY_START.getString())) {
-									way.setLocalId(wayCounter++);
+									way.setId(wayCounter++);
 									tempWays.add(way);
 									//System.out.println(way.getlocalId());
 									break;

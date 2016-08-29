@@ -10,8 +10,8 @@ package database;
  */
 public class OSMNode implements Node{
 
-	private String id;
-	private int localId;
+	private String externalId;
+	private long localId;
 //	private boolean visible;
 //	private String version;
 //	private String timestamp;
@@ -21,14 +21,22 @@ public class OSMNode implements Node{
 	private double lat;
 	private double lon;
 
-	@Override
-	public String getId() {
-		return id;
+
+	public final long getId() {
+		return localId;
 	}
 
-	@Override
-	public void setId(String id) {
-		this.id=id;
+	public void setId(long localID) {
+		this.localId=localID;
+		
+	}
+	
+	public final String getExternalId() {
+		return externalId;
+	}
+
+	public void setExternalId(String externalId) {
+		this.externalId=externalId;
 
 	}
 
@@ -116,40 +124,25 @@ public class OSMNode implements Node{
 //		this.uid = uid;
 //	}
 
-	@Override
+
 	public double getLatitude() {
 		return lat;
 	}
 
-	@Override
 	public void setLatitude(double lat) {
 		this.lat=lat;
 	}
 
-	@Override
 	public double getLongitude() {
 		return lon;
 	}
 
-	@Override
 	public void setLongitude(double lon) {
 		this.lon=lon;
 	}
-	
-	@Override
-	public int getlocalId() {
-		return localId;
-	}
 
-	@Override
-	public void setLocalId(int localID) {
-		this.localId=localID;
-		
-	}
-	
-	@Override
 	public String toString() {
-		return "Node [id=" + getId() + ", lat=" + getLatitude() + ", lon=" + getLongitude() + "]";
+		return "Node [id=" + getExternalId() + ", lat=" + getLatitude() + ", lon=" + getLongitude() + "]";
 	}
 
 } 
