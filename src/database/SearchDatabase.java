@@ -1,6 +1,7 @@
 package database;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -65,7 +66,7 @@ public class SearchDatabase{
 	/**
 	 * Searches through the list {@link database.BuildDatabase#getWays()} for a specific set of nodes, and returns only the ways that contain all of them.
 	 * @param nodeToFind The IDs of the nodes to search for
-	 * @return An unordered list of every Way that contain the complete set of Nodes
+	 * @return An unordered list of every Way that contains the complete set of Nodes
 	 */
 	public static List<Way> getWaysContainingNode(final List<String> nodeToFind){
 		List<Way> matches = new ArrayList<Way>();
@@ -109,13 +110,13 @@ public class SearchDatabase{
 							break;
 						}
 					}
-					
+
 					if(inaccessible){
 						accessible=false;
-						System.out.println("Way "+way.getExternalId()+": "+dbPair.getKey() +"-"+ dbPair.getValue() + " is not suitable for navigation");
+						//System.out.println("Way "+way.getExternalId()+": "+dbPair.getKey() +"-"+ dbPair.getValue() + " is not suitable for navigation");
 						break;
 					}
-					
+
 					for(PermittedKeys permittedTag:PermittedKeys.values()){
 						if(dbPair.getKey().equals(permittedTag.getKey())&&dbPair.getValue().equals(permittedTag.getValue())){
 							accessible=true;
@@ -125,13 +126,13 @@ public class SearchDatabase{
 				}
 				if(accessible){
 					navigatableWays.add(way);
-					System.out.println("Way "+way.getExternalId()+": IS navigable");
+					//System.out.println("Way "+way.getExternalId()+": IS navigable");
 				}
 			}catch(NullPointerException e){
 				//in case a Key or Value is null; which can happen in the OSM database.
 			}
 		}
-		System.out.print("\n");
+		//System.out.print("\n");
 		return navigatableWays;
 	}
 
@@ -163,9 +164,11 @@ public class SearchDatabase{
 		double shortestDistance=Double.POSITIVE_INFINITY;
 		double currentDistance=Double.POSITIVE_INFINITY;
 
-		for(Node node:BuildDatabase.getNodes()){
+		for(Node node:Arrays.asList(BuildDatabase.getNodes())){
 			currentDistance=Search.distanceBetweenPoints(node.getLatitude(), node.getLongitude(), lat, lon);
-			if(currentDistance<shortestDistance){
+			if(currentDistance<shortestDistance
+					&&getWaysContainingNode(node.getExternalId()).size()>1
+					&&getNavigatableConnectedNodes(node).size()>0){
 				closestNode=node;
 				shortestDistance=currentDistance;
 			}
@@ -174,20 +177,16 @@ public class SearchDatabase{
 	}
 
 	/**
-	 * Searches for the Nodes connected to the input, and returns only the Nodes fit for navigation, and the Nodes connected to the goal(regardless) - if found
+	 * Searches for the Nodes connected to the input, and returns only the Nodes fit for navigation
+	 * Does not guarantee that any of the returned Nodes are linked to other Ways. i.e it might only return Nodes isolated within a single Way (provided the Way is fit for navigation)
 	 * @param parentNode Node to expand (find references to)
 	 * @return The children of the parent. I.e every Node in a Way related to this Node
 	 * @see database.SearchDatabase #FilterAccessibleWays(List)
 	 */
 	public static List<Node> getNavigatableConnectedNodes(Node parentNode){
 		List<Way> wayList=getWaysContainingNode(parentNode.getExternalId());
-		List<Node>nodeList= new ArrayList<Node>();//This can remove a Way containing the goal... Do I want this?
-
-		for(Node n:filterAccessibleNodes(wayList)){
-			if(n!=parentNode){
-				nodeList.add(n);
-			}
-		}
+		List<Node>nodeList= filterAccessibleNodes(wayList);//This can remove a Way containing the goal... Do I want this?
+		nodeList.removeIf(parentNode::equals);
 
 		return nodeList;
 	}

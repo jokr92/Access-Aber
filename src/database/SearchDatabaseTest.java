@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -82,7 +83,7 @@ public class SearchDatabaseTest {
 		assertTrue(nodesInFilteredWays!=0);
 		assertTrue(nodesInFilteredWays<nodesInAllWays);
 	}
-	
+
 	@Test
 	public void FilterShouldRemoveAnyNodesNotSuitableForNavigation(){
 		long numTotalNodes=0;
@@ -91,22 +92,44 @@ public class SearchDatabaseTest {
 			numTotalNodes=numTotalNodes+way.getNodeRelations().size();
 		}
 		numFilteredNodes=SearchDatabase.filterAccessibleNodes(DBWays).size();
-		
+
 		assertTrue(numFilteredNodes!=0);
 		assertTrue(numFilteredNodes<numTotalNodes);
 	}
 
 	@Test
+	/**
+	 * This test assumes that any Node within a Way tagged with one of the tags found in @PermittedKeys can be found by the method it is testing.
+	 * The exact coordinates it is supposed to find is actually the coordinates of a Node already stored in the internal database {@link BuildDatabase}
+	 */
 	public void ShouldFindNodeSpecifiedByExactCoordinates(){
-		Node testNode = BuildDatabase.getNodes()[BuildDatabase.getNodes().length/2];
-		double lat=testNode.getLatitude();
-		double lon=testNode.getLongitude();
+		Node testNode=null;
+		
+		for(Way w:BuildDatabase.getWays()){
+			if(testNode!=null){break;}
 
-		assertEquals(SearchDatabase.findClosestNode(lat,lon),(testNode));
+			for(Entry<String, Object> entry:w.getKeyValuePairs()){
+				if(testNode!=null){break;}
+
+				for(PermittedKeys permittedKey:PermittedKeys.values()){
+					if(entry.getKey().equals(permittedKey.getKey())&&entry.getValue().equals(permittedKey.getValue())){
+						testNode = BuildDatabase.getNodes()[(int) w.getNodeRelations().get(0).getId()];//TODO Might be a dangerous cast...
+						break;
+					}
+				}
+			}
+		}
+		if(testNode!=null){
+			double lat=testNode.getLatitude();
+			double lon=testNode.getLongitude();
+
+			assertEquals(SearchDatabase.findClosestNode(lat,lon),(testNode));
+		}else{fail("No navigatable node could be found. Issue likely in @BuildDatabase or @PermittedKeys");}
 	}
 
 	@Test
 	public void ShouldFindNodeClosestToCoordinates(){
+		System.out.println("Closest Node: "+SearchDatabase.findClosestNode(52.4164812821479, -4.065756207246293));
 		assertFalse(SearchDatabase.findClosestNode(90, 180).equals(null));
 		assertFalse(SearchDatabase.findClosestNode(-90, -180).equals(null));
 		assertFalse(SearchDatabase.findClosestNode(90, 180).equals(SearchDatabase.findClosestNode(-90, -180)));

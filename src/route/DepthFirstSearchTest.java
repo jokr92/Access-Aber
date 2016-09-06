@@ -69,8 +69,8 @@ public class DepthFirstSearchTest {
 
 		assertFalse(path.isEmpty());
 		assertTrue(path.size()>2);//i.e contains more Nodes than just the start and goal nodes
-		assertTrue(path.get(0).equals(goalNode));
-		assertTrue(path.get(path.size()-1).equals(startNode));
+		assertTrue(path.get(0).equals(startNode));
+		assertTrue(path.get(path.size()-1).equals(goalNode));
 	}
 
 	@Test

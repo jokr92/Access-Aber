@@ -5,9 +5,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import database.Node;
 import database.SearchDatabase;
+import database.AreaAndBuildingTags;
 import database.Way;
 /**
  * Top-level class used when implementing a new search-algorithm
@@ -139,7 +141,7 @@ public abstract class Search {
 
 		while(childNode!=null){
 			path.add(childNode);
-			
+
 			parentNode=childNode;
 			//if the goalNode was never reached, childNode will be set to null here, and this loop ends
 			childNode=expansionList.remove(childNode);//assigns the value associated with this key - i.e its parent Node
@@ -150,52 +152,70 @@ public abstract class Search {
 				parentChild.add(parentNode.getExternalId());
 				parentChild.add(childNode.getExternalId());
 
-				double shortestDistance=Double.POSITIVE_INFINITY;
-				List<Node> shortestPath = new ArrayList<Node>();
-				for(Way way:SearchDatabase.getWaysContainingNode(parentChild)){
-					List<Node> intermediatePath = new ArrayList<Node>();
-					boolean parentFound=false, childFound=false;
-					for(Node node:way.getNodeRelations()){
-						
-						if(node==childNode){childFound=true;}
-						else if(node==parentNode){parentFound=true;}
-						
-						if(childFound^parentFound){
-							intermediatePath.add(node);
-						}else if(parentFound&&childFound){
-							intermediatePath.add(node);
-							
-							/**********************Checks whether this path is shorter than any previous path**********************/
-							double distance=0;
-							for(int i=1;i<intermediatePath.size();i++){
-								distance+=distanceBetweenPoints(intermediatePath.get(i-1),intermediatePath.get(i));
-							}
-							if(distance<shortestDistance&&distance>0){
-								shortestDistance=distance;
-								if(intermediatePath.get(0)==childNode){
-									Collections.reverse(intermediatePath);
-								}
-								shortestPath=intermediatePath;
-							}
-							break;//Because both the parent and child has been found, the following Nodes are irrelevant
-							}
+				boolean area=false;
+				for(Way w:SearchDatabase.getWaysContainingNode(parentChild)){
+					if(area==true){break;}
+
+					for(Entry<String, Object> entry:w.getKeyValuePairs()){
+						if(area==true){break;}
+						for(AreaAndBuildingTags areaTag:AreaAndBuildingTags.values()){
+						if(entry.getKey().equals(areaTag.getKey())&&entry.getValue().equals(areaTag.getValue())){
+							area=true;
+							break;
+						}
+					}
 					}
 				}
-				path.remove(path.size()-1);
-				path.addAll(shortestPath);
+
+				if(area==false){
+					double shortestDistance=Double.POSITIVE_INFINITY;
+					List<Node> shortestPath = new ArrayList<Node>();
+					for(Way way:SearchDatabase.getWaysContainingNode(parentChild)){
+						List<Node> intermediatePath = new ArrayList<Node>();
+						boolean parentFound=false, childFound=false;
+						for(Node node:way.getNodeRelations()){
+
+							if(node==childNode){childFound=true;}
+							else if(node==parentNode){parentFound=true;}
+
+							if(childFound^parentFound){
+								intermediatePath.add(node);
+							}else if(parentFound&&childFound){
+								intermediatePath.add(node);
+
+								/**********************Checks whether this path is shorter than any previous path**********************/
+								double distance=0;
+								for(int i=1;i<intermediatePath.size();i++){
+									distance+=distanceBetweenPoints(intermediatePath.get(i-1),intermediatePath.get(i));
+								}
+								if(distance<shortestDistance&&distance>0){
+									shortestDistance=distance;
+									if(intermediatePath.get(0)==childNode){
+										Collections.reverse(intermediatePath);
+									}
+									shortestPath=intermediatePath;
+								}
+								break;//Because both the parent and child has been found, the following Nodes are irrelevant
+							}
+						}
+					}
+					path.remove(path.size()-1);//TODO necessary?
+					path.addAll(shortestPath);
+					path.remove(path.size()-1);//TODO necessary?
+				}
 			}
 		}
 
-		if(!(path.get(path.size()-1)==startNode)){
-			//In case we were unable to find a complete path back to the start-node from the goal-node
-			path.clear();
-		}else{
-			//Makes sure that the Nodes in the path are returned in the correct order (i.e going from startNode to goalNode)
-			Collections.reverse(path);
+			if(!(path.get(path.size()-1)==startNode)){
+				//In case we were unable to find a complete path back to the start-node from the goal-node
+				path.clear();
+			}else{
+				//Makes sure that the Nodes in the path are returned in the correct order (i.e going from startNode to goalNode)
+				Collections.reverse(path);
 			}
 
-		return path;
-	}
-	/***************************METHODS***************************/
+			return path;
+		}
+		/***************************METHODS***************************/
 
-}
+	}

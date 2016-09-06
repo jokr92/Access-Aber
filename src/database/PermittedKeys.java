@@ -8,7 +8,6 @@ package database;
  */
 public enum PermittedKeys {
 
-	STAIRS("highway","steps"),//TODO DELETE THIS!!! I've just included it for fun
 	WHEELCHAIR("wheelchair","yes"),
 	WHEELCHAIR_LIM("wheelchair","limited"),
 	WHEELCHAIR_DES("wheelchair","designated"),
@@ -18,10 +17,11 @@ public enum PermittedKeys {
 	BIKE_ACCESS("bicycle","yes"),
 	BIKE_PERMISSIVE("bicycle","permissive"),
 	
-	CROSSING("highway","crossing"),
-	SIDEWALK_LEFT("sidewalk","left"),
-	SIDEWALK_RIGHT("sidewalk","right"),
-	SIDEWALK_BOTH("sidewalk","both"),
+	/*
+	 * Generally for access to a building, service station, beach, campsite, industrial estate, business park, etc.
+	 * also commonly used for access to parking, driveways, and alleys.
+	 */
+	SERVICE_ROAD("highway","service"),
 	/*
 	 * Some footways seem to span multiple layers ("ramp"?); Example: k="layer" v="-1"
 	 */
@@ -30,19 +30,26 @@ public enum PermittedKeys {
 	CYCLEWAY("highway","cycleway"),
 	LIVING_STREET("highway","living_street"),
 	RESIDENTIAL("highway","residential"),
-	//EQUESTRIAN("highway","bridleway"),//Intended for use by horse riders, but also pedestrians; surface my be unsuitable for wheelchairs
-	/*
-	 * Generally for access to a building, service station, beach, campsite, industrial estate, business park, etc.
-	 * also commonly used for access to parking, driveways, and alleys.
-	 */
-	SERVICE_ROAD("highway","service"),
 	//PATH("highway","path"),//Are these always accessible?
+	//EQUESTRIAN("highway","bridleway"),//Intended for use by horse riders, but also pedestrians; surface may be unsuitable for wheelchairs
+	
+	BUILDING("building","yes"),
+	UNIVERSITY_BUILDING("building","university"),
+	PUBLIC_BUILDING("building","public"),
+	CIVIC_BUILDING("building","civic"),
+	//BRIDGE("building","bridge"),//Are bridges always accessible?
+	
+	AREA("area","yes"),
+	SQUARE("place","square"),//Is this the same as the Piazza in Aber? OSM-ID:108350246
+	CROSSING("highway","crossing"),
+	SIDEWALK_LEFT("sidewalk","left"),
+	SIDEWALK_RIGHT("sidewalk","right"),
+	SIDEWALK_BOTH("sidewalk","both"),
+	
 	PARKING("amenity","parking"),
 	//PARKING_DISABLED("capacity:disabled",null),//Is this actually disabled-parking? Does the above: "PARKING" cover this?
-	//DOCTORS("amenity","doctors"),//Should this be included? The building itself might not be accessible
-	//BRIDGE("building","bridge"),//Are the bridges always accessible?
+	//DOCTORS("amenity","doctors"),//Should this be included? The building itself might not be accessible. A tag like wheelchair=yes on an entrance should cover this
 	PARKING_AISLE("service","parking_aisle"),
-	SQUARE("place","square"),//Is this the same as the Plaza in Aber?
 	ENTRANCE("entrance","yes");
 	
 	String key, value;

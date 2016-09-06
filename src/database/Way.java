@@ -61,7 +61,7 @@ public /*abstract*//*Can't instantiate an abstract class*/ interface Way extends
 	
 	/**
 	 * Removes the Node specified by the input
-	 * TODO Every implementation of this method should remove all occurrences of the Node in question
+	 * TODO Every implementation of this method should remove all occurrences of the Node in question, not just the first
 	 * @param node The Node to remove
 	 */
 	void removeNodeRelation(Node node);

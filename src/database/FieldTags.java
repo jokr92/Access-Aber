@@ -24,9 +24,9 @@ public enum FieldTags {
 	WAY_ND_START("nd"),
 	WAY_ND_REF("ref"),
 	
-	WAY_TAG_START("tag"),
-	WAY_TAG_KEY("k"),
-	WAY_TAG_VALUE("v");
+	TAG_START("tag"),
+	TAG_KEY("k"),
+	TAG_VALUE("v");
 	
 	String s;
 

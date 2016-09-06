@@ -34,7 +34,7 @@ public class SearchFunctionalityTest {
 		goalNode = BuildDatabase.getNodes()[5];
 		
 		optimalPath = new ArrayList<Node>();
-		for(int i=5;i>=0;i--){//This assumes that the optimal path is the sequence of Nodes 5-0
+		for(int i=0;i<=5;i++){//This assumes that the optimal path is the sequence of Nodes 5-0
 			optimalPath.add(BuildDatabase.getNodes()[i]);
 		}
 

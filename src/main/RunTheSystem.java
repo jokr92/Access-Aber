@@ -77,14 +77,16 @@ public final class RunTheSystem {
 
 	// instantiating the polyline object
 	private static Polyline polyline = new Polyline(getRoutePaint(), AwtGraphicFactory.INSTANCE);
-	
+
 	// instantiating the start and end markers
 	private static Circle startPosMarker = new Circle(null, 6, getStartMarkerPaint(true), getStartMarkerPaint(true), true);
 	private static Circle endPosMarker = new Circle(null, 6, getStartMarkerPaint(false), getStartMarkerPaint(false), true);
-	
+
 	//Lists containing the path(s) found by the system
 	private static List<Node> nodePath;
 	private static List<LatLong> coordinatePath;
+
+	private static Node startNode, goalNode;
 
 	/**
 	 * Starts the {@code Samples}.
@@ -95,12 +97,12 @@ public final class RunTheSystem {
 		/***********************************************Initialize the system***********************************************/
 		BuildDatabase.readConfig("map.osm");
 		AStar aStar = new AStar();
-		
+
 		try{
 			//TODO Is this a safe cast? Does this try-catch statement deal with casting-errors?
-			Node startNode = SearchDatabase.findClosestNode(Double.parseDouble(args[0]), Double.parseDouble(args[1]));
-			Node goalNode = SearchDatabase.findClosestNode(Double.parseDouble(args[2]),Double.parseDouble(args[3]));
-			
+			startNode = SearchDatabase.findClosestNode(Double.parseDouble(args[0]), Double.parseDouble(args[1]));
+			goalNode = SearchDatabase.findClosestNode(Double.parseDouble(args[2]),Double.parseDouble(args[3]));
+
 			aStar.setStartNode(startNode);
 			aStar.setGoalNode(goalNode);
 
@@ -110,13 +112,13 @@ public final class RunTheSystem {
 			System.out.println("This is your path:");
 			for(Node step:nodePath){
 				System.out.println(step);
-				
+
 				LatLong latlon = new LatLong(step.getLatitude(),step.getLongitude());
 				coordinatePath.add(latlon);
 			}
-			
+
 			/*********************************Handle errors*********************************/
-			
+
 		}catch(NumberFormatException e){//Would never be reached if args[] is a double. As any missing input would be 0 by default
 			System.out.println("One or more elements in the input were not of type: double");
 
@@ -133,10 +135,10 @@ public final class RunTheSystem {
 		}catch(ArrayIndexOutOfBoundsException e){
 			System.out.println("4 coordinates expected as input.\n" + args.length + " coordinate(s) received.\nPlease try again.");
 		}
-		
+
 		/***********************************************\Initialize the system***********************************************/
 		/**************************************************Create the Map**************************************************/
-		
+
 		// Increase read buffer limit
 		ReadBuffer.setMaximumBufferSize(6500000);
 
@@ -176,25 +178,33 @@ public final class RunTheSystem {
 		if(coordinatePath!=null)
 			drawRoute(coordinatePath);
 		frame.setVisible(true); 
-		
+
 		/**************************************************\Create the Map**************************************************/
 	}
 
 	public static void drawRoute(List<LatLong> latlng){
 		//TODO is this necessary?
-//		mapView.getLayerManager().getLayers().remove(startPosMarker, false);
-//		mapView.getLayerManager().getLayers().remove(endPosMarker, false);
-//		mapView.getLayerManager().getLayers().remove(polyline.hashCode(), false);
+		//		mapView.getLayerManager().getLayers().remove(startPosMarker, false);
+		//		mapView.getLayerManager().getLayers().remove(endPosMarker, false);
+		//		mapView.getLayerManager().getLayers().remove(polyline.hashCode(), false);
 
 		// set lat long for the polyline
 		List<LatLong> coordinateList = polyline.getLatLongs();
 		coordinateList.clear();
 		coordinateList.addAll(latlng);
-		
-		startPosMarker.setLatLong(coordinateList.get(0));
-		endPosMarker.setLatLong(coordinateList.get(coordinateList.size()-1));
+
+		if(startNode!=null&&goalNode!=null){
+			LatLong start = new LatLong(startNode.getLatitude(), startNode.getLongitude());
+			LatLong goal = new LatLong(goalNode.getLatitude(), goalNode.getLongitude());
+			startPosMarker.setLatLong(start);
+			endPosMarker.setLatLong(goal);
+		}
 
 		// adding the layer to the mapview
+		mapView.getLayerManager().getLayers().remove(startPosMarker,false);
+		mapView.getLayerManager().getLayers().remove(endPosMarker,false);
+		mapView.getLayerManager().getLayers().remove(polyline,false);
+
 		mapView.getLayerManager().getLayers().add(startPosMarker, true);
 		mapView.getLayerManager().getLayers().add(endPosMarker, true);
 		mapView.getLayerManager().getLayers().add(polyline, true);
@@ -203,25 +213,25 @@ public final class RunTheSystem {
 	private static Paint getRoutePaint(){
 		// instantiating the paint object
 		Paint routePaint = AwtGraphicFactory.INSTANCE.createPaint();
-		
+
 		routePaint.setColor(Color.BLUE);
 		routePaint.setStrokeWidth(6);
 		routePaint.setStyle(Style.STROKE);
 		return routePaint;
 	}
-	
+
 	private static Paint getStartMarkerPaint(boolean startMarker){
 		Paint markerPaint = AwtGraphicFactory.INSTANCE.createPaint();
-		
+
 		if(startMarker){
-		markerPaint.setColor(Color.GREEN);
+			markerPaint.setColor(Color.GREEN);
 		}else{
 			markerPaint.setColor(Color.RED);
 		}
-		
+
 		markerPaint.setStrokeWidth(6);
 		markerPaint.setStyle(Style.STROKE);
-		
+
 		return markerPaint;
 	}
 

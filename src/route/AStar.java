@@ -69,6 +69,7 @@ public class AStar extends InformedSearch{
 				break;
 			}else{
 
+				//TODO Make sure the distance between tower-Nodes takes into account the distance between the intermediate Nodes as well. The path cannot be guaranteed to be optimal otherwise.
 				for(Node child:SearchDatabase.getNavigatableConnectedNodes(currentNode)){
 					if(child!=currentNode && child!=getStartNode()){
 						//if(child.currentMinEstimatedCost>child.distance(parent)+parent.get(distanceTravelled)+child.distance(goalNode)){expansionList.put(child,parent);child.setDistanceTravelled();child.setGoalDistance(same if updated, different if new)}
