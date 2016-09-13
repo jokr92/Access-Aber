@@ -40,6 +40,13 @@ public class OSMNodeTest {
 		testNode.setLongitude(43.21);
 		assertTrue(testNode.getLongitude()==43.21);
 	}
+	
+	@Test
+	public void ShouldMarkAsTowerNode(){
+		assertFalse(testNode.isTowerNode());
+		testNode.setTowerNode(true);
+		assertTrue(testNode.isTowerNode());
+	}
 
 //	@Test
 //	public void GetAndSetVisibleShouldReturnAResult() {

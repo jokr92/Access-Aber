@@ -323,6 +323,32 @@ public class BuildDatabaseTest {
 	}
 	
 	@Test
+	public void TowerNodeIndicationShouldNotBeTheSameInAllEntries(){
+		Boolean different=false;
+		for(Node testNode:nodeConfig){
+			if(testNode.isTowerNode()!=(prevNode.isTowerNode())){
+				different=true;
+				break;
+			}
+			
+			prevNode=testNode;
+		}
+		assertTrue(different);
+	}
+	
+	@Test
+	public void AllTowerNodesShouldBeMarked(){
+
+		for(Node testNode:nodeConfig){
+			if(SearchDatabase.getWaysContainingNode(testNode.getExternalId()).size()>1){
+				assertTrue(testNode.isTowerNode());
+			}else{
+				assertFalse(testNode.isTowerNode());
+			}
+		}
+	}
+	
+	@Test
 	public void KeyAndValuePairsShouldNotBeTheSameInAllEntries(){
 		Boolean different=false;
 		for(Way testway:wayConfig){

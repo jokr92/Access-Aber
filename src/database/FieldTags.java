@@ -13,8 +13,6 @@ public enum FieldTags {
 	NODE_LATITUDE("lat"),
 	NODE_LONGITUDE("lon"),
 	
-	WAY_HIGHWAY_FOOTWAY("footway"),//TODO should these be here?
-	
 	NODE_START("node"),
 	NODE_END("</node>"),//seems to only be used in a few cases. usually /> is used instead
 	

@@ -5,7 +5,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 import database.BuildDatabaseTest;
-import database.ComplexityAnalysisTest;
+import database.ComplexityAnalysisDBTest;
 import database.NodeTest;
 import database.OSMNodeTest;
 import database.OSMWayTest;
@@ -25,7 +25,7 @@ import route.SearchFunctionalityTest;
 @RunWith(Suite.class)
 @SuiteClasses({NodeTest.class, OSMNodeTest.class, WayTest.class, OSMWayTest.class, AStarTest.class,
 	GreedyBestFirstTest.class, BreadthFirstSearchTest.class, DepthFirstSearchTest.class, SearchDatabaseTest.class,
-	BuildDatabaseTest.class, ComplexityAnalysisTest.class, RunTheSystemTest.class,
+	BuildDatabaseTest.class, ComplexityAnalysisDBTest.class, RunTheSystemTest.class,
 	/*This test should be run last, as it changes the contents of BuildDatabase (which all of the other tests rely on)*/
 	SearchFunctionalityTest.class})
 public class AllTests {

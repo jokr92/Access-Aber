@@ -1,5 +1,6 @@
 package route;
 
+import java.time.Instant;
 import java.util.ArrayDeque;
 import java.util.List;
 
@@ -10,6 +11,7 @@ public class BreadthFirstSearch extends Search{
 
 	@Override
 	public List<Node> findPath() {
+		Instant start = Instant.now();
 
 		ArrayDeque<Node> queue = new ArrayDeque<Node>();
 
@@ -25,6 +27,7 @@ public class BreadthFirstSearch extends Search{
 		}
 
 		while(!queue.isEmpty()){
+			this.updateMaxStoredNodes(queue.size()+expansionList.size());//Makes sure that the maximum number of Nodes stored by this search-algorithm's queue is always recorded
 
 			currentNode = queue.pollFirst();
 
@@ -41,6 +44,8 @@ public class BreadthFirstSearch extends Search{
 				}
 			}
 		}
+		
+		this.setTimeElapsed(start, Instant.now());//Performed before the path is returned because the search can be considered finished at this point.
 		return getPath(expansionList,getStartNode(),getGoalNode());
 	}
 }

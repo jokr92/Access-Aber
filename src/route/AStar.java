@@ -1,5 +1,6 @@
 package route;
 
+import java.time.Instant;
 import java.util.Comparator;
 import java.util.List;
 import java.util.PriorityQueue;
@@ -36,6 +37,7 @@ public class AStar extends InformedSearch{
 
 	@Override
 	public List<Node> findPath (){
+		Instant start = Instant.now();//Starts a timer used for measuring the run-time of this algorithm
 
 		Node currentNode = getStartNode();
 		updatePathCost(currentNode,0);
@@ -53,6 +55,7 @@ public class AStar extends InformedSearch{
 		}
 
 		while(!priorityQueue.isEmpty()){
+			this.updateMaxStoredNodes(priorityQueue.size()+expansionList.size());//Makes sure that the maximum number of Nodes stored by this search-algorithm's queue is always recorded
 
 			currentNode = priorityQueue.poll();//To pop the last element in this list.
 			//The list can get quite large,
@@ -70,15 +73,19 @@ public class AStar extends InformedSearch{
 			}else{
 
 				//TODO Make sure the distance between tower-Nodes takes into account the distance between the intermediate Nodes as well. The path cannot be guaranteed to be optimal otherwise.
+				Node intermediateParent=currentNode;
 				for(Node child:SearchDatabase.getNavigatableConnectedNodes(currentNode)){
 					if(child!=currentNode && child!=getStartNode()){
 						//if(child.currentMinEstimatedCost>child.distance(parent)+parent.get(distanceTravelled)+child.distance(goalNode)){expansionList.put(child,parent);child.setDistanceTravelled();child.setGoalDistance(same if updated, different if new)}
 						if(getEstimatedMinimalCost(child)>(getPathCost(currentNode)+Search.distanceBetweenPoints(currentNode,child)+Search.distanceBetweenPoints(child,getGoalNode()))){
 							updatePathCost(child,getPathCost(currentNode)+Search.distanceBetweenPoints(currentNode,child));
 							updateGoalDistance(child,Search.distanceBetweenPoints(child,getGoalNode()));
-							expansionList.put(child, currentNode);
-							priorityQueue.remove(child);//To ensure that the Node only appears once in the queue
-							priorityQueue.add(child);
+
+							//if(SearchDatabase.getWaysContainingNode(child.getExternalId()).size()>1){
+								expansionList.put(child, currentNode);
+								priorityQueue.remove(child);//To ensure that the Node only appears once in the queue
+								priorityQueue.add(child);
+							//}
 						}else{
 							//If this Node has not been encountered yet
 							if(expansionList.putIfAbsent(child, currentNode)==null){
@@ -86,19 +93,13 @@ public class AStar extends InformedSearch{
 							}
 						}
 					}
-					//Distance from Node<305025164> to Node<295134062>:
-					//0.002514673702126127
-					//0.002514673702126127
-					//0.002514673702126127
-					//0.002514673702126127
-					//0.002514673702126127
-
-
-
+					intermediateParent=child;
 				}
 			}
 		}
 
+		this.setTimeElapsed(start, Instant.now());//Performed before the path is returned because the search can be considered finished at this point.
+		
 		return getPath(expansionList,getStartNode(),getGoalNode());
 	}
 

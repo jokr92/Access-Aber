@@ -20,6 +20,7 @@ public class OSMNode implements Node{
 //	private String uid;
 	private double lat;
 	private double lon;
+	private boolean tower;
 
 
 	public final long getId() {
@@ -139,6 +140,14 @@ public class OSMNode implements Node{
 
 	public void setLongitude(double lon) {
 		this.lon=lon;
+	}
+	
+	public boolean isTowerNode(){
+		return tower;
+	}
+	
+	public void setTowerNode(boolean isTower){
+		tower=isTower;
 	}
 
 	public String toString() {

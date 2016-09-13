@@ -1,5 +1,6 @@
 package route;
 
+import java.time.Instant;
 import java.util.Comparator;
 import java.util.List;
 import java.util.PriorityQueue;
@@ -29,6 +30,7 @@ public class GreedyBestFirst extends InformedSearch{
 
 	@Override
 	public List<Node> findPath (){
+		Instant start = Instant.now();
 
 		Node currentNode = getStartNode();
 		updatePathCost(currentNode,0);
@@ -46,6 +48,7 @@ public class GreedyBestFirst extends InformedSearch{
 		}
 
 		while(!priorityQueue.isEmpty()){
+			this.updateMaxStoredNodes(priorityQueue.size()+expansionList.size());//Makes sure that the maximum number of Nodes stored by this search-algorithm's queue is always recorded
 
 			currentNode = priorityQueue.poll();//To pop the most promising Node
 			priorityQueue.clear();//Only one child of a parent is expanded, so the others are discarded
@@ -77,6 +80,7 @@ public class GreedyBestFirst extends InformedSearch{
 			}
 		}
 
+		this.setTimeElapsed(start, Instant.now());//Performed before the path is returned because the search can be considered finished at this point.
 		return getPath(expansionList,getStartNode(),getGoalNode());
 	}
 

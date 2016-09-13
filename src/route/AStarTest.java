@@ -154,16 +154,19 @@ public class AStarTest {
 		otherAStar.setGoalNode(aStar.getStartNode());
 		path2=otherAStar.findPath();
 
-		assertTrue(path1!=null);
-		assertTrue(path2!=null);
-		assertTrue(path1.size()==path2.size());
+		assertFalse(path1.isEmpty());
+		assertFalse(path2.isEmpty());
+		assertEquals(path1.size(),path2.size());
+		
+		//Makes sure that path2 is path1 backwards (i.e in reverse)
+				for(int i=0;i<path1.size();i++){
+					assertTrue(path1.get(i).equals(path2.get((path2.size()-1)-i)));
+				}
+				
 		assertTrue(aStar.getPathCost(aStar.getGoalNode())>0 && aStar.getPathCost(aStar.getGoalNode())<Double.MAX_VALUE);
 		//Makes sure that both path-costs are the same
 		assertEquals(aStar.getPathCost(aStar.getGoalNode()),otherAStar.getPathCost(otherAStar.getGoalNode()),0);
-		assertEquals(aStar.getPathCost(aStar.getGoalNode()),otherAStar.getPathCost(otherAStar.getGoalNode()),0);
-		//Makes sure that path2 is path1 backwards (or in reverse if you will)
-		for(int i=0;i<path1.size();i++){
-			assertTrue(path1.get(i).equals(path2.get((path2.size()-1)-i)));
-		}
+		
+		
 	}
 }

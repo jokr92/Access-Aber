@@ -1,5 +1,7 @@
 package route;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -28,6 +30,9 @@ public abstract class Search {
 	 * The desired, final node.
 	 */
 	private Node goalNode;
+
+	private Duration runTime;//Used to measure time-complexity
+	private long maxStoredNodes=0;//Used to measure space-complexity
 
 	/**
 	 * For keeping track of which parent node was expanded to reach a child node.
@@ -94,6 +99,42 @@ public abstract class Search {
 	}
 
 	/**
+	 * 
+	 * @return The runtime of this particular instance of a search
+	 */
+	public Duration getTimeElapsed() {
+		return runTime;
+	}
+
+	/**
+	 * Changes the approximate runtime of this instance of a search by looking at the time-difference between two recorded points in time
+	 * @param start System-time at the start of the search
+	 * @param end System-time at the end of the search
+	 */
+	protected void setTimeElapsed(Instant start, Instant end){
+		runTime=Duration.between(start, end);
+	}
+
+	/**
+	 * 
+	 * @return The maximum number of Nodes stored in this particular search's queue
+	 */
+	public long getMaxNodesStored(){
+		return maxStoredNodes;
+	}
+
+	/**
+	 * Updates the counter keeping track of the maximum number of Nodes stored in a search's queue at any one time
+	 * Only performs the update if the input value is greater than the value already stored in {@link #maxStoredNodes}
+	 * @param numStoredNodes The number of Nodes stored in a search's queue at a single point in time
+	 */
+	protected void updateMaxStoredNodes(long numStoredNodes){
+		if(maxStoredNodes<numStoredNodes){
+			maxStoredNodes=numStoredNodes;
+		}
+	}
+
+	/**
 	 * TODO BigDecimal might provide better accuracy in these calculations.
 	 * Finds the distance between two nodes by comparing their latitude and longitude.
 	 * @param latitude1 The latitude of the first node
@@ -112,6 +153,7 @@ public abstract class Search {
 		 * UPDATE(21.July.2016): These calculations seem to work now - at least with the path I have tested everything on. -
 		 * - finding the distance from a node to itself will still return >0 (as it should)
 		 */
+		
 		return Math.max(distance, Double.MIN_VALUE);
 	}
 
@@ -159,11 +201,11 @@ public abstract class Search {
 					for(Entry<String, Object> entry:w.getKeyValuePairs()){
 						if(area==true){break;}
 						for(AreaAndBuildingTags areaTag:AreaAndBuildingTags.values()){
-						if(entry.getKey().equals(areaTag.getKey())&&entry.getValue().equals(areaTag.getValue())){
-							area=true;
-							break;
+							if(entry.getKey().equals(areaTag.getKey())&&entry.getValue().equals(areaTag.getValue())){
+								area=true;
+								break;
+							}
 						}
-					}
 					}
 				}
 
@@ -199,23 +241,25 @@ public abstract class Search {
 							}
 						}
 					}
-					path.remove(path.size()-1);//TODO necessary?
-					path.addAll(shortestPath);
-					path.remove(path.size()-1);//TODO necessary?
+					if(!shortestPath.isEmpty()){
+						path.remove(path.size()-1);//TODO necessary?
+						path.addAll(shortestPath);
+						path.remove(path.size()-1);//TODO necessary?
+					}
 				}
 			}
 		}
 
-			if(!(path.get(path.size()-1)==startNode)){
-				//In case we were unable to find a complete path back to the start-node from the goal-node
-				path.clear();
-			}else{
-				//Makes sure that the Nodes in the path are returned in the correct order (i.e going from startNode to goalNode)
-				Collections.reverse(path);
-			}
-
-			return path;
+		if(!(path.get(path.size()-1)==startNode)){
+			//In case we were unable to find a complete path back to the start-node from the goal-node
+			path.clear();
+		}else{
+			//Makes sure that the Nodes in the path are returned in the correct order (i.e going from startNode to goalNode)
+			Collections.reverse(path);
 		}
-		/***************************METHODS***************************/
 
+		return path;
 	}
+	/***************************METHODS***************************/
+
+}

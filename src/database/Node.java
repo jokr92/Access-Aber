@@ -27,10 +27,14 @@ public /*abstract*//*Can't instantiate an abstract class*/ interface Node extend
 	 */
 	void setId(long localID);
 	
+	/**
+	 * 
+	 * @return This Node's external id, as it appears in the data read by {@link database.BuildDatabase}
+	 */
 	String getExternalId();
 
 	/**
-	 * Changes this Node's external id
+	 * Changes this Node's external id, as it appears in the data read by {@link database.BuildDatabase}
 	 * @param id The ID to assign to this Node; Should be unique.
 	 */
 	void setExternalId(String id);
@@ -42,6 +46,17 @@ public /*abstract*//*Can't instantiate an abstract class*/ interface Node extend
 	double getLongitude();
 
 	void setLongitude(double lon);
+	
+	/**
+	 * Indicates whether a Node is part of more than one Way, i.e that it is a junction-Node
+	 * @return true if the Node is part of more than one Way; false otherwise
+	 */
+	boolean isTowerNode();
+	/**
+	 * Controls the Node's level of importance. Tower Nodes act as connections between Ways, and are therefore more relevant when planning routes
+	 * @param isTower true if the Node is part of more than one Way; false otherwise
+	 */
+	void setTowerNode(boolean isTower);
 
 	@Override
 	public default int compare(Node n1, Node n2) {

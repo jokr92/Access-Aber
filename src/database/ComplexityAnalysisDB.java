@@ -2,7 +2,7 @@ package database;
 
 import java.util.List;
 
-public class ComplexityAnalysis {
+public class ComplexityAnalysisDB {
 
 	private static long numNodes;
 	private static long numWays;
@@ -27,9 +27,7 @@ public class ComplexityAnalysis {
 		long totNumNodes=0;
 
 		for(Way w:ways){
-			for(int i=0;i<w.getNodeRelations().size();i++){
-				totNumNodes++;
-			}
+			totNumNodes+=w.getNodeRelations().size();
 		}
 		numConnections=2*(totNumNodes-getNumWays(ways));
 		//System.out.println("2*("+totNumNodes+"-"+getNumWays(ways)+")="+numConnections);

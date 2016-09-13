@@ -49,10 +49,16 @@ import org.mapsforge.map.reader.MapFile;
 import org.mapsforge.map.reader.ReadBuffer;
 import org.mapsforge.map.rendertheme.InternalRenderTheme;
 
+import database.AreaAndBuildingTags;
 import database.BuildDatabase;
 import database.Node;
 import database.SearchDatabase;
+import database.Way;
 import route.AStar;
+import route.BreadthFirstSearch;
+import route.DepthFirstSearch;
+import route.GreedyBestFirst;
+import route.Search;
 
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
@@ -60,6 +66,7 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.prefs.Preferences;
 
 import javax.swing.JFrame;
@@ -75,46 +82,36 @@ public final class RunTheSystem {
 
 	private static final MapView mapView = createMapView();
 
-	// instantiating the polyline object
-	private static Polyline polyline = new Polyline(getRoutePaint(), AwtGraphicFactory.INSTANCE);
 
-	// instantiating the start and end markers
-	private static Circle startPosMarker = new Circle(null, 6, getStartMarkerPaint(true), getStartMarkerPaint(true), true);
-	private static Circle endPosMarker = new Circle(null, 6, getStartMarkerPaint(false), getStartMarkerPaint(false), true);
 
-	//Lists containing the path(s) found by the system
+	//List containing the path(s) found by the system
 	private static List<Node> nodePath;
-	private static List<LatLong> coordinatePath;
 
 	private static Node startNode, goalNode;
 
 	/**
 	 * Starts the {@code Samples}.
 	 *
-	 * @param args Assumes args[0] is startLatitude, args[1] is startLongitude, args[2] is goalLatitude, and args[3] is goal goalLongitude
+	 * @param args Assumes args[0] is startLatitude, args[1] is startLongitude, args[2] is goalLatitude, and args[3] is goalLongitude
 	 */
 	public static void main(String args[]) {
 		/***********************************************Initialize the system***********************************************/
 		BuildDatabase.readConfig("map.osm");
-		AStar aStar = new AStar();
+		Search algorithm = new AStar();
 
 		try{
 			//TODO Is this a safe cast? Does this try-catch statement deal with casting-errors?
 			startNode = SearchDatabase.findClosestNode(Double.parseDouble(args[0]), Double.parseDouble(args[1]));
 			goalNode = SearchDatabase.findClosestNode(Double.parseDouble(args[2]),Double.parseDouble(args[3]));
 
-			aStar.setStartNode(startNode);
-			aStar.setGoalNode(goalNode);
+			algorithm.setStartNode(startNode);
+			algorithm.setGoalNode(goalNode);
 
-			nodePath=aStar.findPath();
-			coordinatePath = new ArrayList<LatLong>();
+			nodePath=algorithm.findPath();
 
 			System.out.println("This is your path:");
 			for(Node step:nodePath){
 				System.out.println(step);
-
-				LatLong latlon = new LatLong(step.getLatitude(),step.getLongitude());
-				coordinatePath.add(latlon);
 			}
 
 			/*********************************Handle errors*********************************/
@@ -171,27 +168,33 @@ public final class RunTheSystem {
 			public void windowOpened(WindowEvent e) {
 				final Model model = mapView.getModel();
 				// model.init(preferencesFacade);
-				byte zoomLevel = LatLongUtils.zoomForBounds(model.mapViewDimension.getDimension(), boundingBox, model.displayModel.getTileSize());
-				model.mapViewPosition.setMapPosition(new MapPosition(boundingBox.getCenterPoint(), zoomLevel));
+				byte zoomLevelMin = LatLongUtils.zoomForBounds(model.mapViewDimension.getDimension(), boundingBox, model.displayModel.getTileSize());
+				byte zoomLevelStart = 17;// zoom level chosen based on experimentation. Accepted range is: 1(7)-25
+				byte zoomLevelMax = 24;// zoom level chosen based on experimentation. Accepted range is: 1(7)-25
+				LatLong center = new LatLong((startNode.getLatitude()+goalNode.getLatitude())/2.0,(startNode.getLongitude()+goalNode.getLongitude())/2.0);
+				model.mapViewPosition.setMapPosition(new MapPosition(center, zoomLevelStart));
+				model.mapViewPosition.setZoomLevelMin(zoomLevelMin);//Restricts how far out you're allowed to zoom
+				model.mapViewPosition.setZoomLevelMax(zoomLevelMax);//Restricts how far in you're allowed to zoom
 			}
 		});
-		if(coordinatePath!=null)
-			drawRoute(coordinatePath);
+		if(nodePath!=null)
+			drawRoute(nodePath);
 		frame.setVisible(true); 
 
 		/**************************************************\Create the Map**************************************************/
 	}
 
-	public static void drawRoute(List<LatLong> latlng){
+	public static void drawRoute(List<Node> steps){
+
+		// instantiating the start and end markers
+		Circle startPosMarker = new Circle(null, 6, getStartMarkerPaint(true), getStartMarkerPaint(true), true);
+		Circle endPosMarker = new Circle(null, 6, getStartMarkerPaint(false), getStartMarkerPaint(false), true);
+
 		//TODO is this necessary?
 		//		mapView.getLayerManager().getLayers().remove(startPosMarker, false);
 		//		mapView.getLayerManager().getLayers().remove(endPosMarker, false);
 		//		mapView.getLayerManager().getLayers().remove(polyline.hashCode(), false);
 
-		// set lat long for the polyline
-		List<LatLong> coordinateList = polyline.getLatLongs();
-		coordinateList.clear();
-		coordinateList.addAll(latlng);
 
 		if(startNode!=null&&goalNode!=null){
 			LatLong start = new LatLong(startNode.getLatitude(), startNode.getLongitude());
@@ -200,22 +203,118 @@ public final class RunTheSystem {
 			endPosMarker.setLatLong(goal);
 		}
 
-		// adding the layer to the mapview
-		mapView.getLayerManager().getLayers().remove(startPosMarker,false);
-		mapView.getLayerManager().getLayers().remove(endPosMarker,false);
-		mapView.getLayerManager().getLayers().remove(polyline,false);
+		//creates a new polyline whenever an area (e.g building, parking lot) is entered or exited
+		List<Polyline> polylines = new ArrayList<Polyline>();
+		boolean change=true;//Indicates whether an area (e.g building, parking lot) has been entered/exited
+		boolean area=false;
+		List<LatLong> coordinateList = new ArrayList<LatLong>();
+		Polyline polyline = null;
+		
+		for(int i=0;i<steps.size();i++){
+			
+			LatLong latlon = new LatLong(steps.get(i).getLatitude(),steps.get(i).getLongitude());
 
-		mapView.getLayerManager().getLayers().add(startPosMarker, true);
-		mapView.getLayerManager().getLayers().add(endPosMarker, true);
-		mapView.getLayerManager().getLayers().add(polyline, true);
+			if(i+1<steps.size()){
+			List<String> parentChild = new ArrayList<String>();
+			parentChild.add(steps.get(i).getExternalId());
+			parentChild.add(steps.get(i+1).getExternalId());
+
+			boolean nodePartOfArea=false;
+			for(Way w:SearchDatabase.getWaysContainingNode(parentChild)){
+
+				for(Entry<String, Object> entry:w.getKeyValuePairs()){
+
+					for(AreaAndBuildingTags areaTag:AreaAndBuildingTags.values()){
+						if(entry.getKey().equals(areaTag.getKey())&&entry.getValue().equals(areaTag.getValue())){
+							nodePartOfArea=true;
+							
+							if(area==false){
+								change=true;//Indicates entrance into an area (building, parking lot, etc.)
+								area=true;
+							}else{
+								change=false;
+							}
+							break;
+						}
+					}
+				}
+			}
+			
+
+			if(nodePartOfArea^area){//indicates a mismatch between the area-tag and the nodePartOfArea-tag
+				area=!area;
+				change=true;
+			}
+		}
+			
+			if(change&&area==false){
+				
+				if(polyline!=null){
+					coordinateList.add(latlon);//Makes sure the lines intersect
+					polylines.add(polyline);
+				}
+				
+				polyline = new Polyline(getStripPaint(), AwtGraphicFactory.INSTANCE);
+				change=false;
+				
+				// set lat long for the polyline
+				coordinateList = polyline.getLatLongs();
+				coordinateList.clear();
+			}
+			else if(change&&area==true){
+				if(polyline!=null){
+					coordinateList.add(latlon);//Makes sure the lines intersect
+				polylines.add(polyline);
+				}
+				
+				polyline = new Polyline(getAreaPaint(), AwtGraphicFactory.INSTANCE);
+				change=false;
+				
+				// set lat long for the polyline
+				coordinateList = polyline.getLatLongs();
+				coordinateList.clear();
+			}
+			
+			coordinateList.add(latlon);
+		}
+		
+		if(polyline!=null){
+			polylines.add(polyline);
+			}
+
+
+		// adding the layer to the mapview
+		mapView.getLayerManager().getLayers().remove(startPosMarker,false);//false refers to whether to repaint the frame or not
+		mapView.getLayerManager().getLayers().remove(endPosMarker,false);
+
+		mapView.getLayerManager().getLayers().add(startPosMarker, false);
+		mapView.getLayerManager().getLayers().add(endPosMarker, false);
+
+		for(Polyline line:polylines){
+			mapView.getLayerManager().getLayers().remove(line,false);//false refers to whether to repaint the frame or not
+			mapView.getLayerManager().getLayers().add(line, false);
+		}
+
+		mapView.repaint();//updates the frame with all the new markers and lines
 	}
 
-	private static Paint getRoutePaint(){
+	private static Paint getStripPaint(){
 		// instantiating the paint object
 		Paint routePaint = AwtGraphicFactory.INSTANCE.createPaint();
 
 		routePaint.setColor(Color.BLUE);
-		routePaint.setStrokeWidth(6);
+		routePaint.setStrokeWidth(5);
+		routePaint.setStyle(Style.STROKE);
+		return routePaint;
+	}
+
+	private static Paint getAreaPaint(){
+		// instantiating the paint object
+		Paint routePaint = AwtGraphicFactory.INSTANCE.createPaint();
+
+		routePaint.setColor(Color.RED);
+		//routePaint.setDashPathEffect(new float[] { 25, 15 });
+		routePaint.setStrokeWidth(3);
 		routePaint.setStyle(Style.STROKE);
 		return routePaint;
 	}

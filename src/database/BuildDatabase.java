@@ -73,9 +73,6 @@ public class BuildDatabase{
 		ways=new Way[tempWays.size()];
 		for(int i=tempWays.size()-1;i>=0;i--){
 			ways[i]=tempWays.remove(i);
-			if(ways[i].getExternalId().equals("55216076")){//ref 71
-				System.out.println("Llandinam Building");
-			}
 			ways[i].setId(i);
 		}
 	}
@@ -102,32 +99,30 @@ public class BuildDatabase{
 						area=true;
 
 						if(entry.getKey().equals(AreaAndBuildingTags.BUILDING.getKey())){
-							if(w.getExternalId().equals("55216076")){
-								System.out.println("Llandinam");
-							}
 							Iterator<Node> j = w.getNodeRelations().iterator();
 							while(j.hasNext()){
 								Node relation = j.next();
 								//Only retains the Nodes that represent accessible doors in this building
 								if(!accessibleDoors.contains(relation)){
 									j.remove();
-								}else{
-									if(w.getExternalId().equals("55216076")){//ref 71
-										System.out.println(relation.getExternalId());
-									}
 								}
 							}
 						}else{
 							Iterator<Node> j = w.getNodeRelations().iterator();
 							while(j.hasNext()){
 								Node relation = j.next();
+								
+								if(relation.getExternalId().equals("305025622")){
+									System.out.println("DELETE THIS SYSTEM.OUT.PRINTLN");
+								}
 
 								//If this Node is not part of a junction: remove it.
 								//As the Ways tagged with @AreaAndBuildingTags represent areas where movement is only restricted by the Way's borders (Nodes),
 								//only the entry and exit points are needed for pathfinding and route-drawing.
 								if(SearchDatabase.getWaysContainingNode(relation.getExternalId()).size()<=1){
+									relation.setTowerNode(false);
 									j.remove();
-								}
+								}else{relation.setTowerNode(true);}
 							}
 						}
 						break;
@@ -142,9 +137,12 @@ public class BuildDatabase{
 		}
 
 		for(Node n:nodes){
-			if(SearchDatabase.getWaysContainingNode(n.getExternalId()).size()<1){
-				//nodes[(int) n.getId()]=null;//TODO Fix here
+			
+			if(SearchDatabase.getWaysContainingNode(n.getExternalId()).size()<=1){
+				n.setTowerNode(false);//This Node does not serve as a connector between Ways
+				tempNodes.add(n);
 			}else{
+				n.setTowerNode(true);//This Node connects at least two Ways together
 				tempNodes.add(n);
 			}
 		}
@@ -250,7 +248,7 @@ public class BuildDatabase{
 											String attributeValue=attribute.getValue();
 											for(Node nodeI:tempNodes){
 												if(nodeI.getExternalId().equals(attributeValue)){
-													//TODO MASSIVE BOTTLENECK HERE
+													//TODO POSSIBLE MASSIVE BOTTLENECK HERE
 													way.addNodeRelation(nodeI);
 													break;
 												}

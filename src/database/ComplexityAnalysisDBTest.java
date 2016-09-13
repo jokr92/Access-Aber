@@ -9,7 +9,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 
-public class ComplexityAnalysisTest {
+public class ComplexityAnalysisDBTest {
 
 	static List<Node> nodeDBComplete = new ArrayList<Node>();
 	static List<Node> nodeDBFiltered = new ArrayList<Node>();
@@ -22,7 +22,7 @@ public class ComplexityAnalysisTest {
 		if(BuildDatabase.getNodes()==null||BuildDatabase.getWays()==null){
 			BuildDatabase.readConfig("map.osm");
 		}
-		ComplexityAnalysis.reset();
+		ComplexityAnalysisDB.reset();
 
 		for(Node n:BuildDatabase.getNodes()){
 			nodeDBComplete.add(n);
@@ -38,50 +38,50 @@ public class ComplexityAnalysisTest {
 
 	@Test
 	public void shouldCountAllNodesInTheCompleteDatabase(){
-		//System.out.println("AllNodes: "+ComplexityAnalysis.getNumNodes(nodeDBComplete));
-		assertTrue(ComplexityAnalysis.getNumNodes(nodeDBComplete)>0);
+		//System.out.println("AllNodes: "+ComplexityAnalysisDB.getNumNodes(nodeDBComplete));
+		assertTrue(ComplexityAnalysisDB.getNumNodes(nodeDBComplete)>0);
 	}
 
 	@Test
 	public void shouldCountAllNodesInTheFilteredDatabase(){
-		//System.out.println("FilteredNodes: "+ComplexityAnalysis.getNumNodes(nodeDBFiltered));
-		assertTrue(ComplexityAnalysis.getNumNodes(nodeDBFiltered)>0);
+		//System.out.println("FilteredNodes: "+ComplexityAnalysisDB.getNumNodes(nodeDBFiltered));
+		assertTrue(ComplexityAnalysisDB.getNumNodes(nodeDBFiltered)>0);
 	}
 
 	@Test
 	public void shouldCountAllWaysInTheCompleteDatabase(){
-		//System.out.println("AllWays: "+ComplexityAnalysis.getNumWays(wayDBComplete));
-		assertTrue(ComplexityAnalysis.getNumWays(wayDBComplete)>0);
+		//System.out.println("AllWays: "+ComplexityAnalysisDB.getNumWays(wayDBComplete));
+		assertTrue(ComplexityAnalysisDB.getNumWays(wayDBComplete)>0);
 	}
 
 	@Test
 	public void shouldCountAllWaysInTheFilteredDatabase(){
-		//System.out.println("FilteredWays: "+ComplexityAnalysis.getNumWays(wayDBFiltered));
-		assertTrue(ComplexityAnalysis.getNumWays(wayDBFiltered)>0);
+		//System.out.println("FilteredWays: "+ComplexityAnalysisDB.getNumWays(wayDBFiltered));
+		assertTrue(ComplexityAnalysisDB.getNumWays(wayDBFiltered)>0);
 	}
 
 	@Test
 	public void shouldCountAllConnectionsInTheCompleteDatabase(){
-		//System.out.println("AllConnections: "+ComplexityAnalysis.getNumConnections(wayDBComplete));
-		assertTrue(ComplexityAnalysis.getNumConnections(wayDBComplete)>0);
+		//System.out.println("AllConnections: "+ComplexityAnalysisDB.getNumConnections(wayDBComplete));
+		assertTrue(ComplexityAnalysisDB.getNumConnections(wayDBComplete)>0);
 	}
 
 	@Test
 	public void shouldCountAllConnectionsInTheFilteredDatabase(){
-		//System.out.println("FilteredConnections: "+ComplexityAnalysis.getNumConnections(wayDBFiltered));
-		assertTrue(ComplexityAnalysis.getNumConnections(wayDBFiltered)>0);
+		//System.out.println("FilteredConnections: "+ComplexityAnalysisDB.getNumConnections(wayDBFiltered));
+		assertTrue(ComplexityAnalysisDB.getNumConnections(wayDBFiltered)>0);
 	}
 
 	@Test
 	public void shouldPredictTheDifferenceInTheNumberOfNodesWaysAndConnections(){
-		long numNodesComplete=ComplexityAnalysis.getNumNodes(nodeDBComplete);
-		long numNodesFiltered=ComplexityAnalysis.getNumNodes(nodeDBFiltered);
+		long numNodesComplete=ComplexityAnalysisDB.getNumNodes(nodeDBComplete);
+		long numNodesFiltered=ComplexityAnalysisDB.getNumNodes(nodeDBFiltered);
 
-		long numWaysComplete=ComplexityAnalysis.getNumWays(wayDBComplete);
-		long numWaysFiltered=ComplexityAnalysis.getNumWays(wayDBFiltered);
+		long numWaysComplete=ComplexityAnalysisDB.getNumWays(wayDBComplete);
+		long numWaysFiltered=ComplexityAnalysisDB.getNumWays(wayDBFiltered);
 
-		long numConnectionsComplete=ComplexityAnalysis.getNumConnections(wayDBComplete);
-		long numConnectionsFiltered=ComplexityAnalysis.getNumConnections(wayDBFiltered);
+		long numConnectionsComplete=ComplexityAnalysisDB.getNumConnections(wayDBComplete);
+		long numConnectionsFiltered=ComplexityAnalysisDB.getNumConnections(wayDBFiltered);
 
 		//compare the filtered sets to the complete sets 
 		assertTrue(numWaysComplete>numWaysFiltered);
