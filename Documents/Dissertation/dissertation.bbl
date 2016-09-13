@@ -1,0 +1,153 @@
+\begin{thebibliography}{10}
+\providecommand{\url}[1]{#1}
+\csname url@rmstyle\endcsname
+\providecommand{\newblock}{\relax}
+\providecommand{\bibinfo}[2]{#2}
+\providecommand\BIBentrySTDinterwordspacing{\spaceskip=0pt\relax}
+\providecommand\BIBentryALTinterwordstretchfactor{4}
+\providecommand\BIBentryALTinterwordspacing{\spaceskip=\fontdimen2\font plus
+\BIBentryALTinterwordstretchfactor\fontdimen3\font minus
+  \fontdimen4\font\relax}
+\providecommand\BIBforeignlanguage[2]{{%
+\expandafter\ifx\csname l@#1\endcsname\relax
+\typeout{** WARNING: IEEEtran.bst: No hyphenation pattern has been}%
+\typeout{** loaded for the language `#1'. Using the pattern for}%
+\typeout{** the default language instead.}%
+\else
+\language=\csname l@#1\endcsname
+\fi
+#2}}
+
+\bibitem{CC-License}
+\BIBentryALTinterwordspacing
+``Cc by-nc-sa 3.0 de.'' [Online]. Available:
+  \url{http://creativecommons.org/licenses/by-nc-sa/3.0/de/deed.en}
+\BIBentrySTDinterwordspacing
+
+
+\bibitem{botea-etal-jogd04}
+A.~Botea, M.~M\"{u}ller, and J.~Schaeffer, ``{Near Optimal Hierarchical
+  Path-Finding},'' \emph{Journal of Game Development}, vol.~1, no.~1, pp.
+  7--28, 2004.
+
+
+\bibitem{Google-TermsOfService}
+\BIBentryALTinterwordspacing
+Google. Google maps - terms of service. [Online]. Available:
+  \url{https://developers.google.com/maps/terms}
+\BIBentrySTDinterwordspacing
+
+
+\bibitem{GoogleMaps}
+{Google}, ``{Google Maps},'' \url{https://maps.google.com/}, 2015.
+
+
+\bibitem{kishimoto-etal-icaps09}
+A.~Kishimoto, A.~Fukunaga, and A.~Botea, ``{Scalable, Parallel Best-First
+  Search for Optimal Sequential Planning},'' in \emph{Proceedings of the
+  International Conference on Automated Scheduling and Planning ICAPS-09},
+  Thessaloniki, Greece, 2009, pp. 201--208.
+
+
+\bibitem{WGS84}
+\BIBentryALTinterwordspacing
+{National Geospatial-Intelligence Agency}. Wgs84. [Online]. Available:
+  \url{http://earth-info.nga.mil/GandG/wgs84/}
+\BIBentrySTDinterwordspacing
+
+
+\bibitem{OSMLicense}
+\BIBentryALTinterwordspacing
+{OpenStreetMap Foundation}. Openstreetmap license. [Online]. Available:
+  \url{www.openstreetmap.org/copyright}
+\BIBentrySTDinterwordspacing
+
+
+\bibitem{OSM-Features}
+\BIBentryALTinterwordspacing
+------. Osm - features. [Online]. Available:
+  \url{http://wiki.openstreetmap.org/wiki/Map_Features}
+\BIBentrySTDinterwordspacing
+
+
+\bibitem{OSM-Node}
+\BIBentryALTinterwordspacing
+------. Osm - nodes. [Online]. Available:
+  \url{http://wiki.openstreetmap.org/wiki/Node}
+\BIBentrySTDinterwordspacing
+
+
+\bibitem{OSM-Relation}
+\BIBentryALTinterwordspacing
+------. Osm - relations. [Online]. Available:
+  \url{http://wiki.openstreetmap.org/wiki/Relation}
+\BIBentrySTDinterwordspacing
+
+
+\bibitem{OSM-Tags}
+\BIBentryALTinterwordspacing
+------. Osm - tags. [Online]. Available:
+  \url{http://wiki.openstreetmap.org/wiki/Tags}
+\BIBentrySTDinterwordspacing
+
+
+\bibitem{OSM-Way}
+\BIBentryALTinterwordspacing
+------. Osm - ways. [Online]. Available:
+  \url{http://wiki.openstreetmap.org/wiki/Way}
+\BIBentrySTDinterwordspacing
+
+
+\bibitem{OSM-XML}
+\BIBentryALTinterwordspacing
+------. Osm-xml file format. [Online]. Available:
+  \url{http://wiki.openstreetmap.org/wiki/osm_xml}
+\BIBentrySTDinterwordspacing
+
+
+\bibitem{OSM_Convert-WGS84}
+\BIBentryALTinterwordspacing
+------. Wgs84 conversion in openstreetmap. [Online]. Available:
+  \url{wiki.openstreetmap.org/wiki/Converting_to_WGS84}
+\BIBentrySTDinterwordspacing
+
+
+\bibitem{OSM}
+------, ``{OpenStreetMap Homepage},''
+  \url{http://wiki.osmfoundation.org/wiki/Main_Page}, 2004.
+
+
+\bibitem{OSGB}
+\BIBentryALTinterwordspacing
+{Ordnance Survey}. A guide to coordinate systems in great britain. [Online].
+  Available:
+  \url{http://www.ordnancesurvey.co.uk/docs/support/guide-coordinate-systems-great-britain.pdf}
+\BIBentrySTDinterwordspacing
+
+
+\bibitem{RN27}
+S.~J. Russel and P.~Norvig, \emph{Artificial Intelligence: A Modern Approach},
+  3rd~ed.\hskip 1em plus 0.5em minus 0.4em\relax Pearson Custom Library, 2014,
+  p. 1091, pearson New International Edition. 978-1-292-02420-2.
+
+
+\bibitem{Eclipse_License}
+{The Eclipse Foundation}, ``Eclipse public license - v 1.0,''
+  \url{www.eclipse.org/legal/epl-v10.html}.
+
+
+\bibitem{Vogella-XML}
+\BIBentryALTinterwordspacing
+L.~Vogel. Java and xml - tutorial. [Online]. Available:
+  \url{www.vogella.com/tutorials/JavaXML/article.html}
+\BIBentrySTDinterwordspacing
+
+
+\bibitem{CCAI07}
+S.~Yang and A.~K. Mackworth, ``Hierarchical shortest pathfinding applied to
+  route-planning for wheelchair users,'' in \emph{Proceedings of the Canadian
+  Conference on Artificial Intelligence, CanadianAI 2007}, Montreal, PQ, May
+  2007, pp. 539--550.
+
+
+\end{thebibliography}

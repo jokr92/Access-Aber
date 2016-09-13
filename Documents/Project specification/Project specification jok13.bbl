@@ -1,0 +1,74 @@
+\begin{thebibliography}{1}
+\providecommand{\url}[1]{#1}
+\csname url@rmstyle\endcsname
+\providecommand{\newblock}{\relax}
+\providecommand{\bibinfo}[2]{#2}
+\providecommand\BIBentrySTDinterwordspacing{\spaceskip=0pt\relax}
+\providecommand\BIBentryALTinterwordstretchfactor{4}
+\providecommand\BIBentryALTinterwordspacing{\spaceskip=\fontdimen2\font plus
+\BIBentryALTinterwordstretchfactor\fontdimen3\font minus
+  \fontdimen4\font\relax}
+\providecommand\BIBforeignlanguage[2]{{%
+\expandafter\ifx\csname l@#1\endcsname\relax
+\typeout{** WARNING: IEEEtran.bst: No hyphenation pattern has been}%
+\typeout{** loaded for the language `#1'. Using the pattern for}%
+\typeout{** the default language instead.}%
+\else
+\language=\csname l@#1\endcsname
+\fi
+#2}}
+
+\bibitem{GoogleMaps}
+Google, ``Google maps development kit,''
+  \url{https://developers.google.com/maps/}, Feb. 2015, accessed February 2015.
+ \begin{quotation}\noindent This website can provide me with valuable insight
+  into how pathfinding can be done. My project will have comparable
+  functionality to Google Maps and other route-planning software, so this is a
+  good place to get ideas from. \end{quotation}
+
+\bibitem{WGS84}
+\BIBentryALTinterwordspacing
+{National Geospatial-Intelligence Agency}. Wgs84. [Online]. Available:
+  \url{http://earth-info.nga.mil/GandG/wgs84/}
+\BIBentrySTDinterwordspacing
+
+
+\bibitem{OSM_Convert-WGS84}
+\BIBentryALTinterwordspacing
+{OpenStreetMap Foundation}. Wgs84 conversion in openstreetmap. [Online].
+  Available: \url{wiki.openstreetmap.org/wiki/Converting_to_WGS84}
+\BIBentrySTDinterwordspacing
+
+
+\bibitem{OSM}
+------, ``{OpenStreetMap Homepage},''
+  \url{http://wiki.osmfoundation.org/wiki/Main_Page}, 2004.
+
+
+\bibitem{OSGB}
+\BIBentryALTinterwordspacing
+{Ordnance Survey}. A guide to coordinate systems in great britain. [Online].
+  Available:
+  \url{http://www.ordnancesurvey.co.uk/docs/support/guide-coordinate-systems-great-britain.pdf}
+\BIBentrySTDinterwordspacing
+
+
+\bibitem{Route4Me}
+Route4Me, ``{Route4Me Route Planning SDK},''
+  \url{http://route-planning-blog.route4me.com/2014/08/route4me-releases-c-sdk-for-route-planning-api-2/},
+  Aug. 2014, accessed February 2015.
+ \begin{quotation}\noindent A SDK for creating route-planning software. I am
+  unsure of how it is licensed and which(if any) parts I am allowed to use in
+  my own project. But it is worth a look. \end{quotation}
+
+\bibitem{SandersSchultesRoutePlanning}
+P.~Sanders and D.~Schultes, ``{Sanders/Schultes: Route Planning},''
+  \url{http://algo2.iti.uka.de/schultes/hwy/}, Feb. 2008, accessed February
+  2015.
+ \begin{quotation}\noindent A website containing lots of links to other works
+  related to route planning. Made for a PhD thesis, which is also available on
+  the site. This might provide me with more ideas for how to structure my
+  system, as the thesis is aimed at pathfinding in larger areas than my project
+  is aimed at, such as cities or countries. \end{quotation}
+
+\end{thebibliography}

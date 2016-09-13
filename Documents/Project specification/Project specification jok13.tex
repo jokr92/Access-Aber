@@ -1,0 +1,125 @@
+\documentclass[11pt,fleqn,twoside]{article}
+\usepackage{makeidx}
+\makeindex
+\usepackage{palatino} %or {times} etc
+\usepackage{plain} %bibliography style 
+\usepackage{amsmath} %math fonts - just in case
+\usepackage{amsfonts} %math fonts
+\usepackage{amssymb} %math fonts
+\usepackage{lastpage} %for footer page numbers
+\usepackage{fancyhdr} %header and footer package
+\usepackage{mmpv2} 
+\usepackage{url}
+
+% the following packages are used for citations - You only need to include one. 
+%
+% Use the cite package if you are using the numeric style (e.g. IEEEannot). 
+% Use the natbib package if you are using the author-date style (e.g. authordate2annot). 
+% Only use one of these and comment out the other one. 
+\usepackage{cite}
+%\usepackage{natbib}
+
+\begin{document}
+
+\name{Jostein Kristiansen}
+\userid{jok13}
+\projecttitle{Access Aber - Pathfinding}
+\projecttitlememoir{Access Aber} %same as the project title or abridged version for page header
+\reporttitle{Outline Project Specification}
+\version{0.1}
+\docstatus{Draft}%TODO change this
+\modulecode{CSM6960}
+\degreeschemecode{G496}
+\degreeschemename{Intelligent Systems}
+\supervisor{Myra Scott Wilson} % e.g. Neil Taylor
+\supervisorid{mxw}
+\wordcount{718}%TODO change this
+
+%optional - comment out next line to use current date for the document
+%\documentdate{10th February 2014} 
+\mmp
+
+\setcounter{tocdepth}{3} %set required number of level in table of contents
+
+
+%==============================================================================
+\section{Project description}
+%==============================================================================
+
+The project will focus on creating a framework for route-planning or pathfinding-applications in Java, aimed at persons with reduced mobility (\textit{PRM}) at Aberystwyth University; non-PRMs should be able to use the applications as well, but they are not my target-users.
+
+The applications should be able to help PRMs with various disabilities find the best accessible route from one point on the Aberystwyth University campuses to another, with respect to each user's physical limitations (if any). Not all users will be limited in the same ways, so the framework will have to account for this.
+
+The routes will be planned by one or more pathfinding-algorithms in real-time via a set of nodes: making it possible to dynamically generate the best route-suggestions for the user wherever they are on campus. The pathfinding-algorithm(s) to be implemented have not been decided upon yet, but A* (A Star) and D* (D Star / Dynamic A Star) are strong contenders at the time of writing this. In addition to implementing one or more algorithms in the framework, I will need to investigate several others and document their functionality and advantages and disadvantages in my dissertation; 8 search-algorithms was the number suggested by my supervisor.
+
+The nodes to be used for route-planning have already been mapped in \textit{OpenStreetMap}(\textit{OSM}) \cite{OSM} by various members of the public. OSM's database of nodes on the Aberystwyth University campuses is quite extensive, and can be further expanded upon to increase the accuracy of my framework, as the database is open to the public. In addition to this, the framework should be made in such a way that it possible to update the nodes used for pathfinding over time - for example by importing a more recent version of the OSM database - thus ensuring that the framework can stay useful over time.
+
+%==============================================================================
+\section{Proposed tasks}
+%==============================================================================
+
+\begin{itemize}
+	
+	\item Investigate how to store, represent, and index the OSM database containing all the nodes to be used for pathfinding.
+	
+	\item Extract current information about disabled access on the campuses from the university's records, and investigate whether information is available on other points of interest as well.
+	
+	\item decide upon a pathfinding algorithm to use for the project, or combination of algorithms if this has an impact on effectiveness.
+	
+	\item Investigate what constitutes an obstacle for people with different disabilities.
+	
+	\subitem Create different categories for the various disabilities / modes of transportation based on this information. The route-planning algorithm(s) should avoid any obstacles flagged in each category.
+	
+	\subitem Possibly hold a conversation with the university about this, and find the nodes that are hard to travel between for people with various disabilities. %Societies may also prove helpful
+	
+	\item Investigate localisation on various platforms. How is it done, where can it be used, and how do I incorporate it in my framework?
+	
+	\subitem The framework should make it possible to use the users' coordinates for route-planning, but as there are many ways of finding and interpreting said coordinates, my framework should focus on standardising them to a single coordinate system like WGS84, OSGB36, or ED50 \cite{WGS84,OSGB,OSM_Convert-WGS84}.
+	
+	%\item Investigate weather types and their effects on locomotion
+\end{itemize}
+
+%==============================================================================
+\section{Project deliverables}
+%==============================================================================
+
+\subsection{Software:}
+\begin{itemize}
+	\item Working iterations of the system, with various functionality added over time.
+	
+	\subitem The first iteration has to provide some simple route-planning using a subset of the OSM database, without considering specific disabilities.
+	\subitem Then some functionality has to be added in order to make it possible to distinguish between different modes of transportation and disabilities when planning routes.
+	\subitem Then some localisation has to be added to the system so that the user knows where it is, and the pathfinding can be made more dynamic.
+	\subitem After this, I can start experimenting with different search-algorithms, and document their advantages and disadvantages when applied to the OSM database and my framework.
+	
+	\item All of these steps will work as a potential demo of the system, with each iteration improving upon previous functionality and/or adding something new.
+\end{itemize}
+
+\subsection{Documents:}
+\begin{itemize}
+	\item Final hand-in of the dissertation:
+	\subitem 30.September.2016
+	
+	\item Any other deliverables (Like design and testing plans) to be decided upon by the supervisor (As far as I have understood this).
+\end{itemize}
+
+%referanse: https://social.msdn.microsoft.com/Forums/en-US/7245143e-24c9-4c0c-ae3f-a4b5ed97864d/route-and-map-comparisons?forum=netfxcompact
+
+%referanse: http://algo2.iti.kit.edu/schultes/hwy/weaOverviewSlides.pdf
+
+%==============================================================================
+
+\nocite{*} % include everything from the bibliography, irrespective of whether it has been referenced.
+
+% the following line is included so that the bibliography is also shown in the table of contents. There is the possibility that this is added to the previous page for the bibliography. To address this, a newline is added so that it appears on the first page for the bibliography. 
+\newpage
+\addcontentsline{toc}{section}{Initial Annotated Bibliography} 
+
+%
+% example of including an annotated bibliography. The current style is an author date one. If you want to change, comment out the line and uncomment the subsequent line. You should also modify the packages included at the top (see the notes earlier in the file) and then trash your aux files and re-run. 
+%\bibliographystyle{authordate2annot}
+\bibliographystyle{IEEEannot}
+\renewcommand{\refname}{Annotated Bibliography}  % if you put text into the final {} on this line, you will get an extra title, e.g. References. This isn't necessary for the outline project specification. 
+\bibliography{mmpPSbib} % References file
+
+\end{document}

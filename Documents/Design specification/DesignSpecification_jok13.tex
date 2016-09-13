@@ -1,0 +1,266 @@
+\documentclass[conference]{IEEEtran}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{AccessAber}
+\chead{Design Specification}
+\rfoot{Page \thepage}
+
+\newcommand\blfootnote[1]{%
+	\begingroup
+	\renewcommand\thefootnote{}\footnote{#1}%
+	\addtocounter{footnote}{-1}%
+	\endgroup
+}
+
+%opening
+\title{Design Specification}
+\author{jok13}
+\date{}
+\thanks{text}
+\begin{document}
+\maketitle'
+\nocite{*}
+\tableofcontents
+\blfootnote{by \textbf{Brad Appleton} \textless brad@bradapp.net\textgreater \\http://www.bradapp.net\\\\Copyright \textcopyright\space 1994-1997 by Bradford D. Appleton\\\\Permission is hereby granted to make and distribute verbatim copies of this document provided the copyright notice and this permission notice are preserved on all copies.}
+
+
+%https://blackboard.aber.ac.uk/bbcswebdav/pid-43412-dt-content-rid-571055_1/courses/CS22120_2013-14/heatingdesign%281%29.pdf
+%NOTE: The above document is essentially only 2 pages! The rest consists of various diagrams and code
+\section*{Glossary}
+%An ordered list of defined terms and concepts used throughout the document.
+\begin{itemize}
+	\item \textbf{PRM}
+	\subitem Person with Reduced Mobility
+	\item \textbf{AU}
+	\subitem Aberystwyth University
+	\item \textbf{the system}
+	\subitem Access Aber - A routeplanning-application aimed at PRMs on the AU campuses
+	\item \textbf{Node}
+	\subitem a single coordinate
+	\item \textbf{Relation}
+	\subitem Descriptive collection of nodes
+	\item \textbf{OSM}
+	\subitem OpenStreetMap
+	\item $\mathbf{O(\,)}$
+	\subitem Big-O notation. Used to illustrate the worst-case time/memory requirement-growth of the system with respect to some constant \textbf{n}
+	\item \textbf{In-place}
+	\subitem Refers to an algorithm able to transform its input using no auxiliary data structure.
+	\subsubitem Usually requires $O(log\, n)$ to $O(n)$ extra space
+	\item \textbf{Complete}
+	\subitem The system is able to find a path to any location, provided that it is possible to find one
+	\item \textbf{Optimal}
+	\subitem The route found by the system is always the shortest/best
+\end{itemize}
+
+\clearpage
+\section{Introduction}
+%http://www.bradapp.com/docs/sdd.html
+%Design Specification for group-project still on M: drive
+\subsection{Purpose of this document}
+This document describes the outline design for the system I am developing as part of my Major Project - \textit{Access Aber}. This project will form the basis of my dissertation written as part of my MSc at Aberystwyth University.
+
+\subsection{Scope}
+This design specification will break down the coding-components of my system, and detail how they are connected, what they do, and what the end-result of the system should look like.
+
+\subsection{Objectives}
+\begin{itemize}
+	\item Describe the main components of the system
+	\item Detail the dependencies between the different parts of the system
+	\item Provide a reference to any design-models, design-patters and tools that were used to develop the system
+\end{itemize}
+
+\section{System Overview}
+%Provide a general description of the software system including its functionality and matters related to the overall system and its design (perhaps including a discussion of the basic design approach or organization). Feel free to split this discussion up into subsections (and subsubsections, etc ...).
+\subsection{Data-sources}
+The data used to plan routes in this system will most likely come from an external source, as the mapping of roads, stairs, buildings, etc. is a very time-consuming task to undertake, and many external sources are fairly up-to-date with the layout of the AU campuses.
+
+\subsubsection{Data-filtering}
+The system is aimed at PRMs, so any routes it returns to the user has to be accessible.
+
+Unless the external data has already been tailored to a specific disability when it is passed to the system: some method of flagging and/or deletion of nodes and relations will be needed.
+
+\subsubsection{Versatility}
+The data used in my system is (currently) from OSM, but the system is designed to work with data from any external source - as long as it is in XML-format, all nodes and relations are individually marked with proper XML-tags, and all the required fields like ID, latitude, longitude,  etc. are present.
+
+\subsubsection{Output}
+The output of the system is also designed to be quite versatile, as it consists solely of an ordered list of coordinates - ready to be plotted on any map (as long as it uses the same coordinate-system or alternatively can convert the coordinates). The coordinate-system used in the output could also be converted beforehand if the coordinate-system used by the map is not the same as the input to the system.
+
+\subsection{Time and Space-constraints}
+As the system is meant to plan routes for pedestrians, it needs to run within some acceptable parameters.
+
+\subsubsection{Time}
+Any route-planning application should be able to display routes to its users in real-time, therefore it needs to have a very good time-complexity: preferably in the $O(1)$ to $O(log\, n)$ region.
+
+\subsubsection{Memory}
+Any application running on a handheld device should manage its memory-usage quite carefully, as the storage-capacity on these devices can be quite limited.
+
+My system requires the input of an initial database of nodes and relations, but should ideally not need to store much more than this initial overhead.
+It will of course require some additional memory, but the usage should never get to the point where it suddenly reaches exponential growth. Things like the reuse of data in the form of Pointers (Or \textquoteleft References\textquoteright in Java), and implementing algorithms able to work in-place, may be useful to consider.
+
+\section{Design Considerations}
+%This section describes many of the issues which need to be addressed or resolved before attempting to devise a complete design solution.
+
+
+\subsection{Assumptions and Dependencies}
+%Describe any assumptions or dependencies regarding the software and its use. These may concern such issues as:
+%Related software or hardware
+%Operating systems
+%End-user characteristics
+%Possible and/or probable changes in functionality
+
+\begin{itemize}
+	\item The user is assumed to be a pedestrian
+	\item The input can be dynamic when passed to the system, but static once loaded
+	\item The routes are planned dynamically
+	\item The pathfinding is complete and optimal
+	\item The input-data is assumed to contain the following:
+	\subitem Only one input-file
+	\subitem The input-file is formatted as an XML-document
+	\subitem Nodes and relations can be clearly distinguished by their XML-tags - the ordering in which they appear is irrelevant
+	\subitem Nodes and relations are only listed once:
+	\subsubitem Unique IDs within the set of nodes.
+	\subsubitem Unique IDs within the set of Relations.
+	\subitem All nodes have a latitude and longitude (coordinate)
+	\subitem Relations are labelled correctly and accurately - describing what they represent (e.g. stairs or a footway)
+	\subitem Nodes are ordered by their actual physical order within each relation.
+	\subitem A node can be part of multiple relations.
+	
+	\item All coordinates in the input use the same coordinate-system
+	\item The output is directly related to the original, unmodified, state of the input
+	\item The system is able to handle input in any coordinate-system (assuming the coordinate-system is constant)
+	
+\end{itemize}
+
+\clearpage
+\subsection{General Constraints}
+%Describe any global limitations or constraints that have a significant impact on the design of the system's software (and describe the associated impact). Such constraints may be imposed by any of the following (the list is not exhaustive):
+%Hardware or software environment
+%End-user environment
+%Availability or volatility of resources
+%Standards compliance
+%Interoperability requirements
+%Interface/protocol requirements
+%Data repository and distribution requirements
+%Security requirements (or other such regulations)
+%Memory and other capacity limitations
+%Performance requirements
+%Network communications
+%Verification and validation requirements (testing)
+%Other means of addressing quality goals
+%Other requirements described in the requirements specification
+\begin{itemize}
+	\item Everything is written in Java.
+	\subitem This limits the number of libraries I can use, and which platforms the system can be deployed on.
+	\item limited memory available
+	\subitem Memory-use has to be managed very carefully, and can never be allowed to grow out of control.
+	\subsubitem This may have a negative impact on the run-time of the system.
+	%\newpage
+	\item User assumes real-time functionality
+	\subitem A route has to be returned to the user almost as soon as they input where they want to go. Any worse time-complexity than this, and the user might stop using the system.
+	\subsubitem This may have a negative impact on memory-usage
+	\item The pathfinding relies upon accurate and updated data
+	\subitem The data used by the system has to either be downloaded from the internet, or stored locally and updated regularly in order to minimise routing-errors.
+	\item The OSM data is licensed under the \textquoteleft Open Data Commons Open Database License\textquoteright \space \textbf{(ODbL)}
+	\subitem The OSM data can be stored and edited by the system, but it must always abide by this license
+	\item OSM's map-cartography is licensed under the \textquoteleft Creative Commons Attribution-ShareAlike 2.0 license\textquoteright \space \textbf{(CC BY-SA)}
+	\subitem We have to abide by this license
+	\item I plan on using Test Driven Development
+	\subitem This means that every class and method in the system has to be rigorously tested. Any deviation from this may result in unforeseen issues when maintaining the code later.\\These tests also act as a form of self-maintaining design-documentation - clearly showing what functionality we assume to be present
+\end{itemize}
+
+\newpage
+\subsection{Goals and Guidelines}
+%Describe any goals, guidelines, principles, or priorities which dominate or embody the design of the system's software. Such goals might be:
+%The KISS principle ("Keep it simple stupid!")
+%Emphasis on speed versus memory use
+%working, looking, or "feeling" like an existing product
+%For each such goal or guideline, unless it is implicitly obvious, describe the reason for its desirability. Feel free to state and describe each goal in its own subsubsection if you wish.
+\begin{itemize}
+	\item Emphasis on lowering both speed and memory use.
+	\subitem Neither is really more important than the other, but I have found that improving one often leads to improvement in the other as well.
+	\subsubitem Care has to be taken to not ignore one when optimising the other though.
+	\item
+\end{itemize}
+
+\subsection{Development Methods}
+%Briefly describe the method or approach used for this software design. If one or more formal/published methods were adopted or adapted, then include a reference to a more detailed description of these methods. If several methods were seriously considered, then each such method should be mentioned, along with a brief explanation of why all or part of it was used or not used.
+\subsubsection{Test Driven Development}
+Test Driven Development makes sure that all functionality is preserved in the system whenever parts if it is restructured.
+
+By creating unit tests for every class and method in the system, it becomes much easier and quicker to discover bugs and dangerous behaviour after refactoring the code.
+
+But even though all of the unit tests pass, the system might still have some bugs in it that we didn't think of when writing the tests. So TDD is really just a tool to make it easier to refactor code, and for documenting what behaviour we expect in each of the individual classes and methods.
+
+\subsubsection{Spiral Model}
+The spiral model makes sure that the development-process is a little more structured.
+
+The model follows these four steps:
+\begin{enumerate}
+	\item determine objectives, alternatives, and constraints of the iteration
+	\item evaluate alternatives; identify and resolve risks
+	\item develop and verify deliverables from the iteration
+	\item plan the next iteration
+\end{enumerate}
+
+The spiral model makes it easier to focus on one aspect of the system at a time, and makes sure that that aspect is implemented properly. It does this by having a step dedicated to finding and evaluating alternative approaches based on the risk involved in implementing them. This risk could be: time vs memory requirements, expected difficulty of coding, etc.
+
+After one iteration of the spiral is complete, we are able to move on to another aspect of the system. This makes it much easier to stop optimising every single part of the system, and instead prioritise creating a finished product.
+
+\section{Architectural Strategies}
+%Describe any design decisions and/or strategies that affect the overall organization of the system and its higher-level structures. These strategies should provide insight into the key abstractions and mechanisms used in the system architecture. Describe the reasoning employed for each decision and/or strategy (possibly referring to previously stated design goals and principles) and how any design goals or priorities were balanced or traded-off. Such decisions might concern (but are not limited to) things like the following:
+%Use of a particular type of product (programming language, database, library, etc. ...)
+%Reuse of existing software components to implement various parts/features of the system
+%Future plans for extending or enhancing the software
+%User interface paradigms (or system input and output models)
+%Hardware and/or software interface paradigms
+%Error detection and recovery
+%Memory management policies
+%External databases and/or data storage management and persistence
+%Distributed data or control over a network
+%Generalized approaches to control
+%Concurrency and synchronization
+%Communication mechanisms
+%Management of other resources
+%Each significant strategy employed should probably be discussed in its own subsection, or (if it is complex enough) in a separate design document (with an appropriate reference here of course). Make sure that when describing a design decision that you also discuss any other significant alternatives that were considered, and your reasons for rejecting them (as well as your reasons for accepting the alternative you finally chose). Sometimes it may be most effective to employ the "pattern format" for describing a strategy.
+
+\subsection{Strategy-1 name or description}
+
+\subsection{strategy-2 name or description}
+
+\subsection{...}
+
+\section{System Architecture}
+%http://www.bradapp.com/docs/sdd.html
+
+\subsection{component-1 name or description}
+
+\subsection{component-2 name or description}
+
+\subsection{...}
+
+
+\section{Policies and Tactics}
+%http://www.bradapp.com/docs/sdd.html
+
+\subsection{policy/tactic-1 name or description}
+
+\subsection{policy/tactic-2 name or description}
+
+\subsection{...}
+
+\section{Detailed System Design}
+%http://www.bradapp.com/docs/sdd.html
+
+\subsection{module-1 name or description}
+
+\subsection{module-2 name or description}
+
+\subsection{...}
+
+\clearpage
+%A list of referenced and/or related publications.
+\bibliographystyle{IEEEtran}%!!!had a % before it!!! add it again if problems arise!!!
+\bibliography{references}
+
+\end{document}
