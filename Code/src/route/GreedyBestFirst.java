@@ -64,7 +64,7 @@ public class GreedyBestFirst extends InformedSearch{
 			}else{
 
 				for(Node child:SearchDatabase.getNavigatableConnectedNodes(currentNode)){
-					if(child!=currentNode && child!=getStartNode()){
+					if(child!=currentNode && child.isTowerNode() && child!=getStartNode()){
 						//if(child.currentMinEstimatedCost>child.distance(parent)+parent.get(distanceTravelled)+child.distance(goalNode)){expansionList.put(child,parent);child.setDistanceTravelled();child.setGoalDistance(same if updated, different if new)}
 						if(expansionList.putIfAbsent(child, currentNode)==null){
 							//updatePathCost(child,getPathCost(currentNode)+Search.distanceBetweenPoints(currentNode,child));

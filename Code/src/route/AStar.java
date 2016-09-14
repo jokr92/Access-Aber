@@ -1,12 +1,14 @@
 package route;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.PriorityQueue;
 
 import database.Node;
 import database.SearchDatabase;
+import database.Way;
 
 /**
  * Uses the A* algorithm to find a path from one {@link #startNode} to a {@link #goalNode}, via the nodes connected to the start node.
@@ -16,24 +18,24 @@ import database.SearchDatabase;
  *@see database.BuildDatabase
  */
 public class AStar extends InformedSearch{
-	
+
 	/**
 	 * For organizing the order of the nodes to be expanded
 	 * TODO Aren't these comparisons backwards? pathCost+goalDistance should be minimized, not maximized
 	 */
 	PriorityQueue<Node> priorityQueue = new PriorityQueue<Node>(new Comparator<Node>() {
-        public int compare(Node n1, Node n2) {
-        	if(getPathCost(n1)+getGoalDistance(n1) > getPathCost(n2)+getGoalDistance(n2)){
-    			return 1;
-    		}else if(getPathCost(n1)+getGoalDistance(n1) < getPathCost(n2)+getGoalDistance(n2)){
-    			return -1;
-    		}else{
-    			//TODO The interface 'Node' can break distance-ties
-    			//with what? the ID? That's not related to distance at all...
-    			return 0;
-    			}
-        }
-    });
+		public int compare(Node n1, Node n2) {
+			if(getPathCost(n1)+getGoalDistance(n1) > getPathCost(n2)+getGoalDistance(n2)){
+				return 1;
+			}else if(getPathCost(n1)+getGoalDistance(n1) < getPathCost(n2)+getGoalDistance(n2)){
+				return -1;
+			}else{
+				//TODO The interface 'Node' can break distance-ties
+				//with what? the ID? That's not related to distance at all...
+				return 0;
+			}
+		}
+	});
 
 	@Override
 	public List<Node> findPath (){
@@ -66,7 +68,7 @@ public class AStar extends InformedSearch{
 				 * as all shorter paths are guaranteed have been explored.
 				 * (Assuming my implementation of AStar is correct)
 				 */
-	
+
 				Node goalParent=expansionList.get(currentNode);//returns the parent of the goalNode
 				updatePathCost(currentNode,(getPathCost(goalParent)+distanceBetweenPoints(currentNode,goalParent)));
 				break;
@@ -74,23 +76,35 @@ public class AStar extends InformedSearch{
 
 				//TODO Make sure the distance between tower-Nodes takes into account the distance between the intermediate Nodes as well. The path cannot be guaranteed to be optimal otherwise.
 				Node intermediateParent=currentNode;
+				Node prevTowerNode=currentNode;
+				double distanceCounter = 0;
+				
 				for(Node child:SearchDatabase.getNavigatableConnectedNodes(currentNode)){
+					
 					if(child!=currentNode && child!=getStartNode()){
-						//if(child.currentMinEstimatedCost>child.distance(parent)+parent.get(distanceTravelled)+child.distance(goalNode)){expansionList.put(child,parent);child.setDistanceTravelled();child.setGoalDistance(same if updated, different if new)}
-						if(getEstimatedMinimalCost(child)>(getPathCost(currentNode)+Search.distanceBetweenPoints(currentNode,child)+Search.distanceBetweenPoints(child,getGoalNode()))){
-							updatePathCost(child,getPathCost(currentNode)+Search.distanceBetweenPoints(currentNode,child));
-							updateGoalDistance(child,Search.distanceBetweenPoints(child,getGoalNode()));
 
-							//if(SearchDatabase.getWaysContainingNode(child.getExternalId()).size()>1){
-								expansionList.put(child, currentNode);
+						distanceCounter+=Search.distanceBetweenPoints(child, intermediateParent);
+
+						if(!child.isTowerNode()){
+							continue;//No need to add a Node to the queue or list of expanded Nodes if it is not part of a junction. This reduces both runtime and memory requirements
+						}else{
+							//if(child.currentMinEstimatedCost>child.distance(parent)+parent.get(distanceTravelled)+child.distance(goalNode)){expansionList.put(child,parent);child.setDistanceTravelled();child.setGoalDistance(same if updated, different if new)}
+							if(getEstimatedMinimalCost(child)>(getPathCost(prevTowerNode)+distanceCounter+Search.distanceBetweenPoints(child,getGoalNode()))){
+
+								updatePathCost(child,getPathCost(prevTowerNode)+distanceCounter);
+								updateGoalDistance(child,Search.distanceBetweenPoints(child,getGoalNode()));
+
+								expansionList.put(child, prevTowerNode);
 								priorityQueue.remove(child);//To ensure that the Node only appears once in the queue
 								priorityQueue.add(child);
-							//}
-						}else{
-							//If this Node has not been encountered yet
-							if(expansionList.putIfAbsent(child, currentNode)==null){
-								priorityQueue.add(child);
+							}else{
+								//If this Node has not been encountered yet
+								if(expansionList.putIfAbsent(child, prevTowerNode)==null){
+									priorityQueue.add(child);
+								}
 							}
+							distanceCounter=0;//reset because a towerNode has been encountered and added to the queue
+							prevTowerNode=child;
 						}
 					}
 					intermediateParent=child;
@@ -99,7 +113,7 @@ public class AStar extends InformedSearch{
 		}
 
 		this.setTimeElapsed(start, Instant.now());//Performed before the path is returned because the search can be considered finished at this point.
-		
+
 		return getPath(expansionList,getStartNode(),getGoalNode());
 	}
 

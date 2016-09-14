@@ -29,6 +29,7 @@ import org.mapsforge.core.util.LatLongUtils;
 import org.mapsforge.map.awt.graphics.AwtGraphicFactory;
 import org.mapsforge.map.awt.util.JavaPreferences;
 import org.mapsforge.map.awt.view.MapView;
+import org.mapsforge.map.layer.Layer;
 import org.mapsforge.map.layer.Layers;
 import org.mapsforge.map.layer.cache.FileSystemTileCache;
 import org.mapsforge.map.layer.cache.InMemoryTileCache;
@@ -65,6 +66,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.prefs.Preferences;
@@ -85,9 +87,13 @@ public final class RunTheSystem {
 
 
 	//List containing the path(s) found by the system
-	private static List<Node> nodePath;
+	private static List<Node> path;
 
 	private static Node startNode, goalNode;
+	
+	private static Search algorithm = new AStar();
+
+
 
 	/**
 	 * Starts the {@code Samples}.
@@ -97,40 +103,38 @@ public final class RunTheSystem {
 	public static void main(String args[]) {
 		/***********************************************Initialize the system***********************************************/
 		BuildDatabase.readConfig("map.osm");
-		Search algorithm = new AStar();
 
 		try{
-			//TODO Is this a safe cast? Does this try-catch statement deal with casting-errors?
 			startNode = SearchDatabase.findClosestNode(Double.parseDouble(args[0]), Double.parseDouble(args[1]));
 			goalNode = SearchDatabase.findClosestNode(Double.parseDouble(args[2]),Double.parseDouble(args[3]));
 
 			algorithm.setStartNode(startNode);
 			algorithm.setGoalNode(goalNode);
 
-			nodePath=algorithm.findPath();
+			path=algorithm.findPath();
 
 			System.out.println("This is your path:");
-			for(Node step:nodePath){
+			for(Node step:path){
 				System.out.println(step);
 			}
 
 			/*********************************Handle errors*********************************/
 
 		}catch(NumberFormatException e){//Would never be reached if args[] is a double. As any missing input would be 0 by default
-			System.out.println("One or more elements in the input were not of type: double");
+			System.err.println("One or more elements in the input were not of type: double");
 
 			try{
 				System.out.println("start Node:" + SearchDatabase.findClosestNode(Double.parseDouble(args[0]), Double.parseDouble(args[1])));
 			}catch(NumberFormatException s){
-				System.out.println("No start Node could be found. Please check input");
+				System.err.println("No start Node could be found. Please check input");
 			}
 			try{
 				System.out.println("goal Node:" + SearchDatabase.findClosestNode(Double.parseDouble(args[2]),Double.parseDouble(args[3])));
 			}catch(NumberFormatException g){
-				System.out.println("No goal Node could be found. please check input");
+				System.err.println("No goal Node could be found. please check input");
 			}
 		}catch(ArrayIndexOutOfBoundsException e){
-			System.out.println("4 coordinates expected as input.\n" + args.length + " coordinate(s) received.\nPlease try again.");
+			System.err.println("4 coordinates expected as input.\n" + args.length + " coordinate(s) received.\nPlease try again.");
 		}
 
 		/***********************************************\Initialize the system***********************************************/
@@ -171,131 +175,150 @@ public final class RunTheSystem {
 				byte zoomLevelMin = LatLongUtils.zoomForBounds(model.mapViewDimension.getDimension(), boundingBox, model.displayModel.getTileSize());
 				byte zoomLevelStart = 17;// zoom level chosen based on experimentation. Accepted range is: 1(7)-25
 				byte zoomLevelMax = 24;// zoom level chosen based on experimentation. Accepted range is: 1(7)-25
-				LatLong center = new LatLong((startNode.getLatitude()+goalNode.getLatitude())/2.0,(startNode.getLongitude()+goalNode.getLongitude())/2.0);
-				model.mapViewPosition.setMapPosition(new MapPosition(center, zoomLevelStart));
+				if(startNode!=null&&goalNode!=null){
+					LatLong center = new LatLong((startNode.getLatitude()+goalNode.getLatitude())/2.0,(startNode.getLongitude()+goalNode.getLongitude())/2.0);
+					model.mapViewPosition.setMapPosition(new MapPosition(center, zoomLevelStart));
+				}else{
+					model.mapViewPosition.setMapPosition(new MapPosition(boundingBox.getCenterPoint(), zoomLevelMin));
+				}
+
 				model.mapViewPosition.setZoomLevelMin(zoomLevelMin);//Restricts how far out you're allowed to zoom
 				model.mapViewPosition.setZoomLevelMax(zoomLevelMax);//Restricts how far in you're allowed to zoom
 			}
 		});
-		if(nodePath!=null)
-			drawRoute(nodePath);
+		if(path!=null)
+			drawRoute(path);
 		frame.setVisible(true); 
 
 		/**************************************************\Create the Map**************************************************/
 	}
 
 	public static void drawRoute(List<Node> steps){
+		
+		/*********Remove old markers and polylines*********/
+		
+		List<Integer> layersToRemove = new ArrayList<Integer>();
+		Layers layer = mapView.getLayerManager().getLayers();
+		for(int i=0;i<layer.size();i++){
+			if(layer.get(i).getClass().equals(Circle.class)||
+					layer.get(i).getClass().equals(Polyline.class)){
+				layersToRemove.add(i);
+			}
+		}
+		for(int i=0;i<layersToRemove.size();i++){
+			int num=layersToRemove.get(i);
+			mapView.getLayerManager().getLayers().remove(num-i);
+		}
 
 		// instantiating the start and end markers
 		Circle startPosMarker = new Circle(null, 6, getStartMarkerPaint(true), getStartMarkerPaint(true), true);
 		Circle endPosMarker = new Circle(null, 6, getStartMarkerPaint(false), getStartMarkerPaint(false), true);
 
-		//TODO is this necessary?
-		//		mapView.getLayerManager().getLayers().remove(startPosMarker, false);
-		//		mapView.getLayerManager().getLayers().remove(endPosMarker, false);
-		//		mapView.getLayerManager().getLayers().remove(polyline.hashCode(), false);
-
-
-		if(startNode!=null&&goalNode!=null){
+		/****************Adding the start and goal markers****************/
+		if(startNode!=null){
 			LatLong start = new LatLong(startNode.getLatitude(), startNode.getLongitude());
-			LatLong goal = new LatLong(goalNode.getLatitude(), goalNode.getLongitude());
 			startPosMarker.setLatLong(start);
-			endPosMarker.setLatLong(goal);
-		}
 
+			mapView.getLayerManager().getLayers().add(startPosMarker, false);//false refers to whether to repaint the frame or not
+		}else{System.err.println("Start node not found");}
+
+		if(goalNode!=null){
+			LatLong goal = new LatLong(goalNode.getLatitude(), goalNode.getLongitude());
+			endPosMarker.setLatLong(goal);
+
+			mapView.getLayerManager().getLayers().add(endPosMarker, false);//false refers to whether to repaint the frame or not
+		}else{System.err.println("Goal node not found");}
+
+		/****************Adding the polylines****************/
 		//creates a new polyline whenever an area (e.g building, parking lot) is entered or exited
 		List<Polyline> polylines = new ArrayList<Polyline>();
-		boolean change=true;//Indicates whether an area (e.g building, parking lot) has been entered/exited
-		boolean area=false;
+		boolean changeArea=true;//Indicates whether an area (e.g building, parking lot) has been entered/exited
+		boolean isArea=false;
 		List<LatLong> coordinateList = new ArrayList<LatLong>();
 		Polyline polyline = null;
-		
+
 		for(int i=0;i<steps.size();i++){
-			
+
 			LatLong latlon = new LatLong(steps.get(i).getLatitude(),steps.get(i).getLongitude());
 
 			if(i+1<steps.size()){
-			List<String> parentChild = new ArrayList<String>();
-			parentChild.add(steps.get(i).getExternalId());
-			parentChild.add(steps.get(i+1).getExternalId());
+				List<String> parentChild = new ArrayList<String>();
+				parentChild.add(steps.get(i).getExternalId());
+				parentChild.add(steps.get(i+1).getExternalId());
 
-			boolean nodePartOfArea=false;
-			for(Way w:SearchDatabase.getWaysContainingNode(parentChild)){
+				boolean nodePartOfArea=false;
+				for(Way w:SearchDatabase.getWaysContainingNode(parentChild)){
 
-				for(Entry<String, Object> entry:w.getKeyValuePairs()){
+					for(Entry<String, Object> entry:w.getKeyValuePairs()){
 
-					for(AreaAndBuildingTags areaTag:AreaAndBuildingTags.values()){
-						if(entry.getKey().equals(areaTag.getKey())&&entry.getValue().equals(areaTag.getValue())){
-							nodePartOfArea=true;
-							
-							if(area==false){
-								change=true;//Indicates entrance into an area (building, parking lot, etc.)
-								area=true;
-							}else{
-								change=false;
+						for(AreaAndBuildingTags areaTag:AreaAndBuildingTags.values()){
+							if(entry.getKey().equals(areaTag.getKey())&&entry.getValue().equals(areaTag.getValue())){
+								nodePartOfArea=true;
+
+								if(isArea==false){
+									changeArea=true;//Indicates entrance into an area (building, parking lot, etc.)
+									isArea=true;
+								}else{
+									changeArea=false;
+								}
+								break;
 							}
-							break;
 						}
 					}
 				}
-			}
-			
 
-			if(nodePartOfArea^area){//indicates a mismatch between the area-tag and the nodePartOfArea-tag
-				area=!area;
-				change=true;
+
+				if(nodePartOfArea^isArea){//indicates a mismatch between the iaArea-tag and the nodePartOfArea-tag
+					isArea=!isArea;
+					changeArea=true;
+				}
 			}
-		}
-			
-			if(change&&area==false){
-				
+
+			if(changeArea&&isArea==false){
+
 				if(polyline!=null){
 					coordinateList.add(latlon);//Makes sure the lines intersect
 					polylines.add(polyline);
 				}
-				
+
 				polyline = new Polyline(getStripPaint(), AwtGraphicFactory.INSTANCE);
-				change=false;
-				
+				changeArea=false;
+
 				// set lat long for the polyline
 				coordinateList = polyline.getLatLongs();
 				coordinateList.clear();
 			}
-			else if(change&&area==true){
+			else if(changeArea&&isArea==true){
 				if(polyline!=null){
 					coordinateList.add(latlon);//Makes sure the lines intersect
-				polylines.add(polyline);
+					polylines.add(polyline);
 				}
-				
+
 				polyline = new Polyline(getAreaPaint(), AwtGraphicFactory.INSTANCE);
-				change=false;
-				
+				changeArea=false;
+
 				// set lat long for the polyline
 				coordinateList = polyline.getLatLongs();
 				coordinateList.clear();
 			}
-			
-			coordinateList.add(latlon);
+
+			coordinateList.add(latlon);//add another coordinate to a polyline
 		}
-		
+
+		/****************Adds the final polyline****************/
 		if(polyline!=null){
 			polylines.add(polyline);
-			}
-
-
-		// adding the layer to the mapview
-		mapView.getLayerManager().getLayers().remove(startPosMarker,false);//false refers to whether to repaint the frame or not
-		mapView.getLayerManager().getLayers().remove(endPosMarker,false);
-
-		mapView.getLayerManager().getLayers().add(startPosMarker, false);
-		mapView.getLayerManager().getLayers().add(endPosMarker, false);
-
-		for(Polyline line:polylines){
-			mapView.getLayerManager().getLayers().remove(line,false);//false refers to whether to repaint the frame or not
-			mapView.getLayerManager().getLayers().add(line, false);
 		}
 
-		mapView.repaint();//updates the frame with all the new markers and lines
+
+		/****************adding every polyline to the mapview****************/
+		for(Polyline line:polylines){
+			mapView.getLayerManager().getLayers().add(line, false);//false refers to whether to repaint the frame or not
+		}
+
+
+		/****************update the frame with all the new markers and lines****************/
+		mapView.getLayerManager().redrawLayers();
 	}
 
 	private static Paint getStripPaint(){
@@ -388,7 +411,43 @@ public final class RunTheSystem {
 		return new TileDownloadLayer(tileCache, mapViewPosition, tileSource, GRAPHIC_FACTORY) {
 			@Override
 			public boolean onTap(LatLong tapLatLong, Point layerXY, Point tapXY) {
-				System.out.println("Tap on: " + tapLatLong);
+
+				/**********In case the start/goal Node has not been set yet**********/
+				if(startNode==null){
+					//System.out.println("Start Node set at: " + tapLatLong);
+					
+					startNode = SearchDatabase.findClosestNode(tapLatLong.getLatitude(), tapLatLong.getLongitude());
+					algorithm.setStartNode(startNode);
+				}else if(goalNode==null){
+					//System.out.println("Goal Node set at: " + tapLatLong);
+					
+					goalNode = SearchDatabase.findClosestNode(tapLatLong.getLatitude(), tapLatLong.getLongitude());
+					algorithm.setGoalNode(goalNode);
+
+					if(startNode!=null&&goalNode!=null){
+						drawRoute(algorithm.findPath());
+						
+						return true;
+					}
+				}
+
+				/**********Change the start/goal Node position, and recalculate the route**********/
+				if(startNode!=null&&goalNode!=null){
+					if(Search.distanceBetweenPoints(tapLatLong.getLatitude(), tapLatLong.getLongitude(), startNode.getLatitude(), startNode.getLongitude())<
+							Search.distanceBetweenPoints(tapLatLong.getLatitude(), tapLatLong.getLongitude(), goalNode.getLatitude(), goalNode.getLongitude())){
+						//System.out.println("Start Node set at: " + tapLatLong);
+						
+						startNode = SearchDatabase.findClosestNode(tapLatLong.getLatitude(), tapLatLong.getLongitude());
+						algorithm.setStartNode(startNode);
+					}else{
+						//System.out.println("Goal Node set at: " + tapLatLong);
+						
+						goalNode = SearchDatabase.findClosestNode(tapLatLong.getLatitude(), tapLatLong.getLongitude());
+						algorithm.setGoalNode(goalNode);
+					}
+					drawRoute(algorithm.findPath());
+				}
+
 				return true;
 			}
 		};
@@ -400,7 +459,39 @@ public final class RunTheSystem {
 				mapViewPosition, isTransparent, renderLabels, cacheLabels, GRAPHIC_FACTORY) {
 			@Override
 			public boolean onTap(LatLong tapLatLong, Point layerXY, Point tapXY) {
-				System.out.println("Tap on: " + tapLatLong);
+
+				/**********In case the start/goal Node has not been set yet**********/
+				if(startNode==null){
+					//System.out.println("Start Node set at: " + tapLatLong);
+					startNode = SearchDatabase.findClosestNode(tapLatLong.getLatitude(), tapLatLong.getLongitude());
+					algorithm.setStartNode(startNode);
+				}else if(goalNode==null){
+					//System.out.println("Goal Node set at: " + tapLatLong);
+					goalNode = SearchDatabase.findClosestNode(tapLatLong.getLatitude(), tapLatLong.getLongitude());
+					algorithm.setGoalNode(goalNode);
+
+					if(startNode!=null&&goalNode!=null){
+						drawRoute(algorithm.findPath());
+						return true;
+					}
+				}
+
+				/**********Change the start/goal Node position, and recalculate the route**********/
+				if(startNode!=null&&goalNode!=null){
+					if(Search.distanceBetweenPoints(tapLatLong.getLatitude(), tapLatLong.getLongitude(), startNode.getLatitude(), startNode.getLongitude())<
+							Search.distanceBetweenPoints(tapLatLong.getLatitude(), tapLatLong.getLongitude(), goalNode.getLatitude(), goalNode.getLongitude())){
+						//System.out.println("Start Node set at: " + tapLatLong);
+						startNode = SearchDatabase.findClosestNode(tapLatLong.getLatitude(), tapLatLong.getLongitude());
+						algorithm.setStartNode(startNode);
+					}else{
+						//System.out.println("Goal Node set at: " + tapLatLong);
+						
+						goalNode = SearchDatabase.findClosestNode(tapLatLong.getLatitude(), tapLatLong.getLongitude());
+						algorithm.setGoalNode(goalNode);
+					}
+					drawRoute(algorithm.findPath());
+				}
+
 				return true;
 			}
 		};

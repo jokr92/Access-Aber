@@ -42,6 +42,7 @@ public class DepthFirstSearch extends Search {
 				for(Node child:SearchDatabase.getNavigatableConnectedNodes(currentNode)){
 					if(!(child.equals(getStartNode()))
 							&& child!=currentNode
+							&& child.isTowerNode()
 							&& expansionList.putIfAbsent(child,currentNode)==null){
 						stack.offerLast(child);
 					}

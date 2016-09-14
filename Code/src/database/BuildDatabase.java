@@ -94,7 +94,8 @@ public class BuildDatabase{
 				if(area==true){break;}
 
 				for(AreaAndBuildingTags areaTag:AreaAndBuildingTags.values()){
-
+					if(area==true){break;}
+					
 					if(entry.getKey().equals(areaTag.getKey())&&entry.getValue().equals(areaTag.getValue())){
 						area=true;
 
@@ -102,26 +103,21 @@ public class BuildDatabase{
 							Iterator<Node> j = w.getNodeRelations().iterator();
 							while(j.hasNext()){
 								Node relation = j.next();
-								//Only retains the Nodes that represent accessible doors in this building
-								if(!accessibleDoors.contains(relation)){
-									j.remove();
-								}
+								//Removes all inaccessible doors in this building, but retains the walls and accessible doors
+								if(accessibleDoors.contains(relation)==false&&SearchDatabase.getWaysContainingNode(relation.getExternalId()).size()>1){
+									relation.setTowerNode(false);
+									j.remove();//TODO Uncomment this so that only accessible doors are retained
+								}else{relation.setTowerNode(true);}
 							}
 						}else{
 							Iterator<Node> j = w.getNodeRelations().iterator();
 							while(j.hasNext()){
 								Node relation = j.next();
-								
-								if(relation.getExternalId().equals("305025622")){
-									System.out.println("DELETE THIS SYSTEM.OUT.PRINTLN");
-								}
 
-								//If this Node is not part of a junction: remove it.
-								//As the Ways tagged with @AreaAndBuildingTags represent areas where movement is only restricted by the Way's borders (Nodes),
-								//only the entry and exit points are needed for pathfinding and route-drawing.
+								//If this Node is not part of a junction: mark it as such
 								if(SearchDatabase.getWaysContainingNode(relation.getExternalId()).size()<=1){
 									relation.setTowerNode(false);
-									j.remove();
+									//j.remove();
 								}else{relation.setTowerNode(true);}
 							}
 						}

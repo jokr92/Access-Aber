@@ -194,22 +194,22 @@ public abstract class Search {
 				parentChild.add(parentNode.getExternalId());
 				parentChild.add(childNode.getExternalId());
 
-				boolean area=false;
+				boolean isArea=false;
 				for(Way w:SearchDatabase.getWaysContainingNode(parentChild)){
-					if(area==true){break;}
+					if(isArea==true){break;}
 
 					for(Entry<String, Object> entry:w.getKeyValuePairs()){
-						if(area==true){break;}
+						if(isArea==true){break;}
 						for(AreaAndBuildingTags areaTag:AreaAndBuildingTags.values()){
 							if(entry.getKey().equals(areaTag.getKey())&&entry.getValue().equals(areaTag.getValue())){
-								area=true;
+								isArea=true;
 								break;
 							}
 						}
 					}
 				}
 
-				if(area==false){
+				if(isArea==false){
 					double shortestDistance=Double.POSITIVE_INFINITY;
 					List<Node> shortestPath = new ArrayList<Node>();
 					for(Way way:SearchDatabase.getWaysContainingNode(parentChild)){
@@ -221,7 +221,7 @@ public abstract class Search {
 							else if(node==parentNode){parentFound=true;}
 
 							if(childFound^parentFound){
-								intermediatePath.add(node);
+								intermediatePath.add(node);//If we are looking at a Node between the child and parent inside this Way
 							}else if(parentFound&&childFound){
 								intermediatePath.add(node);
 

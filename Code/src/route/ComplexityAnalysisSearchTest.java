@@ -39,23 +39,6 @@ public class ComplexityAnalysisSearchTest {
 
 		startNode = SearchDatabase.findClosestNode(-180, -180);
 		goalNode = SearchDatabase.findClosestNode(180, 180);
-
-		/*
-		aStar = new AStar();
-		gBFS = new GreedyBestFirst();
-		bfs = new BreadthFirstSearch();
-		dfs = new DepthFirstSearch();
-
-		aStar.setStartNode(startNode);aStar.setGoalNode(goalNode);
-		gBFS.setStartNode(startNode);gBFS.setGoalNode(goalNode);
-		bfs.setStartNode(startNode);bfs.setGoalNode(goalNode);
-		dfs.setStartNode(startNode);dfs.setGoalNode(goalNode);
-
-		aStarPath = aStar.findPath();
-		gBFSPath = gBFS.findPath();
-		bfsPath = bfs.findPath();
-		dfsPath = dfs.findPath();
-		 */
 	}
 
 	@Test
