@@ -3,6 +3,7 @@ package route;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.BeforeClass;
@@ -10,13 +11,14 @@ import org.junit.Test;
 
 import database.BuildDatabase;
 import database.Node;
+import database.SearchDatabase;
 
 public class SearchFunctionalityTest {
 
 	static Node startNode;
 	static Node goalNode;
 	static AStar aStar;
-	static GreedyBestFirst gBFS;
+	static GreedyBestFirstSearch gBFS;
 	static BreadthFirstSearch bfs;
 	static DepthFirstSearch dfs;
 	
@@ -29,17 +31,27 @@ public class SearchFunctionalityTest {
 	@BeforeClass
 	public static void Initialize(){
 		BuildDatabase.readConfig("InformedSearchPathTest.osm");
+		BuildDatabase.setWays(SearchDatabase.filterAccessibleWays(Arrays.asList(BuildDatabase.getWays())));
+		BuildDatabase.setNodes(SearchDatabase.filterAccessibleNodes(Arrays.asList(BuildDatabase.getWays())));
 
-		startNode = BuildDatabase.getNodes()[0];
-		goalNode = BuildDatabase.getNodes()[5];
+		for(Node n:BuildDatabase.getNodes())
+		if(n.getExternalId().equals("1")){
+			startNode=n;
+		}else if(n.getExternalId().equals("6")){
+		goalNode=n;
+		}else if(startNode!=null&&goalNode!=null){break;}
 		
 		optimalPath = new ArrayList<Node>();
-		for(int i=0;i<=5;i++){//This assumes that the optimal path is the sequence of Nodes 5-0
-			optimalPath.add(BuildDatabase.getNodes()[i]);
+		for(int i=1;i<=6;i++){//This assumes that the optimal path is the sequence of Nodes 1-6
+			for(Node n:Arrays.asList(BuildDatabase.getNodes())){
+				if(n.getExternalId().equals(Integer.toString(i))){
+					optimalPath.add(n);
+				}
+			}
 		}
 
 		aStar = new AStar();
-		gBFS = new GreedyBestFirst();
+		gBFS = new GreedyBestFirstSearch();
 		bfs = new BreadthFirstSearch();
 		dfs = new DepthFirstSearch();
 

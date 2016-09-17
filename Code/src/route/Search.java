@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import database.Node;
+import database.OSMNode;
 import database.SearchDatabase;
 import database.AreaAndBuildingTags;
 import database.Way;
@@ -25,11 +26,11 @@ public abstract class Search {
 	 * The initial node.
 	 * The Root of the search-tree.
 	 */
-	private Node startNode;
+	protected Node startNode;
 	/**
 	 * The desired, final node.
 	 */
-	private Node goalNode;
+	protected Node goalNode;
 
 	private Duration runTime;//Used to measure time-complexity
 	private long maxStoredNodes=0;//Used to measure space-complexity
@@ -71,8 +72,12 @@ public abstract class Search {
 	public void setStartNode(Node startNode) {
 		if(getStartNode()!=startNode){
 			this.startNode = startNode;
+			
 			this.path.clear();
 			this.expansionList.clear();
+			
+			this.runTime = Duration.ZERO;
+			this.updateMaxStoredNodes(0);
 			//TODO This does not reset any searches in progress though...
 		}
 	}
@@ -92,8 +97,12 @@ public abstract class Search {
 	public void setGoalNode(Node goalNode) {
 		if(getGoalNode()!=goalNode){
 			this.goalNode = goalNode;
+			
 			this.path.clear();
 			this.expansionList.clear();
+			
+			this.runTime = Duration.ZERO;
+			this.updateMaxStoredNodes(0);
 			//TODO This does not reset any searches in progress though...
 		}
 	}
@@ -103,7 +112,7 @@ public abstract class Search {
 	 * @return The runtime of this particular instance of a search
 	 */
 	public Duration getTimeElapsed() {
-		return runTime;
+		return this.runTime;
 	}
 
 	/**
@@ -112,7 +121,11 @@ public abstract class Search {
 	 * @param end System-time at the end of the search
 	 */
 	protected void setTimeElapsed(Instant start, Instant end){
-		runTime=Duration.between(start, end);
+		if(start!=null&&end!=null){
+			this.runTime=Duration.between(start, end);
+		}else{
+			this.runTime=Duration.ZERO;
+		}
 	}
 
 	/**
@@ -120,7 +133,7 @@ public abstract class Search {
 	 * @return The maximum number of Nodes stored in this particular search's queue
 	 */
 	public long getMaxNodesStored(){
-		return maxStoredNodes;
+		return this.maxStoredNodes;
 	}
 
 	/**
@@ -130,7 +143,7 @@ public abstract class Search {
 	 */
 	protected void updateMaxStoredNodes(long numStoredNodes){
 		if(maxStoredNodes<numStoredNodes){
-			maxStoredNodes=numStoredNodes;
+			this.maxStoredNodes=numStoredNodes;
 		}
 	}
 
@@ -153,7 +166,7 @@ public abstract class Search {
 		 * UPDATE(21.July.2016): These calculations seem to work now - at least with the path I have tested everything on. -
 		 * - finding the distance from a node to itself will still return >0 (as it should)
 		 */
-		
+
 		return Math.max(distance, Double.MIN_VALUE);
 	}
 
@@ -164,8 +177,11 @@ public abstract class Search {
 	 * @return The distance between the two nodes
 	 */
 	protected static double distanceBetweenPoints(Node node1, Node node2){
-		double dist=distanceBetweenPoints(node1.getLatitude(),node1.getLongitude(),node2.getLatitude(),node2.getLongitude());
-		return dist;
+		if(node1!=null&&node2!=null){
+			double dist=distanceBetweenPoints(node1.getLatitude(),node1.getLongitude(),node2.getLatitude(),node2.getLongitude());
+			return dist;
+		}
+		return Double.POSITIVE_INFINITY;//In case one of the Nodes does not exist
 	}
 
 	/**
@@ -250,7 +266,7 @@ public abstract class Search {
 			}
 		}
 
-		if(!(path.get(path.size()-1)==startNode)){
+		if(!path.isEmpty()&&!(path.get(path.size()-1)==startNode)){
 			//In case we were unable to find a complete path back to the start-node from the goal-node
 			path.clear();
 		}else{
@@ -259,6 +275,71 @@ public abstract class Search {
 		}
 
 		return path;
+	}
+
+	/**
+	 * Expands the Node it receives, and adds all of its children that are also tower Nodes to {@link #expansionList} in the order they are encountered
+	 * @param currentNode The Node to expand
+	 * @return A list of every tower Node in the same Way(s) as the received Node that has not been visited yet, or to which a shorter path has been found
+	 */
+	List<Node> expandNode(Node nodeToExpand){
+		List<Node> towerNodes=new ArrayList<Node>();
+
+		/***************Link this Node's children to it***************/
+		if(nodeToExpand!=null){
+			for(Way w:SearchDatabase.getWaysContainingNode(nodeToExpand.getExternalId())){
+				List<Node> children=w.getNodeRelations();
+				Node child;
+				int currentNodeIndex=children.indexOf(nodeToExpand);
+				Node prevTowerNode=nodeToExpand;
+
+				//Add connections to Nodes that are listed after the currentNode
+				for(int i=currentNodeIndex-1;i>=0;i--){
+					child=children.get(i);
+					if(child.equals(nodeToExpand)||child.equals(this.getStartNode())){//In case the currentNode appears more than once in a Way
+						prevTowerNode=child;
+						continue;
+					}
+
+					if(child.isTowerNode()||child.equals(this.getGoalNode())){
+						//to avoid returning Nodes that have already been expanded
+						if(this.expansionList.putIfAbsent(child, prevTowerNode)==null){
+							towerNodes.remove(child);//To ensure that the Node only appears once in the queue
+							towerNodes.add(child);
+						}
+
+						prevTowerNode=child;
+					}
+				}
+
+				//Add connections to Nodes that are listed after the currentNode
+				prevTowerNode=nodeToExpand;
+				int mixIndex=1;//Lets us make sure the list 'towerNodes' is ordered by each Node's order in the Way - with respect to nodeToExpand's position in that list
+				for(int i=currentNodeIndex+1;i<children.size();i++){
+					child=children.get(i);
+					if(child.equals(nodeToExpand)||child.equals(this.getStartNode())){//In case the currentNode appears more than once in a Way
+						prevTowerNode=child;
+						continue;
+					}
+
+					if(child.isTowerNode()||child.equals(this.getGoalNode())){
+						//to avoid returning Nodes that have already been expanded
+						if(this.expansionList.putIfAbsent(child, prevTowerNode)==null){
+							towerNodes.remove(child);//To ensure that the Node only appears once in the queue
+							if(!(mixIndex>towerNodes.size())){
+								towerNodes.add(mixIndex,child);
+								mixIndex+=3;
+							}else{towerNodes.add(child);}
+
+
+						}
+
+						prevTowerNode=child;
+					}
+				}
+			}
+		}
+		return towerNodes;
 	}
 	/***************************METHODS***************************/
 

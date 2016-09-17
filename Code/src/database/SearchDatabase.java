@@ -89,11 +89,10 @@ public class SearchDatabase{
 	}
 
 	/**
-	 *TODO Currently, the filter is: Key=highway && Value!=steps. Is it possible to create a better filter? Maybe it should be possible to cross open spaces like k=amenity v=parking?
-	 * Filters out the Ways that are not marked with a highway key (ie. any Way that is not a road, path, stair, etc.).
+	 * Filters out the Ways that are not marked with as accessible (ie. any Way that is not a road, path, stair, etc.).
 	 * This is meant to aid in restricting the nodes used for pathfinding, as not all nodes are actually meant for navigation.
 	 * @param wayList List of Ways to run the filter on.
-	 * @return A list of nodes that can be used for navigation.
+	 * @return A list of Ways that can be used for navigation.
 	 */
 	public static List<Way> filterAccessibleWays(final List<Way> wayList){
 		List<Way> navigatableWays = new ArrayList<Way>();
@@ -113,7 +112,6 @@ public class SearchDatabase{
 
 					if(inaccessible){
 						accessible=false;
-						//System.out.println("Way "+way.getExternalId()+": "+dbPair.getKey() +"-"+ dbPair.getValue() + " is not suitable for navigation");
 						break;
 					}
 
@@ -126,7 +124,6 @@ public class SearchDatabase{
 				}
 				if(accessible){
 					navigatableWays.add(way);
-					//System.out.println("Way "+way.getExternalId()+": IS navigable");
 				}
 			}catch(NullPointerException e){
 				//in case a Key or Value is null; which can happen in the OSM database.
@@ -137,8 +134,7 @@ public class SearchDatabase{
 	}
 
 	/**
-	 *TODO Currently, the filter is: Key=highway && Value!=steps. Is it possible to create a better filter? Maybe it should be possible to cross open spaces like k=amenity v=parking?
-	 * Filters out the Ways that are not marked with a highway key (ie. any Way that is not a road, path, stair, etc.).
+	 * Filters out the Ways that are not marked as accessible (ie. any Way that is not a road, path, stair, etc.).
 	 * This is meant to aid in restricting the nodes used for pathfinding, as not all nodes are actually meant for navigation.
 	 * @param wayList List of Ways to run the filter on.
 	 * @return A list of Nodes that can be used for navigation.
@@ -147,7 +143,12 @@ public class SearchDatabase{
 		List<Node> navigatableNodes = new ArrayList<Node>();
 		for(Way way:filterAccessibleWays(wayList)){
 			//Only adds a Node to the list if it is part of a highway(eg. a road, path, etc.), and it is not stairs
-			navigatableNodes.addAll(way.getNodeRelations());			
+			for(Node n:way.getNodeRelations()){
+				if(!navigatableNodes.contains(n)){
+					navigatableNodes.add(n);
+				}
+			}
+					
 		}
 		return navigatableNodes;
 	}

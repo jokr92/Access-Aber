@@ -26,9 +26,8 @@ public class DepthFirstSearchTest {
 
 	@BeforeClass
 	public static void PopulateLists(){
-		if(BuildDatabase.getNodes()==null||BuildDatabase.getWays()==null){
-			BuildDatabase.readConfig("map.osm");
-		}
+
+		BuildDatabase.readConfig("map.osm");
 
 		startNode=SearchDatabase.searchForNode(1);
 		goalNode=SearchDatabase.searchForNode(20);

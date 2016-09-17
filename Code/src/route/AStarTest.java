@@ -3,6 +3,7 @@ package route;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Before;
@@ -26,9 +27,10 @@ public class AStarTest {
 
 	@BeforeClass
 	public static void PopulateLists(){
-		if(BuildDatabase.getNodes()==null||BuildDatabase.getWays()==null){
-			BuildDatabase.readConfig("map.osm");
-		}
+		BuildDatabase.readConfig("map.osm");
+		
+		BuildDatabase.setWays(SearchDatabase.filterAccessibleWays(Arrays.asList(BuildDatabase.getWays())));
+		BuildDatabase.setNodes(SearchDatabase.filterAccessibleNodes(Arrays.asList(BuildDatabase.getWays())));
 
 		startNode=SearchDatabase.searchForNode(1);
 		goalNode=SearchDatabase.searchForNode(20);
@@ -147,6 +149,9 @@ public class AStarTest {
 		List<Node> path2 = new ArrayList<Node>();
 
 		path1=aStar.findPath();
+		for(Node n:path1){
+			System.out.println(n.getExternalId());
+		}
 
 		//This makes path2 the reverse of path1
 		AStar otherAStar = new AStar();
@@ -157,16 +162,16 @@ public class AStarTest {
 		assertFalse(path1.isEmpty());
 		assertFalse(path2.isEmpty());
 		assertEquals(path1.size(),path2.size());
-		
+
 		//Makes sure that path2 is path1 backwards (i.e in reverse)
-				for(int i=0;i<path1.size();i++){
-					assertTrue(path1.get(i).equals(path2.get((path2.size()-1)-i)));
-				}
-				
+		for(int i=0;i<path1.size();i++){
+			assertTrue(path1.get(i).equals(path2.get((path2.size()-1)-i)));
+		}
+
 		assertTrue(aStar.getPathCost(aStar.getGoalNode())>0 && aStar.getPathCost(aStar.getGoalNode())<Double.MAX_VALUE);
 		//Makes sure that both path-costs are the same
-		assertEquals(aStar.getPathCost(aStar.getGoalNode()),otherAStar.getPathCost(otherAStar.getGoalNode()),0);
-		
-		
+		assertEquals(aStar.getPathCost(aStar.getGoalNode()),otherAStar.getPathCost(otherAStar.getGoalNode()),0.000000000000000001);
+
+
 	}
 }

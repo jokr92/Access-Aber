@@ -17,9 +17,7 @@ public class SearchDatabaseTest {
 
 	@BeforeClass
 	public static void PopulateLists(){
-		if(BuildDatabase.getNodes()==null||BuildDatabase.getWays()==null){
-			BuildDatabase.readConfig("map.osm");
-		}
+		BuildDatabase.readConfig("map.osm");
 	}
 
 	@Before
@@ -104,7 +102,7 @@ public class SearchDatabaseTest {
 	 */
 	public void ShouldFindNodeSpecifiedByExactCoordinates(){
 		Node testNode=null;
-		
+
 		for(Way w:BuildDatabase.getWays()){
 			if(testNode!=null){break;}
 
@@ -130,8 +128,8 @@ public class SearchDatabaseTest {
 	@Test
 	public void ShouldFindNodeClosestToCoordinates(){
 		System.out.println("Closest Node: "+SearchDatabase.findClosestNode(52.4164812821479, -4.065756207246293));
-		assertFalse(SearchDatabase.findClosestNode(90, 180).equals(null));
-		assertFalse(SearchDatabase.findClosestNode(-90, -180).equals(null));
+		assertFalse(SearchDatabase.findClosestNode(90, 180)==null);
+		assertFalse(SearchDatabase.findClosestNode(-90, -180)==null);
 		assertFalse(SearchDatabase.findClosestNode(90, 180).equals(SearchDatabase.findClosestNode(-90, -180)));
 	}
 }

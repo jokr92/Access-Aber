@@ -5,12 +5,17 @@ import java.util.ArrayDeque;
 import java.util.List;
 
 import database.Node;
-import database.SearchDatabase;
 
+/**
+ * 
+ * @author Jostein
+ *
+ */
 public class BreadthFirstSearch extends Search{
 
 	@Override
 	public List<Node> findPath() {
+		
 		Instant start = Instant.now();
 
 		ArrayDeque<Node> queue = new ArrayDeque<Node>();
@@ -19,11 +24,8 @@ public class BreadthFirstSearch extends Search{
 
 		expansionList.put(getStartNode(),null);//Because startNode is the root
 
-		for(Node node:SearchDatabase.getNavigatableConnectedNodes(getStartNode())){
-			if(node!=getStartNode()){
-				queue.offerLast(node);
-				expansionList.putIfAbsent(node,getStartNode());
-			}
+		for(Node child:expandNode(getStartNode())){
+			queue.offerLast(child);
 		}
 
 		while(!queue.isEmpty()){
@@ -35,13 +37,10 @@ public class BreadthFirstSearch extends Search{
 				break;
 			}else{
 				
-				for(Node child:SearchDatabase.getNavigatableConnectedNodes(currentNode)){
-					if(!(child.equals(getStartNode()))
-							&& child!=currentNode
-							&& child.isTowerNode()//
-							&& expansionList.putIfAbsent(child,currentNode)==null){
-						queue.offerLast(child);
-					}
+				List<Node> children=expandNode(currentNode);
+				children.removeAll(queue);
+				for(Node child:children){
+					queue.offerLast(child);
 				}
 			}
 		}

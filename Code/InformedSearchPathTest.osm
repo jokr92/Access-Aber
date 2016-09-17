@@ -9,12 +9,14 @@
  <node id="4" lat="0.1" lon="0.1"/>
  <node id="5" lat="0.3" lon="0.3"/>
  <!--/goodPath-->
+ 
  <!--goalNode-->
  <node id="6" lat="0.5" lon="0.5"/>
  <!--bad path-->
  <node id="7" lat="0.4" lon="0.4"/>
  <node id="8" lat="-1.0" lon="-1.0"/>
  <!--/bad path-->
+ 
  <!--dead end-->
  <node id="9" lat="1.0" lon="1.0"/>
  <node id="10" lat="0.6" lon="0.0"/>
@@ -36,8 +38,8 @@
  <!--fewer steps-->
  <way id="2">
   <nd ref="1"/>
-  <nd ref="9"/>
   <nd ref="7"/>
+  <nd ref="9"/>
   <tag k="highway" v="footway"/>
   <!--cont longest distance path-->
  </way>

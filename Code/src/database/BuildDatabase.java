@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
@@ -49,10 +50,10 @@ public class BuildDatabase{
 	 * Changes the contents of {@link #nodes} to the contents of the input
 	 * @param nodes The list of Nodes to mirror the list of {@link #nodes} from
 	 */
-	private static void setNodes(List<Node> tempNodes) {
+	public static void setNodes(List<Node> tempNodes) {
 		BuildDatabase.nodes = new Node[tempNodes.size()];
 		for(int i=tempNodes.size()-1;i>=0;i--){
-			nodes[i]=tempNodes.remove(i);
+			nodes[i]=tempNodes.get(i);
 			nodes[i].setId(i);
 		}
 	}
@@ -69,10 +70,10 @@ public class BuildDatabase{
 	 * Changes the contents of {@link #ways} to the contents of the input
 	 * @param tempWays The list of Ways to mirror the list of {@link #ways} from
 	 */
-	private static void setWays(List<Way> tempWays) {
+	public static void setWays(List<Way> tempWays) {
 		ways=new Way[tempWays.size()];
 		for(int i=tempWays.size()-1;i>=0;i--){
-			ways[i]=tempWays.remove(i);
+			ways[i]=tempWays.get(i);
 			ways[i].setId(i);
 		}
 	}
@@ -84,10 +85,15 @@ public class BuildDatabase{
 	 * @see AreaAndBuildingTags
 	 */
 	private static void removeObsoleteNodesAndWays(){
+		//Removes inaccessible Nodes and Ways
+		List<Way>tempWays= new ArrayList<Way>();
+		tempWays.addAll(Arrays.asList(getWays()));
+		
 		List<Node>tempNodes=new ArrayList<Node>();
-		List<Way>tempWays=new ArrayList<Way>();
+		tempNodes.addAll(Arrays.asList(getNodes()));
+		
 
-		for(Way w:ways){
+		for(Way w:getWays()){
 			boolean area=false;
 
 			for(Entry<String, Object> entry:w.getKeyValuePairs()){
@@ -95,29 +101,21 @@ public class BuildDatabase{
 
 				for(AreaAndBuildingTags areaTag:AreaAndBuildingTags.values()){
 					if(area==true){break;}
-					
+
 					if(entry.getKey().equals(areaTag.getKey())&&entry.getValue().equals(areaTag.getValue())){
 						area=true;
 
+						//Area AND Building
 						if(entry.getKey().equals(AreaAndBuildingTags.BUILDING.getKey())){
 							Iterator<Node> j = w.getNodeRelations().iterator();
 							while(j.hasNext()){
 								Node relation = j.next();
 								//Removes all inaccessible doors in this building, but retains the walls and accessible doors
-								if(accessibleDoors.contains(relation)==false&&SearchDatabase.getWaysContainingNode(relation.getExternalId()).size()>1){
-									relation.setTowerNode(false);
-									j.remove();//TODO Uncomment this so that only accessible doors are retained
-								}else{relation.setTowerNode(true);}
-							}
-						}else{
-							Iterator<Node> j = w.getNodeRelations().iterator();
-							while(j.hasNext()){
-								Node relation = j.next();
+								if(accessibleDoors.contains(relation)==false){
 
-								//If this Node is not part of a junction: mark it as such
-								if(SearchDatabase.getWaysContainingNode(relation.getExternalId()).size()<=1){
-									relation.setTowerNode(false);
-									//j.remove();
+									if(SearchDatabase.getWaysContainingNode(relation.getExternalId()).size()>1){//ignores intermediate Nodes - e.g the walls of this building
+								j.remove();//Removes inaccessible doors
+									}
 								}else{relation.setTowerNode(true);}
 							}
 						}
@@ -126,24 +124,32 @@ public class BuildDatabase{
 				}
 			}
 			if(w.getNodeRelations().size()<=1){//<=1 because a Way like this could never provide a useful link between other Ways
-				//ways[(int) w.getId()]=null;//TODO Fix here
-			}else{
-				tempWays.add(w);
+				tempWays.remove(w);
 			}
+			
+
+			Iterator<Node> j = w.getNodeRelations().iterator();
+			while(j.hasNext()){
+				Node relation = j.next();
+				//Delete relations that point to a non-existing Node
+				if(!Arrays.asList(getNodes()).contains(relation)){
+					j.remove();
+				}
+			}
+		}
+		
+		for(Node n:getNodes()){
+			int numConnections=SearchDatabase.getWaysContainingNode(n.getExternalId()).size();
+
+			if(numConnections==1){
+				n.setTowerNode(false);//This Node does not serve as a connector between Ways
+			}else if(numConnections>1){
+				n.setTowerNode(true);//This Node connects at least two Ways together
+			}else{tempNodes.remove(n);} //This Node is an 'island', and is therefore not useful for anything
 		}
 
-		for(Node n:nodes){
-			
-			if(SearchDatabase.getWaysContainingNode(n.getExternalId()).size()<=1){
-				n.setTowerNode(false);//This Node does not serve as a connector between Ways
-				tempNodes.add(n);
-			}else{
-				n.setTowerNode(true);//This Node connects at least two Ways together
-				tempNodes.add(n);
-			}
-		}
-		setNodes(tempNodes);
 		setWays(tempWays);
+		setNodes(tempNodes);
 	}
 
 	@SuppressWarnings({ "unchecked" })

@@ -16,19 +16,18 @@ import database.SearchDatabase;
 /**
  * 
  * @author Jostein Kristiansen(jok13)
- *@see route.GreedyBestFirst
+ *@see route.GreedyBestFirstSearch
  */
-public class GreedyBestFirstTest {
+public class GreedyBestFirstSearchTest {
 
 	static Node startNode;
 	static Node goalNode;
-	GreedyBestFirst gBFS;
+	GreedyBestFirstSearch gBFS;
 
 	@BeforeClass
 	public static void PopulateLists(){
-		if(BuildDatabase.getNodes()==null||BuildDatabase.getWays()==null){
-			BuildDatabase.readConfig("map.osm");
-		}
+
+		BuildDatabase.readConfig("map.osm");
 
 		startNode=SearchDatabase.searchForNode(1);
 		goalNode=SearchDatabase.searchForNode(20);
@@ -36,7 +35,7 @@ public class GreedyBestFirstTest {
 
 	@Before
 	public void initialiseGreedyBestFirst(){
-		gBFS = new GreedyBestFirst();
+		gBFS = new GreedyBestFirstSearch();
 		gBFS.setStartNode(startNode);
 		gBFS.setGoalNode(goalNode);
 	}
@@ -117,33 +116,33 @@ public class GreedyBestFirstTest {
 		assertTrue(path.isEmpty());
 	}
 
-//	@Test
-//	/**
-//	 * Greedy Best First Search is not optimal, so it cannot guarantee that it finds the best possible route
-//	 * This means that the path going in one direction is not guaranteed to be the same going in the other direction
-//	 */
-//	public void pathsShouldBeTheSameLengthGoingInEitherDirection(){
-//		List<Node> path1 = new ArrayList<Node>();
-//		List<Node> path2 = new ArrayList<Node>();
-//
-//		path1=gBFS.findPath();
-//
-//		//This makes path2 the reverse of path1
-//		GreedyBestFirst otherGreedyBestFirst = new GreedyBestFirst();
-//		otherGreedyBestFirst.setStartNode(gBFS.getGoalNode());
-//		otherGreedyBestFirst.setGoalNode(gBFS.getStartNode());
-//		path2=otherGreedyBestFirst.findPath();
-//
-//		assertTrue(path1!=null);
-//		assertTrue(path2!=null);
-//		assertTrue(path1.size()==path2.size());
-//		assertTrue(gBFS.getPathCost(gBFS.getGoalNode())>0 && gBFS.getPathCost(gBFS.getGoalNode())<Double.MAX_VALUE);
-//		//Makes sure that both path-costs are the same
-//		assertEquals(gBFS.getPathCost(gBFS.getGoalNode()),otherGreedyBestFirst.getPathCost(otherGreedyBestFirst.getGoalNode()),0);
-//		assertEquals(gBFS.getPathCost(gBFS.getGoalNode()),otherGreedyBestFirst.getPathCost(otherGreedyBestFirst.getGoalNode()),0);
-//		//Makes sure that path2 is path1 backwards (or in reverse if you will)
-//		for(int i=0;i<path1.size();i++){
-//			assertTrue(path1.get(i).equals(path2.get((path2.size()-1)-i)));
-//		}
-//	}
+	//	@Test
+	//	/**
+	//	 * Greedy Best First Search is not optimal, so it cannot guarantee that it finds the best possible route
+	//	 * This means that the path going in one direction is not guaranteed to be the same going in the other direction
+	//	 */
+	//	public void pathsShouldBeTheSameLengthGoingInEitherDirection(){
+	//		List<Node> path1 = new ArrayList<Node>();
+	//		List<Node> path2 = new ArrayList<Node>();
+	//
+	//		path1=gBFS.findPath();
+	//
+	//		//This makes path2 the reverse of path1
+	//		GreedyBestFirstSearch otherGreedyBestFirst = new GreedyBestFirstSearch();
+	//		otherGreedyBestFirst.setStartNode(gBFS.getGoalNode());
+	//		otherGreedyBestFirst.setGoalNode(gBFS.getStartNode());
+	//		path2=otherGreedyBestFirst.findPath();
+	//
+	//		assertTrue(path1!=null);
+	//		assertTrue(path2!=null);
+	//		assertTrue(path1.size()==path2.size());
+	//		assertTrue(gBFS.getPathCost(gBFS.getGoalNode())>0 && gBFS.getPathCost(gBFS.getGoalNode())<Double.MAX_VALUE);
+	//		//Makes sure that both path-costs are the same
+	//		assertEquals(gBFS.getPathCost(gBFS.getGoalNode()),otherGreedyBestFirst.getPathCost(otherGreedyBestFirst.getGoalNode()),0);
+	//		assertEquals(gBFS.getPathCost(gBFS.getGoalNode()),otherGreedyBestFirst.getPathCost(otherGreedyBestFirst.getGoalNode()),0);
+	//		//Makes sure that path2 is path1 backwards (or in reverse if you will)
+	//		for(int i=0;i<path1.size();i++){
+	//			assertTrue(path1.get(i).equals(path2.get((path2.size()-1)-i)));
+	//		}
+	//	}
 }

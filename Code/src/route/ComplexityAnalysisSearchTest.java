@@ -17,7 +17,7 @@ public class ComplexityAnalysisSearchTest {
 	static Node startNode;
 	static Node goalNode;
 	static AStar aStar;
-	static GreedyBestFirst gBFS;
+	static GreedyBestFirstSearch gBFS;
 	static BreadthFirstSearch bfs;
 	static DepthFirstSearch dfs;
 
@@ -93,13 +93,13 @@ public class ComplexityAnalysisSearchTest {
 		int rounds;
 		Instant start=Instant.now();
 		
-		gBFS=new GreedyBestFirst();
+		gBFS=new GreedyBestFirstSearch();
 		gBFS.setStartNode(startNode);gBFS.setGoalNode(goalNode);
 		List<Node> path=gBFS.findPath();
 		System.out.println("GBFS\nPath found: "+(path.contains(startNode)&&path.contains(goalNode)));
 
 		for(rounds=0;(rounds<WARMUPROUNDS)&&(Duration.between(start, Instant.now()).getSeconds()<UPPERTIMELIMIT)||(Duration.between(start, Instant.now()).getSeconds()<LOWERTIMELIMIT);rounds++){
-			gBFS=new GreedyBestFirst();
+			gBFS=new GreedyBestFirstSearch();
 			gBFS.setStartNode(startNode);gBFS.setGoalNode(goalNode);
 			gBFS.findPath();
 
@@ -117,7 +117,7 @@ public class ComplexityAnalysisSearchTest {
 
 		start=Instant.now();
 		for(rounds=0;(rounds<BENCHMARKROUNDS)&&(Duration.between(start, Instant.now()).getSeconds()<UPPERTIMELIMIT)||(Duration.between(start, Instant.now()).getSeconds()<LOWERTIMELIMIT);rounds++){
-			gBFS=new GreedyBestFirst();
+			gBFS=new GreedyBestFirstSearch();
 			gBFS.setStartNode(startNode);gBFS.setGoalNode(goalNode);
 			gBFS.findPath();
 

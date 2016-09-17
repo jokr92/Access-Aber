@@ -5,9 +5,9 @@ import java.util.ArrayDeque;
 import java.util.List;
 
 import database.Node;
-import database.SearchDatabase;
+
 /**
- * TODO This is currently BFS, as it uses a queue instead of a stack
+ * 
  * @author Jostein
  *
  */
@@ -15,6 +15,7 @@ public class DepthFirstSearch extends Search {
 
 	@Override
 	public List<Node> findPath() {
+		
 		Instant start = Instant.now();
 		
 		ArrayDeque<Node> stack = new ArrayDeque<Node>();
@@ -23,11 +24,8 @@ public class DepthFirstSearch extends Search {
 
 		expansionList.put(getStartNode(),null);//Because startNode is the root
 
-		for(Node node:SearchDatabase.getNavigatableConnectedNodes(getStartNode())){
-			if(node!=getStartNode()){
-				stack.offerLast(node);
-				expansionList.putIfAbsent(node,getStartNode());
-			}
+		for(Node child:expandNode(getStartNode())){
+			stack.offerLast(child);
 		}
 
 		while(!stack.isEmpty()){
@@ -39,13 +37,10 @@ public class DepthFirstSearch extends Search {
 				break;
 			}else{
 				
-				for(Node child:SearchDatabase.getNavigatableConnectedNodes(currentNode)){
-					if(!(child.equals(getStartNode()))
-							&& child!=currentNode
-							&& child.isTowerNode()
-							&& expansionList.putIfAbsent(child,currentNode)==null){
-						stack.offerLast(child);
-					}
+				List<Node> children=expandNode(currentNode);
+				children.removeAll(stack);
+				for(Node child:children){
+					stack.offerLast(child);
 				}
 			}
 		}

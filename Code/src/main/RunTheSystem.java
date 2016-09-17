@@ -29,7 +29,6 @@ import org.mapsforge.core.util.LatLongUtils;
 import org.mapsforge.map.awt.graphics.AwtGraphicFactory;
 import org.mapsforge.map.awt.util.JavaPreferences;
 import org.mapsforge.map.awt.view.MapView;
-import org.mapsforge.map.layer.Layer;
 import org.mapsforge.map.layer.Layers;
 import org.mapsforge.map.layer.cache.FileSystemTileCache;
 import org.mapsforge.map.layer.cache.InMemoryTileCache;
@@ -58,7 +57,7 @@ import database.Way;
 import route.AStar;
 import route.BreadthFirstSearch;
 import route.DepthFirstSearch;
-import route.GreedyBestFirst;
+import route.GreedyBestFirstSearch;
 import route.Search;
 
 import java.awt.Dimension;
@@ -66,7 +65,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.prefs.Preferences;
@@ -76,6 +75,12 @@ import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 
 public final class RunTheSystem {
+	/***********************DETERMINES WHICH ALGORITHM IS USED FOR ROUTE PLANNING***********************/
+	
+	private static Search algorithm = new AStar();//Just to ensure a default algorithm
+	
+	/***********************DETERMINES WHICH ALGORITHM IS USED FOR ROUTE PLANNING***********************/
+	
 	private static final GraphicFactory GRAPHIC_FACTORY = AwtGraphicFactory.INSTANCE;
 	private static final boolean SHOW_DEBUG_LAYERS = false;
 
@@ -91,7 +96,10 @@ public final class RunTheSystem {
 
 	private static Node startNode, goalNode;
 	
-	private static Search algorithm = new AStar();
+	/**
+	 * Used to lock the thread used to plan routes. I'm sure there's a better way to lock the threads though
+	 */
+	private static boolean routePlanningInProgress;
 
 
 
@@ -103,10 +111,22 @@ public final class RunTheSystem {
 	public static void main(String args[]) {
 		/***********************************************Initialize the system***********************************************/
 		BuildDatabase.readConfig("map.osm");
+		BuildDatabase.setWays(SearchDatabase.filterAccessibleWays(Arrays.asList(BuildDatabase.getWays())));
+		BuildDatabase.setNodes(SearchDatabase.filterAccessibleNodes(Arrays.asList(BuildDatabase.getWays())));
 
 		try{
-			startNode = SearchDatabase.findClosestNode(Double.parseDouble(args[0]), Double.parseDouble(args[1]));
-			goalNode = SearchDatabase.findClosestNode(Double.parseDouble(args[2]),Double.parseDouble(args[3]));
+			if(args[0].equalsIgnoreCase("BFS")){
+				algorithm = new BreadthFirstSearch();
+			}else if(args[0].equalsIgnoreCase("DFS")){
+				algorithm = new DepthFirstSearch();
+			}else if(args[0].equalsIgnoreCase("GBFS")){
+				algorithm = new GreedyBestFirstSearch();
+			}else{
+				algorithm = new AStar();
+			}
+			
+			startNode = SearchDatabase.findClosestNode(Double.parseDouble(args[1]), Double.parseDouble(args[2]));
+			goalNode = SearchDatabase.findClosestNode(Double.parseDouble(args[3]),Double.parseDouble(args[4]));
 
 			algorithm.setStartNode(startNode);
 			algorithm.setGoalNode(goalNode);
@@ -124,17 +144,17 @@ public final class RunTheSystem {
 			System.err.println("One or more elements in the input were not of type: double");
 
 			try{
-				System.out.println("start Node:" + SearchDatabase.findClosestNode(Double.parseDouble(args[0]), Double.parseDouble(args[1])));
+				System.out.println("start Node:" + SearchDatabase.findClosestNode(Double.parseDouble(args[1]), Double.parseDouble(args[2])));
 			}catch(NumberFormatException s){
 				System.err.println("No start Node could be found. Please check input");
 			}
 			try{
-				System.out.println("goal Node:" + SearchDatabase.findClosestNode(Double.parseDouble(args[2]),Double.parseDouble(args[3])));
+				System.out.println("goal Node:" + SearchDatabase.findClosestNode(Double.parseDouble(args[3]),Double.parseDouble(args[4])));
 			}catch(NumberFormatException g){
 				System.err.println("No goal Node could be found. please check input");
 			}
 		}catch(ArrayIndexOutOfBoundsException e){
-			System.err.println("4 coordinates expected as input.\n" + args.length + " coordinate(s) received.\nPlease try again.");
+			System.err.println("1 String and 4 coordinates expected as input.\n" + args.length + " elements received.\nPlease try again.");
 		}
 
 		/***********************************************\Initialize the system***********************************************/
@@ -143,7 +163,7 @@ public final class RunTheSystem {
 		// Increase read buffer limit
 		ReadBuffer.setMaximumBufferSize(6500000);
 
-		//TODO getMapFiles() is apparently able to load multiple .map-files. Is this useful in my application?
+		//TODO getMapFiles() is apparently able to load multiple '.map'-files. Is this useful in my application?
 		String[] map={"./maps/europe_great-britain_wales-gh/wales.map"};
 		List<File> mapFiles = getMapFiles(map);
 		final BoundingBox boundingBox = addLayers(mapView, mapFiles);
@@ -411,6 +431,11 @@ public final class RunTheSystem {
 		return new TileDownloadLayer(tileCache, mapViewPosition, tileSource, GRAPHIC_FACTORY) {
 			@Override
 			public boolean onTap(LatLong tapLatLong, Point layerXY, Point tapXY) {
+				
+				if(routePlanningInProgress==true){
+					System.out.println("Already planning other route");
+					return true;
+				}
 
 				/**********In case the start/goal Node has not been set yet**********/
 				if(startNode==null){
@@ -425,7 +450,9 @@ public final class RunTheSystem {
 					algorithm.setGoalNode(goalNode);
 
 					if(startNode!=null&&goalNode!=null){
+						routePlanningInProgress=true;
 						drawRoute(algorithm.findPath());
+						routePlanningInProgress=false;
 						
 						return true;
 					}
@@ -445,7 +472,10 @@ public final class RunTheSystem {
 						goalNode = SearchDatabase.findClosestNode(tapLatLong.getLatitude(), tapLatLong.getLongitude());
 						algorithm.setGoalNode(goalNode);
 					}
+					
+					routePlanningInProgress=true;
 					drawRoute(algorithm.findPath());
+					routePlanningInProgress=false;
 				}
 
 				return true;
@@ -459,6 +489,11 @@ public final class RunTheSystem {
 				mapViewPosition, isTransparent, renderLabels, cacheLabels, GRAPHIC_FACTORY) {
 			@Override
 			public boolean onTap(LatLong tapLatLong, Point layerXY, Point tapXY) {
+				
+				if(routePlanningInProgress==true){
+					System.out.println("Already planning other route");
+					return true;
+				}
 
 				/**********In case the start/goal Node has not been set yet**********/
 				if(startNode==null){
@@ -471,25 +506,34 @@ public final class RunTheSystem {
 					algorithm.setGoalNode(goalNode);
 
 					if(startNode!=null&&goalNode!=null){
+						routePlanningInProgress=true;
 						drawRoute(algorithm.findPath());
+						routePlanningInProgress=false;
 						return true;
 					}
 				}
 
 				/**********Change the start/goal Node position, and recalculate the route**********/
 				if(startNode!=null&&goalNode!=null){
+					Node closestNode = SearchDatabase.findClosestNode(tapLatLong.getLatitude(), tapLatLong.getLongitude());
 					if(Search.distanceBetweenPoints(tapLatLong.getLatitude(), tapLatLong.getLongitude(), startNode.getLatitude(), startNode.getLongitude())<
 							Search.distanceBetweenPoints(tapLatLong.getLatitude(), tapLatLong.getLongitude(), goalNode.getLatitude(), goalNode.getLongitude())){
-						//System.out.println("Start Node set at: " + tapLatLong);
-						startNode = SearchDatabase.findClosestNode(tapLatLong.getLatitude(), tapLatLong.getLongitude());
-						algorithm.setStartNode(startNode);
-					}else{
-						//System.out.println("Goal Node set at: " + tapLatLong);
+
+						if(!startNode.equals(closestNode)){
+							startNode=closestNode;
+							algorithm.setStartNode(startNode);
+						}else{return true;}//No need to plan the route again if it is the same as before
 						
-						goalNode = SearchDatabase.findClosestNode(tapLatLong.getLatitude(), tapLatLong.getLongitude());
-						algorithm.setGoalNode(goalNode);
+					}else{
+						if(!goalNode.equals(closestNode)){
+							goalNode=closestNode;
+							algorithm.setGoalNode(goalNode);
+						}else{return true;}//No need to plan the route again if it is the same as before
+						
 					}
+					routePlanningInProgress=true;
 					drawRoute(algorithm.findPath());
+					routePlanningInProgress=false;
 				}
 
 				return true;

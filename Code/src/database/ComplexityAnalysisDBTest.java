@@ -19,9 +19,8 @@ public class ComplexityAnalysisDBTest {
 
 	@BeforeClass
 	public static void PopulateLists(){
-		if(BuildDatabase.getNodes()==null||BuildDatabase.getWays()==null){
-			BuildDatabase.readConfig("map.osm");
-		}
+		BuildDatabase.readConfig("map.osm");
+
 		ComplexityAnalysisDB.reset();
 
 		for(Node n:BuildDatabase.getNodes()){
@@ -31,7 +30,7 @@ public class ComplexityAnalysisDBTest {
 		for(Way w:BuildDatabase.getWays()){
 			wayDBComplete.add(w);
 		}
-		
+
 		wayDBFiltered.addAll(SearchDatabase.filterAccessibleWays(wayDBComplete));
 		nodeDBFiltered.addAll(SearchDatabase.filterAccessibleNodes(wayDBComplete));
 	}

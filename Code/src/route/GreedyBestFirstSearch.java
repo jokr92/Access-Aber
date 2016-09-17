@@ -6,9 +6,13 @@ import java.util.List;
 import java.util.PriorityQueue;
 
 import database.Node;
-import database.SearchDatabase;
 
-public class GreedyBestFirst extends InformedSearch{
+/**
+ * 
+ * @author Jostein
+ *
+ */
+public class GreedyBestFirstSearch extends InformedSearch{
 	
 	/**
 	 * For organizing the order of the nodes to be expanded
@@ -30,6 +34,7 @@ public class GreedyBestFirst extends InformedSearch{
 
 	@Override
 	public List<Node> findPath (){
+		
 		Instant start = Instant.now();
 
 		Node currentNode = getStartNode();
@@ -37,15 +42,8 @@ public class GreedyBestFirst extends InformedSearch{
 
 		expansionList.put(getStartNode(),null);//null because startNode is the root
 
-		for(Node node:SearchDatabase.getNavigatableConnectedNodes(getStartNode())){
-			if(node!=getStartNode()){
-				//updatePathCost(node,Search.distanceBetweenPoints(currentNode,node));
-				updateGoalDistance(node,Search.distanceBetweenPoints(node,getGoalNode()));
-
-				priorityQueue.add(node);
-				expansionList.put(node,getStartNode());
-			}
-		}
+		/***************Link startNode's children to the start Node***************/
+		priorityQueue.addAll(expandNode(currentNode));
 
 		while(!priorityQueue.isEmpty()){
 			this.updateMaxStoredNodes(priorityQueue.size()+expansionList.size());//Makes sure that the maximum number of Nodes stored by this search-algorithm's queue is always recorded
@@ -63,24 +61,17 @@ public class GreedyBestFirst extends InformedSearch{
 				break;
 			}else{
 
-				for(Node child:SearchDatabase.getNavigatableConnectedNodes(currentNode)){
-					if(child!=currentNode && child.isTowerNode() && child!=getStartNode()){
-						//if(child.currentMinEstimatedCost>child.distance(parent)+parent.get(distanceTravelled)+child.distance(goalNode)){expansionList.put(child,parent);child.setDistanceTravelled();child.setGoalDistance(same if updated, different if new)}
-						if(expansionList.putIfAbsent(child, currentNode)==null){
-							//updatePathCost(child,getPathCost(currentNode)+Search.distanceBetweenPoints(currentNode,child));
-							updateGoalDistance(child,Search.distanceBetweenPoints(child,getGoalNode()));
-
-							priorityQueue.add(child);
-						}
-					}
-					//Distance from Node<305025164> to Node<295134062>:
-					//0.002514673702126127
-
-				}
+				//Add new Nodes to the priority queue
+				List<Node> children = expandNode(currentNode);
+				priorityQueue.removeAll(children);//This forces a reorder of the Nodes that have been changed. .remove(Object) has O(n) time-complexity though, so there is probably a better way to force a reorder
+				priorityQueue.addAll(children);//a Java priorityQueue does not reorder its contents automatically when their weights are changed. This has to be done manually
+				
 			}
 		}
 
 		this.setTimeElapsed(start, Instant.now());//Performed before the path is returned because the search can be considered finished at this point.
+		
+		priorityQueue.clear();
 		return getPath(expansionList,getStartNode(),getGoalNode());
 	}
 

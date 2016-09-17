@@ -1,14 +1,11 @@
 package route;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.PriorityQueue;
 
 import database.Node;
-import database.SearchDatabase;
-import database.Way;
 
 /**
  * Uses the A* algorithm to find a path from one {@link #startNode} to a {@link #goalNode}, via the nodes connected to the start node.
@@ -25,9 +22,9 @@ public class AStar extends InformedSearch{
 	 */
 	PriorityQueue<Node> priorityQueue = new PriorityQueue<Node>(new Comparator<Node>() {
 		public int compare(Node n1, Node n2) {
-			if(getPathCost(n1)+getGoalDistance(n1) > getPathCost(n2)+getGoalDistance(n2)){
+			if(getEstimatedMinimalCost(n1) > getEstimatedMinimalCost(n2)){
 				return 1;
-			}else if(getPathCost(n1)+getGoalDistance(n1) < getPathCost(n2)+getGoalDistance(n2)){
+			}else if(getEstimatedMinimalCost(n1) < getEstimatedMinimalCost(n2)){
 				return -1;
 			}else{
 				//TODO The interface 'Node' can break distance-ties
@@ -39,22 +36,19 @@ public class AStar extends InformedSearch{
 
 	@Override
 	public List<Node> findPath (){
+
+		Node startNode=getStartNode();
+		Node goalNode=getGoalNode();
+
 		Instant start = Instant.now();//Starts a timer used for measuring the run-time of this algorithm
 
-		Node currentNode = getStartNode();
+		Node currentNode = startNode;
 		updatePathCost(currentNode,0);
 
-		expansionList.put(getStartNode(),null);//Because startNode is the root
+		expansionList.put(startNode,null);//Because startNode is the root
 
-		for(Node node:SearchDatabase.getNavigatableConnectedNodes(getStartNode())){
-			if(node!=getStartNode()){
-				updatePathCost(node,Search.distanceBetweenPoints(currentNode,node));
-				updateGoalDistance(node,Search.distanceBetweenPoints(node,getGoalNode()));
-
-				priorityQueue.add(node);
-				expansionList.put(node,getStartNode());
-			}
-		}
+		/***************Link startNode's children to the start Node***************/
+		priorityQueue.addAll(expandNode(currentNode));
 
 		while(!priorityQueue.isEmpty()){
 			this.updateMaxStoredNodes(priorityQueue.size()+expansionList.size());//Makes sure that the maximum number of Nodes stored by this search-algorithm's queue is always recorded
@@ -63,58 +57,28 @@ public class AStar extends InformedSearch{
 			//The list can get quite large,
 			//so popping the first element would require moving lots of elements one position forwards in the list
 
-			if(currentNode.getExternalId().equals(getGoalNode().getExternalId())){
+			if(currentNode.getExternalId().equals(goalNode.getExternalId())){
 				/* If currentNode==goalNode, then there can not be any shorter path to the goalNode,
 				 * as all shorter paths are guaranteed have been explored.
 				 * (Assuming my implementation of AStar is correct)
 				 */
 
 				Node goalParent=expansionList.get(currentNode);//returns the parent of the goalNode
-				updatePathCost(currentNode,(getPathCost(goalParent)+distanceBetweenPoints(currentNode,goalParent)));
+				updatePathCost(currentNode,(getPathCost(goalParent)+distanceBetweenPoints(currentNode,goalParent)));//TODO NullPointerException keeps occurring here when running Main
 				break;
 			}else{
 
-				//TODO Make sure the distance between tower-Nodes takes into account the distance between the intermediate Nodes as well. The path cannot be guaranteed to be optimal otherwise.
-				Node intermediateParent=currentNode;
-				Node prevTowerNode=currentNode;
-				double distanceCounter = 0;
-				
-				for(Node child:SearchDatabase.getNavigatableConnectedNodes(currentNode)){
-					
-					if(child!=currentNode && child!=getStartNode()){
-
-						distanceCounter+=Search.distanceBetweenPoints(child, intermediateParent);
-
-						if(!child.isTowerNode()){
-							continue;//No need to add a Node to the queue or list of expanded Nodes if it is not part of a junction. This reduces both runtime and memory requirements
-						}else{
-							//if(child.currentMinEstimatedCost>child.distance(parent)+parent.get(distanceTravelled)+child.distance(goalNode)){expansionList.put(child,parent);child.setDistanceTravelled();child.setGoalDistance(same if updated, different if new)}
-							if(getEstimatedMinimalCost(child)>(getPathCost(prevTowerNode)+distanceCounter+Search.distanceBetweenPoints(child,getGoalNode()))){
-
-								updatePathCost(child,getPathCost(prevTowerNode)+distanceCounter);
-								updateGoalDistance(child,Search.distanceBetweenPoints(child,getGoalNode()));
-
-								expansionList.put(child, prevTowerNode);
-								priorityQueue.remove(child);//To ensure that the Node only appears once in the queue
-								priorityQueue.add(child);
-							}else{
-								//If this Node has not been encountered yet
-								if(expansionList.putIfAbsent(child, prevTowerNode)==null){
-									priorityQueue.add(child);
-								}
-							}
-							distanceCounter=0;//reset because a towerNode has been encountered and added to the queue
-							prevTowerNode=child;
-						}
-					}
-					intermediateParent=child;
-				}
+				//Add new Nodes to the priority queue
+				List<Node> children = expandNode(currentNode);
+				priorityQueue.removeAll(children);//This forces a reorder of the Nodes that have been changed. .remove(Object) has O(n) time-complexity though... There is probably a better way to force a reorder
+				priorityQueue.addAll(children);//a Java priorityQueue does not reorder its contents automatically when their weights are changed. This has to be done manually
 			}
 		}
 
 		this.setTimeElapsed(start, Instant.now());//Performed before the path is returned because the search can be considered finished at this point.
 
-		return getPath(expansionList,getStartNode(),getGoalNode());
+		priorityQueue.clear();
+		return getPath(expansionList,startNode,goalNode);
 	}
 
 	//	/**
@@ -135,14 +99,14 @@ public class AStar extends InformedSearch{
 	//
 	//		if(sortedNodes.isEmpty()&&!unsortedNodes.isEmpty()){
 	//			if(unsortedNodes.get(unsortedNodes.size()-1).getDistanceToGoal()<=0){
-	//				unsortedNodes.get(unsortedNodes.size()-1).setGoalDistance(Search.distanceBetweenPoints(unsortedNodes.get(unsortedNodes.size()-1).getLatitude(), unsortedNodes.get(unsortedNodes.size()-1).getLongitude(), getGoalNode().getLatitude(), getGoalNode().getLongitude()));
+	//				unsortedNodes.get(unsortedNodes.size()-1).setGoalDistance(Search.distanceBetweenPoints(unsortedNodes.get(unsortedNodes.size()-1).getLatitude(), unsortedNodes.get(unsortedNodes.size()-1).getLongitude(), goalNode.getLatitude(), goalNode.getLongitude()));
 	//			}
 	//			sortedNodes.add(unsortedNodes.remove(unsortedNodes.size()-1));//to pop the last element of the list. Moves fewer (none) elements in larger lists 
 	//		}
 	//
 	//		for(DistanceMetricNode unsortedNode:unsortedNodes){//next unsorted node
 	//			if(unsortedNode.getDistanceToGoal()<=0){
-	//				unsortedNode.setGoalDistance(Search.distanceBetweenPoints(unsortedNode.getLatitude(), unsortedNode.getLongitude(), getGoalNode().getLatitude(), getGoalNode().getLongitude()));
+	//				unsortedNode.setGoalDistance(Search.distanceBetweenPoints(unsortedNode.getLatitude(), unsortedNode.getLongitude(), goalNode.getLatitude(), goalNode.getLongitude()));
 	//			}
 	//			unsortedNodeDistance=(unsortedNode.getDistanceTravelled()+unsortedNode.getDistanceToGoal());
 	//			for(int x=sortedNodes.size()-1; x>=0;x--){//next sorted node

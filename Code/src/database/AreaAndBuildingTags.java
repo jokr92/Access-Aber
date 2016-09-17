@@ -1,6 +1,7 @@
 package database;
 
 /**
+ * IMPORTANT: Make sure all of these tags also appear in {@link database.PermittedKeys}. They will be overlooked/discarded otherwise
  * Holds key-value pairs (or tags) for Ways whose Nodes represent the outline of an area rather than an actual path.
  * This outline could contain the walls and doors of a building, borders of a parking lot (usually including entrances and exits), etc.
  * This class is important because the path-cost going from one side of the area to another does not include the intermediate Nodes in the Way (unlike Ways like footways and stairs).
