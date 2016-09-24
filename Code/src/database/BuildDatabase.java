@@ -287,7 +287,6 @@ public class BuildDatabase{
 								if (endElement.getName().getLocalPart().equals(WAY_START.getString())) {
 									way.setId(wayCounter++);
 									tempWays.add(way);
-									//System.out.println(way.getlocalId());
 									break;
 								}
 							}

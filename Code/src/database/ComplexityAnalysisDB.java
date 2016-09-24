@@ -30,7 +30,6 @@ public class ComplexityAnalysisDB {
 			totNumNodes+=w.getNodeRelations().size();
 		}
 		numConnections=2*(totNumNodes-getNumWays(ways));
-		//System.out.println("2*("+totNumNodes+"-"+getNumWays(ways)+")="+numConnections);
 
 		return numConnections;
 	}

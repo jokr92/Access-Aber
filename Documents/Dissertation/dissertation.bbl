@@ -18,17 +18,30 @@
 \fi
 #2}}
 
-\bibitem{CC-License}
-\BIBentryALTinterwordspacing
-``Cc by-nc-sa 3.0 de.'' [Online]. Available:
-  \url{http://creativecommons.org/licenses/by-nc-sa/3.0/de/deed.en}
-\BIBentrySTDinterwordspacing
-
-
 \bibitem{botea-etal-jogd04}
 A.~Botea, M.~M\"{u}ller, and J.~Schaeffer, ``{Near Optimal Hierarchical
   Path-Finding},'' \emph{Journal of Game Development}, vol.~1, no.~1, pp.
   7--28, 2004.
+
+
+\bibitem{cloudmade}
+\BIBentryALTinterwordspacing
+{CloudMade}. Bespoke routing-service provider. [Online]. Available:
+  \url{cloudmade.com/solutions/maps-portals/}
+\BIBentrySTDinterwordspacing
+
+
+\bibitem{CC-License}
+\BIBentryALTinterwordspacing
+{Creative Commons}. {CC BY-NC-SA 3.0 DE}. [Online]. Available:
+  \url{http://creativecommons.org/licenses/by-nc-sa/3.0/de/deed.en}
+\BIBentrySTDinterwordspacing
+
+
+\bibitem{geofabrik}
+\BIBentryALTinterwordspacing
+{Geofabrik GmbH}. Geofabrik. [Online]. Available: \url{download.geofabrik.de}
+\BIBentrySTDinterwordspacing
 
 
 \bibitem{Google-TermsOfService}
@@ -39,7 +52,20 @@ Google. Google maps - terms of service. [Online]. Available:
 
 
 \bibitem{GoogleMaps}
-{Google}, ``{Google Maps},'' \url{https://maps.google.com/}, 2015.
+{Google}. (2015) {Google Maps}. \url{https://maps.google.com/}.
+
+
+\bibitem{Graphhopper}
+\BIBentryALTinterwordspacing
+{GraphHopper GmbH}. Graphhopper. [Online]. Available: \url{graphhopper.com}
+\BIBentrySTDinterwordspacing
+
+
+\bibitem{draw.io}
+\BIBentryALTinterwordspacing
+{JGraph ltd}. free-to-license web graph-drawing application. [Online].
+  Available: \url{draw.io}
+\BIBentrySTDinterwordspacing
 
 
 \bibitem{kishimoto-etal-icaps09}
@@ -49,10 +75,43 @@ A.~Kishimoto, A.~Fukunaga, and A.~Botea, ``{Scalable, Parallel Best-First
   Thessaloniki, Greece, 2009, pp. 201--208.
 
 
+\bibitem{mapbox}
+\BIBentryALTinterwordspacing
+{Mapbox}. Mapbox. [Online]. Available: \url{mapbox.com}
+\BIBentrySTDinterwordspacing
+
+
+\bibitem{Mapsforge}
+\BIBentryALTinterwordspacing
+Mapsforge. Mapsforge - homepage. [Online]. Available: \url{mapsforge.org}
+\BIBentrySTDinterwordspacing
+
+
+\bibitem{Mapsforge_map-tiles}
+\BIBentryALTinterwordspacing
+------. Mapsforge - map-tiles. [Online]. Available:
+  \url{download.mapsforge.org/maps/}
+\BIBentrySTDinterwordspacing
+
+
 \bibitem{WGS84}
 \BIBentryALTinterwordspacing
 {National Geospatial-Intelligence Agency}. Wgs84. [Online]. Available:
   \url{http://earth-info.nga.mil/GandG/wgs84/}
+\BIBentrySTDinterwordspacing
+
+
+\bibitem{omniscale}
+\BIBentryALTinterwordspacing
+{Omniscale GmbH \& Co. KG}. Omniscale en. [Online]. Available:
+  \url{omniscale.com}
+\BIBentrySTDinterwordspacing
+
+
+\bibitem{openlayers}
+\BIBentryALTinterwordspacing
+{Open Source Geospatial Foundation}. Openlayers 3. [Online]. Available:
+  \url{openlayers.org}
 \BIBentrySTDinterwordspacing
 
 
@@ -65,43 +124,43 @@ A.~Kishimoto, A.~Fukunaga, and A.~Botea, ``{Scalable, Parallel Best-First
 
 \bibitem{OSM-Features}
 \BIBentryALTinterwordspacing
-------. Osm - features. [Online]. Available:
-  \url{http://wiki.openstreetmap.org/wiki/Map_Features}
+------. {OSM - Features}. [Online]. Available:
+  \url{wiki.openstreetmap.org/wiki/Map_Features}
 \BIBentrySTDinterwordspacing
 
 
 \bibitem{OSM-Node}
 \BIBentryALTinterwordspacing
-------. Osm - nodes. [Online]. Available:
-  \url{http://wiki.openstreetmap.org/wiki/Node}
+------. {OSM - Nodes}. [Online]. Available:
+  \url{wiki.openstreetmap.org/wiki/Node}
 \BIBentrySTDinterwordspacing
 
 
 \bibitem{OSM-Relation}
 \BIBentryALTinterwordspacing
-------. Osm - relations. [Online]. Available:
-  \url{http://wiki.openstreetmap.org/wiki/Relation}
+------. {OSM - Relations}. [Online]. Available:
+  \url{wiki.openstreetmap.org/wiki/Relation}
 \BIBentrySTDinterwordspacing
 
 
 \bibitem{OSM-Tags}
 \BIBentryALTinterwordspacing
-------. Osm - tags. [Online]. Available:
-  \url{http://wiki.openstreetmap.org/wiki/Tags}
+------. {OSM - Tags}. [Online]. Available:
+  \url{wiki.openstreetmap.org/wiki/Tags}
 \BIBentrySTDinterwordspacing
 
 
 \bibitem{OSM-Way}
 \BIBentryALTinterwordspacing
-------. Osm - ways. [Online]. Available:
-  \url{http://wiki.openstreetmap.org/wiki/Way}
+------. {OSM - Ways}. [Online]. Available:
+  \url{wiki.openstreetmap.org/wiki/Way}
 \BIBentrySTDinterwordspacing
 
 
 \bibitem{OSM-XML}
 \BIBentryALTinterwordspacing
-------. Osm-xml file format. [Online]. Available:
-  \url{http://wiki.openstreetmap.org/wiki/osm_xml}
+------. {OSM - XML file format}. [Online]. Available:
+  \url{wiki.openstreetmap.org/wiki/osm_xml}
 \BIBentrySTDinterwordspacing
 
 
@@ -113,8 +172,8 @@ A.~Kishimoto, A.~Fukunaga, and A.~Botea, ``{Scalable, Parallel Best-First
 
 
 \bibitem{OSM}
-------, ``{OpenStreetMap Homepage},''
-  \url{http://wiki.osmfoundation.org/wiki/Main_Page}, 2004.
+------. (2004) {OpenStreetMap Homepage}.
+  \url{http://wiki.osmfoundation.org/wiki/Main_Page}.
 
 
 \bibitem{OSGB}
@@ -125,15 +184,29 @@ A.~Kishimoto, A.~Fukunaga, and A.~Botea, ``{Scalable, Parallel Best-First
 \BIBentrySTDinterwordspacing
 
 
+\bibitem{osrm}
+\BIBentryALTinterwordspacing
+{OSRM}. Open source routing machine. [Online]. Available:
+  \url{project-osrm.org}
+\BIBentrySTDinterwordspacing
+
+
 \bibitem{RN27}
 S.~J. Russel and P.~Norvig, \emph{Artificial Intelligence: A Modern Approach},
   3rd~ed.\hskip 1em plus 0.5em minus 0.4em\relax Pearson Custom Library, 2014,
-  p. 1091, pearson New International Edition. 978-1-292-02420-2.
+  pearson New International Edition. 978-1-292-02420-2.
 
 
 \bibitem{Eclipse_License}
-{The Eclipse Foundation}, ``Eclipse public license - v 1.0,''
+{The Eclipse Foundation}. Eclipse public license - v 1.0.
   \url{www.eclipse.org/legal/epl-v10.html}.
+
+
+\bibitem{leaflet}
+\BIBentryALTinterwordspacing
+{Vladimir Agafonkin of Mapbox}. Leaflet. [Online]. Available:
+  \url{leafletjs.com}
+\BIBentrySTDinterwordspacing
 
 
 \bibitem{Vogella-XML}

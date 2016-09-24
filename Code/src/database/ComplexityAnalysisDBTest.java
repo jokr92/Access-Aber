@@ -37,37 +37,31 @@ public class ComplexityAnalysisDBTest {
 
 	@Test
 	public void shouldCountAllNodesInTheCompleteDatabase(){
-		//System.out.println("AllNodes: "+ComplexityAnalysisDB.getNumNodes(nodeDBComplete));
 		assertTrue(ComplexityAnalysisDB.getNumNodes(nodeDBComplete)>0);
 	}
 
 	@Test
 	public void shouldCountAllNodesInTheFilteredDatabase(){
-		//System.out.println("FilteredNodes: "+ComplexityAnalysisDB.getNumNodes(nodeDBFiltered));
 		assertTrue(ComplexityAnalysisDB.getNumNodes(nodeDBFiltered)>0);
 	}
 
 	@Test
 	public void shouldCountAllWaysInTheCompleteDatabase(){
-		//System.out.println("AllWays: "+ComplexityAnalysisDB.getNumWays(wayDBComplete));
 		assertTrue(ComplexityAnalysisDB.getNumWays(wayDBComplete)>0);
 	}
 
 	@Test
 	public void shouldCountAllWaysInTheFilteredDatabase(){
-		//System.out.println("FilteredWays: "+ComplexityAnalysisDB.getNumWays(wayDBFiltered));
 		assertTrue(ComplexityAnalysisDB.getNumWays(wayDBFiltered)>0);
 	}
 
 	@Test
 	public void shouldCountAllConnectionsInTheCompleteDatabase(){
-		//System.out.println("AllConnections: "+ComplexityAnalysisDB.getNumConnections(wayDBComplete));
 		assertTrue(ComplexityAnalysisDB.getNumConnections(wayDBComplete)>0);
 	}
 
 	@Test
 	public void shouldCountAllConnectionsInTheFilteredDatabase(){
-		//System.out.println("FilteredConnections: "+ComplexityAnalysisDB.getNumConnections(wayDBFiltered));
 		assertTrue(ComplexityAnalysisDB.getNumConnections(wayDBFiltered)>0);
 	}
 

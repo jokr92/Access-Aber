@@ -11,10 +11,48 @@
    
 %\end {itemize}
 
+%Outline:
+%What problem was tackled?
+%Why was that problem tackled?
+%How (in outline) was the problem tackled?
+%Clear statement of project aim and objectives
+%Guide to subsequent chapters
+%Usually drafted early, and finished last
+
 \section{Introduction}
 %\section{Background}
 %What was your background preparation for the project? What similar systems did you assess? What was your motivation and interest in this project?
+\textbf{NOTES: - DELETE THIS -}
+\begin{itemize}
+\item Route-planning applications are widely used.
+\item PRMs not considered by most route-planners.
+\item PRMs often find navigation hard (reference).
+\item More PRMs in university (reference).
+\item Aberystwyth University wants to make its campuses more accessible - ramps, automatic doors, etc.
+\item Project builds upon BSc project (2015) and is inspired by Access Aber (summer 2014).
+\end{itemize}
 
+
+Route planning has been a useful tool for thousands of years; even before we started drawing maps, and routes were planned based on landmarks and star-constellations. In our modern society, route-planning systems are becoming increasingly more accurate and commonplace in our daily lives. These systems can be used by anyone: from tourists wanting to find the nearest toilet, to the Mars rover \textbf{(reference)} boldly going where no one has gone before.
+
+A significant amount of money and effort has gone into accurately mapping our world \textbf{(reference: OSM+Google/keyhole?)}, which in turn provides route-planning systems even more data to work with -- making them more accurate and useful than ever before.
+
+Route-planning systems are of course only practical to use if they are able to plan routes that their users are able to follow, which is unfortunately often not the case for persons with reduced mobility (PRM). Most public route-planning systems focus on providing routing-services to very large, generalised groups of people - like pedestrians, cyclists and cars, but very rarely consider PRMs as a separate group.
+
+PRMs are often categorised as pedestrians, and are therefore given routes intended for people who are able to walk up stairs, cross streets with elevated curbs, climb steep hills, etc. Many PRMs are able to pass these obstacles with some assistance from someone else, but this does not apply to everyone; their wheelchair might be too heavy to move manually, or there might not be anyone around to give them the help they need.
+
+A PRM could try following routes intended for cyclists, as these usually avoid stairs, but they might still face tall curbs, paths with bad surfaces, steep slopes, etc. Bike-routes also tend to be noticeably longer than pedestrian routes, so these may not always be suitable for many PRMs either.
+
+As built-up areas are particularly challenging environments to navigate for PRMs, the project developed as part of this dissertation has put most of its focus on areas like this. Additionally: as Aberystwyth University has made a notable effort to make its campuses more accessible for everyone in recent years, and because there are more PRMs in university now than ever before \textbf{(reference)}, this project has put its main focus on the Aberystwyth University campuses.
+
+This project builds upon the author's Major project for their BSc degree at Aberystwyth University, completed in 2015 (\textquotedblleft Access Aber - Pathfinding\textquotedblright), which in turn was inspired by a separate system developed by Aberystwyth University in the summer of 2014: \textquotedblleft Access Aber\textquotedblright .
+
+\begin{figure}
+	\centering
+	\caption[Longer routes for Persons with Reduced Mobility]{This image shows which path some PRMs would need to take to get from the computer-science department (\textit{IMPACS}) at Penglais campus, to the Students' Union. As there are many stairs in the way, many PRMs are forced to follow a far longer route than an able-bodied person would.}
+	\label{fig:longerRoutePRM}
+	\frame{\includegraphics[keepaspectratio, width=\columnwidth]{Images/AStar_CSdept-SU}}
+\end{figure}
 
 \section{Project aims}
 %\section{Analysis}
@@ -23,7 +61,27 @@
 %There should be a clear statement of the objectives of the work, which you will evaluate at the end of the work. 
 
 %In most cases, the agreed objectives or requirements will be the result of a compromise between what would ideally have been produced and what was felt to be possible in the time available. A discussion of the process of arriving at the final list is usually appropriate.
+\textbf{NOTES: - DELETE THIS -}
+\begin{itemize}
+	\item Make it clear that PRMs need to be considered by more route-planners.
+\\
+	\item Find optimal and complete algorithm(s).
+	\item Algorithm(s) have to plan routes in near-real-time.
+	\item Algorithm(s) have to use as little memory as possible.
+	\item Algorithm(s) needs to be able to distinguish between accessible and inaccessible paths.
+	\item Make a process for automatically filtering out Nodes and Ways deemed unsuitable for navigation.
+\\
+	\item Investigate how to store, represent and index the OpenStreetMap database containing all of the Nodes and Ways to be used for pathfinding.
+	\item Display the routes on a map. (is this really a project aim?).
+\end{itemize}
 
+The goal of this project has been to shine a light on how challenging it can be for PRMs to navigate built-up areas compared to other groups of people -- with a focus on the Aberystwyth University campuses. PRMs are often grouped together with able-bodied pedestrians or cyclists in many route-planning systems, which means that the routes returned to them are often sub-optimal or sometimes even impossible to physically follow.
+
+In order to properly show the difference between traditional route-planners for pedestrians and a route-planner made for PRMs, there has to be a programming-aspect to this project.
+The system developed as part of this dissertation has to identify the most important aspects of route-planning, and replicate this in a route-planning system made specifically for PRMs.
+These aspects include, but are not limited to: calculating routes in near-real-time, having a low memory-footprint, employing optimal and complete routing-algorithms, and of course finding appropriate routes for the target users.
+
+The process of extensive and accurate mapping of Nodes (or individual points of navigational data) is a task beyond the scope of this project, so this data will have to be retrieved from a third party. This will be discussed in more detail later in this report.
 
 \section{Objectives}
 %\section{Process}

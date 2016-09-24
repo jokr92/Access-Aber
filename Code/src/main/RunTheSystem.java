@@ -433,18 +433,16 @@ public final class RunTheSystem {
 			public boolean onTap(LatLong tapLatLong, Point layerXY, Point tapXY) {
 				
 				if(routePlanningInProgress==true){
-					System.out.println("Already planning other route");
+					System.err.println("Already planning other route");
 					return true;
 				}
 
 				/**********In case the start/goal Node has not been set yet**********/
 				if(startNode==null){
-					//System.out.println("Start Node set at: " + tapLatLong);
 					
 					startNode = SearchDatabase.findClosestNode(tapLatLong.getLatitude(), tapLatLong.getLongitude());
 					algorithm.setStartNode(startNode);
 				}else if(goalNode==null){
-					//System.out.println("Goal Node set at: " + tapLatLong);
 					
 					goalNode = SearchDatabase.findClosestNode(tapLatLong.getLatitude(), tapLatLong.getLongitude());
 					algorithm.setGoalNode(goalNode);
@@ -462,12 +460,10 @@ public final class RunTheSystem {
 				if(startNode!=null&&goalNode!=null){
 					if(Search.distanceBetweenPoints(tapLatLong.getLatitude(), tapLatLong.getLongitude(), startNode.getLatitude(), startNode.getLongitude())<
 							Search.distanceBetweenPoints(tapLatLong.getLatitude(), tapLatLong.getLongitude(), goalNode.getLatitude(), goalNode.getLongitude())){
-						//System.out.println("Start Node set at: " + tapLatLong);
 						
 						startNode = SearchDatabase.findClosestNode(tapLatLong.getLatitude(), tapLatLong.getLongitude());
 						algorithm.setStartNode(startNode);
 					}else{
-						//System.out.println("Goal Node set at: " + tapLatLong);
 						
 						goalNode = SearchDatabase.findClosestNode(tapLatLong.getLatitude(), tapLatLong.getLongitude());
 						algorithm.setGoalNode(goalNode);
@@ -491,17 +487,15 @@ public final class RunTheSystem {
 			public boolean onTap(LatLong tapLatLong, Point layerXY, Point tapXY) {
 				
 				if(routePlanningInProgress==true){
-					System.out.println("Already planning other route");
+					System.err.println("Already planning other route");
 					return true;
 				}
 
 				/**********In case the start/goal Node has not been set yet**********/
 				if(startNode==null){
-					//System.out.println("Start Node set at: " + tapLatLong);
 					startNode = SearchDatabase.findClosestNode(tapLatLong.getLatitude(), tapLatLong.getLongitude());
 					algorithm.setStartNode(startNode);
 				}else if(goalNode==null){
-					//System.out.println("Goal Node set at: " + tapLatLong);
 					goalNode = SearchDatabase.findClosestNode(tapLatLong.getLatitude(), tapLatLong.getLongitude());
 					algorithm.setGoalNode(goalNode);
 

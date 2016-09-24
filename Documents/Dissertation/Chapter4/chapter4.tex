@@ -7,12 +7,53 @@
 %The following sections indicate some areas you might include. Other sections may be more appropriate to your project. 
 
 \section{Overall Approach to Testing}
+\textbf{NOTES: - DELETE THIS -}
+\begin{itemize}
+	\item Test Driven Development (\textbf{TDD}).
+	\subitem Tests have been written for every class and every method within those classes.
+	\subitem Tests were usually written before or right after a new method was implemented.
+	\item Top-level test-class for running every test together.
+\end{itemize}
 
 
 \section{Automated Testing}
+\textbf{NOTES: - DELETE THIS -}
+\begin{itemize}
+	\item JUnit-tests created for every class and method. Top-level test-class used to run every test automatically.
+\end{itemize}
 
 
 \section{Integration Testing}
+\textbf{NOTES: - DELETE THIS -}
+\begin{itemize}
+	\item Is this where I talk about the custom graph made for testing optimality and completeness?
+	\item Nodes not visited in the custom graph-illustrations are meant to represent loops and dead ends.
+\end{itemize}
+
+\begin{figure}
+	\centering
+	\caption[Inaccessible path in the custom graph]{Inaccessible path in the custom graph. This route passes through a Way with the tag: \textit{highway=steps}, and is therefore inaccessible. It is the shortest path in the custom graph, but should never be expanded by any algorithm.}
+	\label{fig:customInaccessible}
+	\frame{\includegraphics[keepaspectratio, width=\columnwidth]{Images/Custom_graph-Inaccessible}}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\caption[Longest path in the custom graph]{The longest path in the custom graph. This route is the longest with respect to distance, but passes through fewer Nodes than Figure \ref{fig:customShortest}. Uninformed search-algorithms like BFS and DFS, and greedy algorithms like GBFS are likely to follow this path.}
+	\label{fig:customLongest}
+	\frame{\includegraphics[keepaspectratio, width=\columnwidth]{Images/Custom_graph-Longest}}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\caption[Optimal path in the custom graph]{The optimal path in the custom graph. This route is the shortest with respect to distance, but passes through more Nodes than Figure \ref{fig:customLongest}. Informed search-algorithms like A* should always pass through here. Algorithms that follow this path can be considered \textit{optimal}}
+	\label{fig:customShortest}
+	\frame{\includegraphics[keepaspectratio, width=\columnwidth]{Images/Custom_graph-Shortest}}
+\end{figure}
 
 
 \section{User Testing}
+\textbf{NOTES: - DELETE THIS -}
+\begin{itemize}
+	\item The system has not been tested together with any PRMs.
+\end{itemize}

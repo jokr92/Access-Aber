@@ -149,6 +149,7 @@ public abstract class Search {
 
 	/**
 	 * TODO BigDecimal might provide better accuracy in these calculations.
+	 * TODO Uninformed Search-algorithms does not care about this distance. Should this method be moved to {@link route.InformedSearch}?
 	 * Finds the distance between two nodes by comparing their latitude and longitude.
 	 * @param latitude1 The latitude of the first node
 	 * @param longitude1 The longitude of the first node
@@ -171,6 +172,7 @@ public abstract class Search {
 	}
 
 	/**
+	 * TODO Uninformed Search-algorithms does not care about this distance. Should this method be moved to {@link route.InformedSearch}?
 	 * Finds the distance between two nodes by comparing their latitude and longitude.
 	 * @param node1 The first Node
 	 * @param node2 The second Node

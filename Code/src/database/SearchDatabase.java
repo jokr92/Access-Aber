@@ -129,7 +129,6 @@ public class SearchDatabase{
 				//in case a Key or Value is null; which can happen in the OSM database.
 			}
 		}
-		//System.out.print("\n");
 		return navigatableWays;
 	}
 
@@ -155,7 +154,6 @@ public class SearchDatabase{
 
 	/**
 	 * Searches through the database of Nodes {@link database.BuildDatabase #getNodes()} for the Node closest to the input coordinates
-	 * TODO The node found may not be accessible or connected to any other nodes; I should fix this
 	 * @param lat degrees min -90, max 90
 	 * @param lon degrees min -180, max 180
 	 * @return The Node closest to the coordinates specified in the input
@@ -167,9 +165,7 @@ public class SearchDatabase{
 
 		for(Node node:Arrays.asList(BuildDatabase.getNodes())){
 			currentDistance=Search.distanceBetweenPoints(node.getLatitude(), node.getLongitude(), lat, lon);
-			if(currentDistance<shortestDistance
-					&&getWaysContainingNode(node.getExternalId()).size()>1
-					&&getNavigatableConnectedNodes(node).size()>0){
+			if(currentDistance<shortestDistance&&getNavigatableConnectedNodes(node).size()>0){
 				closestNode=node;
 				shortestDistance=currentDistance;
 			}
@@ -178,8 +174,9 @@ public class SearchDatabase{
 	}
 
 	/**
-	 * Searches for the Nodes connected to the input, and returns only the Nodes fit for navigation
+	 * Searches for the Nodes connected to the input, and returns every Node within the same (navigable) Way(s) as this Node
 	 * Does not guarantee that any of the returned Nodes are linked to other Ways. i.e it might only return Nodes isolated within a single Way (provided the Way is fit for navigation)
+	 * Nodes are not returned in any particular order, and there may be duplicates.
 	 * @param parentNode Node to expand (find references to)
 	 * @return The children of the parent. I.e every Node in a Way related to this Node
 	 * @see database.SearchDatabase #FilterAccessibleWays(List)

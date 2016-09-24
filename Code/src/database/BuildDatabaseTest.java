@@ -37,9 +37,7 @@ public class BuildDatabaseTest {
 	@Test
 	public void NodeAndWayListsShouldBePopulated(){
 		assertFalse(nodeConfig.isEmpty());
-		//System.out.println(nodeConfig.size());
 		assertFalse(wayConfig.isEmpty());
-		//System.out.println(wayConfig.size());
 	}
 
 	@Test
@@ -340,14 +338,8 @@ public class BuildDatabaseTest {
 
 		for(Node testNode:nodeConfig){
 			if(SearchDatabase.getWaysContainingNode(testNode.getExternalId()).size()>1){
-				if(!testNode.isTowerNode()){
-					System.out.println("DELETE THIS");
-				}
 				assertTrue(testNode.isTowerNode());
 			}else{
-				if(testNode.isTowerNode()){
-					System.out.println("DELETE THIS");
-				}
 				assertFalse(testNode.isTowerNode());
 			}
 		}

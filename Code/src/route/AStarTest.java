@@ -149,9 +149,6 @@ public class AStarTest {
 		List<Node> path2 = new ArrayList<Node>();
 
 		path1=aStar.findPath();
-		for(Node n:path1){
-			System.out.println(n.getExternalId());
-		}
 
 		//This makes path2 the reverse of path1
 		AStar otherAStar = new AStar();

@@ -127,7 +127,6 @@ public class SearchDatabaseTest {
 
 	@Test
 	public void ShouldFindNodeClosestToCoordinates(){
-		System.out.println("Closest Node: "+SearchDatabase.findClosestNode(52.4164812821479, -4.065756207246293));
 		assertFalse(SearchDatabase.findClosestNode(90, 180)==null);
 		assertFalse(SearchDatabase.findClosestNode(-90, -180)==null);
 		assertFalse(SearchDatabase.findClosestNode(90, 180).equals(SearchDatabase.findClosestNode(-90, -180)));

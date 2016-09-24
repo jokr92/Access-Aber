@@ -1,16 +1,19 @@
 package route;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import database.Node;
-import database.OSMNode;
 import database.SearchDatabase;
 import database.Way;
 
+/**
+ * Provides functionality for informed-search algorithms
+ * @author jok13
+ *
+ */
 abstract class InformedSearch extends Search {
 
 	/**

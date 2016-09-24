@@ -17,7 +17,31 @@
 
 %Review the discussion on the Evaluation section from the lectures. A recording is available on Blackboard.
 \section{Completed work}
-Occasional NullPointerExceptions (and a few other exceptions) when running the system. Problem originates in Mapsforge's code, not mine. Example: unable to load map-tile...
+\textbf{NOTES: - DELETE THIS -}
+\begin{itemize}
+	\item Occasional NullPointerExceptions (and a few other exceptions) when running the system. Problem originates in Mapsforge's code, not mine. Example: unable to load map-tile...
+	\item Project started a month later than expected; unable to find supervisor(s) - only two (three?) potential supervisors replied to emails.
+	\item No contact with supervisor for a month.
+	\item Routes not always correct; caused by incorrect labelling in the OSM database. (Show Llandinam as example?).
+\end{itemize}
+
+
 
 \section{Future work}
 %Future work detailing your ideas about the requirements you didn't have time for.
+\textbf{NOTES: - DELETE THIS -}
+\begin{itemize}
+	\item Display route-distance on map and improve the GUI.
+	\item Automatic retrieval of Nodes and Ways from OSM.%Issue #25 & #23 (& #10?) - Github
+	\item Store data in better data-structures for faster indexing and lower memory-requirements.
+	\subitem Hash table/map?
+	\subitem Eliminate the need to store Ways by filtering out inaccessible Ways, and then storing Node-connections within the Nodes themselves? Way-type might not be needed after the filtering.
+	\item Let user choose their disability/method of locomotion - eg. Manual/Motorised wheelchair, crutches, foot, bike, etc.
+	\item Implement more/better search-algorithms.
+	\item Update/add data to the OpenStreetMap databases to improve the usefulness and accuracy of my system's suggestions.
+	\subitem Aberystwyth University should be able to provide records of accessible entrances, wheelchair-ramps, etc. on campus. That might be a good place to start.
+	\item Implement localisation (eg. GPS) to make it easier for people to use the system.
+	\item Add search-functionality to let users search for buildings and places rather than forcing them to click on the map; the user might know what the place they want to go to is called, but not necessarily where it is located.
+	\item Include the data-type \textquotedblleft Relations\textquotedblright in route-planning; especially bus-routes.
+	\item Use services like \cite{geofabrik,osrm} to download larger map-areas than what is possible using the export-option on openstreetmap.org (Which is what I currently do).
+\end{itemize}

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9) (preloaded format=pdflatex 2016.9.2)  17 SEP 2016 04:04
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9) (preloaded format=pdflatex 2016.9.2)  24 SEP 2016 09:42
 entering extended mode
 **./dissertation.tex
 (dissertation.tex
@@ -165,6 +165,7 @@ Package: float 2001/11/08 v1.3d Float enhancements (AL)
 Package: times 2005/04/12 PSNFSS-v9.2a (SPQR) 
 )
 ("D:\MiKTeX 2.9\tex\latex\fancyhdr\fancyhdr.sty"
+Package: fancyhdr 2016/09/06 3.8 Extensive control of page headers and footers
 \fancy@headwidth=\skip52
 \f@ncyO@elh=\skip53
 \f@ncyO@erh=\skip54
@@ -191,19 +192,19 @@ Package: cite 2015/02/27  v 5.5
 (Appendix1/appendix1.aux) (Appendix2/appendix2.aux))
 \openout1 = `dissertation.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 36.
-LaTeX Font Info:    ... okay on input line 36.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 36.
-LaTeX Font Info:    ... okay on input line 36.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 36.
-LaTeX Font Info:    ... okay on input line 36.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 36.
-LaTeX Font Info:    ... okay on input line 36.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 36.
-LaTeX Font Info:    ... okay on input line 36.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 36.
-LaTeX Font Info:    ... okay on input line 36.
-LaTeX Font Info:    Try loading font information for OT1+ptm on input line 36.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 57.
+LaTeX Font Info:    ... okay on input line 57.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 57.
+LaTeX Font Info:    ... okay on input line 57.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 57.
+LaTeX Font Info:    ... okay on input line 57.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 57.
+LaTeX Font Info:    ... okay on input line 57.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 57.
+LaTeX Font Info:    ... okay on input line 57.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 57.
+LaTeX Font Info:    ... okay on input line 57.
+LaTeX Font Info:    Try loading font information for OT1+ptm on input line 57.
 
 ("D:\MiKTeX 2.9\tex\latex\psnfss\ot1ptm.fd"
 File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
@@ -268,7 +269,7 @@ G,.JBIG2,.JB2,.eps]
 )
 Package lastpage Info: Please have a look at the pageslts package at
 (lastpage)             https://www.ctan.org/pkg/pageslts
-(lastpage)             ! on input line 36.
+(lastpage)             ! on input line 57.
 \openout2 = `cover.aux'.
 
  (cover.tex
@@ -320,7 +321,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 54--55
  []
 
 )
-Underfull \hbox (badness 10000) in paragraph at lines 57--51
+Underfull \hbox (badness 10000) in paragraph at lines 57--72
 
  []
 
@@ -363,46 +364,155 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <20.74> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <24.88> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1.
-) [1
+[1
 
 
-]
+] <Images/AStar_CSdept-SU.png, id=32, 1445.4pt x 782.925pt>
+File: Images/AStar_CSdept-SU.png Graphic file (type png)
+
+<use Images/AStar_CSdept-SU.png>
+Package pdftex.def Info: Images/AStar_CSdept-SU.png used on input line 54.
+(pdftex.def)             Requested size: 426.79134pt x 231.1759pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 66--68
+
+ []
+
+[2 <./Images/AStar_CSdept-SU.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 72--74
+
+ []
+
+) [3]
 \openout2 = `Chapter2/chapter2.aux'.
 
  (Chapter2/chapter2.tex
 Chapter 2.
-) [2
+[4
 
 
 
-]
+] [5]
+Overfull \hbox (6.5988pt too wide) in paragraph at lines 65--66
+[]\OT1/ptm/m/n/10.95 A cus-tom test-graph has also been de-vel-oped, which is m
+eant to ver-ify that the search-algorithms
+ []
+
+[6]
+LaTeX Font Info:    Try loading font information for OT1+pcr on input line 94.
+ ("D:\MiKTeX 2.9\tex\latex\psnfss\ot1pcr.fd"
+File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
+) [7]
+Overfull \hbox (1.41444pt too wide) in paragraph at lines 136--137
+[]\OT1/ptm/m/n/10.95 Considered: Graph-Hop-per (Promi-nent at-tri-bu-tion + Pub
+-licly ac-ces-si-ble ap-pli-ca-tion), Leaflet,
+ []
+
+[8] <Images/Way_expansion-order.png, id=56, 364.36125pt x 481.8pt>
+File: Images/Way_expansion-order.png Graphic file (type png)
+
+<use Images/Way_expansion-order.png>
+Package pdftex.def Info: Images/Way_expansion-order.png used on input line 153.
+
+(pdftex.def)             Requested size: 209.1301pt x 276.53293pt.
+
+<Images/Connections_Way.png, id=58, 233.87375pt x 193.72375pt>
+File: Images/Connections_Way.png Graphic file (type png)
+
+<use Images/Connections_Way.png>
+Package pdftex.def Info: Images/Connections_Way.png used on input line 158.
+(pdftex.def)             Requested size: 209.1301pt x 173.23535pt.
+
+<Images/Connections_Way2.png, id=59, 314.17375pt x 203.76125pt>
+File: Images/Connections_Way2.png Graphic file (type png)
+
+<use Images/Connections_Way2.png>
+Package pdftex.def Info: Images/Connections_Way2.png used on input line 161.
+(pdftex.def)             Requested size: 209.1301pt x 135.63321pt.
+
+<Images/AStar_Through_building.png, id=60, 1445.4pt x 782.925pt>
+File: Images/AStar_Through_building.png Graphic file (type png)
+
+<use Images/AStar_Through_building.png>
+Package pdftex.def Info: Images/AStar_Through_building.png used on input line 1
+71.
+(pdftex.def)             Requested size: 426.79134pt x 231.1759pt.
+ [9] [10 <./Images/Way_expansion-order.png> <./Images/Connections_Way.png> <./I
+mages/Connections_Way2.png>]) [11 <./Images/AStar_Through_building.png>]
 \openout2 = `Chapter3/chapter3.aux'.
 
  (Chapter3/chapter3.tex
 Chapter 3.
-) [3
+<Images/AStar_Missing_Node-data.png, id=75, 1445.4pt x 782.925pt>
+File: Images/AStar_Missing_Node-data.png Graphic file (type png)
+
+<use Images/AStar_Missing_Node-data.png>
+Package pdftex.def Info: Images/AStar_Missing_Node-data.png used on input line 
+33.
+(pdftex.def)             Requested size: 426.79134pt x 231.1759pt.
+
+<Images/AStar_Avoids_stairs.png, id=76, 1445.4pt x 782.925pt>
+File: Images/AStar_Avoids_stairs.png Graphic file (type png)
+
+<use Images/AStar_Avoids_stairs.png>
+Package pdftex.def Info: Images/AStar_Avoids_stairs.png used on input line 40.
+(pdftex.def)             Requested size: 426.79134pt x 231.1759pt.
+
+<Images/AStar_Avoids_stairs2.png, id=77, 1445.4pt x 782.925pt>
+File: Images/AStar_Avoids_stairs2.png Graphic file (type png)
+
+<use Images/AStar_Avoids_stairs2.png>
+Package pdftex.def Info: Images/AStar_Avoids_stairs2.png used on input line 46.
+
+(pdftex.def)             Requested size: 426.79134pt x 231.1759pt.
+ [12
 
 
 
-]
+] [13 <./Images/AStar_Missing_Node-data.png> <./Images/AStar_Avoids_stairs.png>
+]) [14 <./Images/AStar_Avoids_stairs2.png>]
 \openout2 = `Chapter4/chapter4.aux'.
 
  (Chapter4/chapter4.tex
 Chapter 4.
-) [4
+<Images/Custom_graph-Inaccessible.png, id=88, 840.13875pt x 830.10126pt>
+File: Images/Custom_graph-Inaccessible.png Graphic file (type png)
+
+<use Images/Custom_graph-Inaccessible.png>
+Package pdftex.def Info: Images/Custom_graph-Inaccessible.png used on input lin
+e 37.
+(pdftex.def)             Requested size: 426.79134pt x 421.68677pt.
+
+<Images/Custom_graph-Longest.png, id=89, 829.0975pt x 835.12pt>
+File: Images/Custom_graph-Longest.png Graphic file (type png)
+
+<use Images/Custom_graph-Longest.png>
+Package pdftex.def Info: Images/Custom_graph-Longest.png used on input line 44.
+
+(pdftex.def)             Requested size: 426.79134pt x 429.88135pt.
+
+<Images/Custom_graph-Shortest.png, id=90, 840.13875pt x 830.10126pt>
+File: Images/Custom_graph-Shortest.png Graphic file (type png)
+
+<use Images/Custom_graph-Shortest.png>
+Package pdftex.def Info: Images/Custom_graph-Shortest.png used on input line 51
+.
+(pdftex.def)             Requested size: 426.79134pt x 421.68677pt.
+ [15
 
 
 
-]
+] [16 <./Images/Custom_graph-Inaccessible.png>] [17 <./Images/Custom_graph-Long
+est.png>] [18 <./Images/Custom_graph-Shortest.png>]) [19]
 \openout2 = `Chapter5/chapter5.aux'.
 
  (Chapter5/chapter5.tex
 Chapter 5.
-) [5
+[20
 
 
 
-] [6
+]) [21] [22
 
 
 ]
@@ -410,7 +520,7 @@ Chapter 5.
 
  (Appendix1/appendix1.tex
 Appendix A.
-) [7
+) [23
 
 
 ]
@@ -418,34 +528,37 @@ Appendix A.
 
  (Appendix2/appendix2.tex
 Appendix B.
-) [8
+) [24
 
 
 
-] (dissertation.bbl [9
+] (dissertation.bbl [25
 
 
 ]) 
 AED: lastpage setting LastPage
-[10] (dissertation.aux (cover.aux) (declaration.aux) (acknowledgements.aux)
+[26] (dissertation.aux (cover.aux) (declaration.aux) (acknowledgements.aux)
 (abstract.aux) (Chapter1/chapter1.aux) (Chapter2/chapter2.aux)
 (Chapter3/chapter3.aux) (Chapter4/chapter4.aux) (Chapter5/chapter5.aux)
 (Appendix1/appendix1.aux) (Appendix2/appendix2.aux)) ) 
 Here is how much of TeX's memory you used:
- 3252 strings out of 493334
- 41345 string characters out of 3145267
- 110273 words of memory out of 3000000
- 6617 multiletter control sequences out of 15000+200000
- 24371 words of font info for 54 fonts, out of 3000000 for 9000
+ 3391 strings out of 493334
+ 44243 string characters out of 3145267
+ 111524 words of memory out of 3000000
+ 6729 multiletter control sequences out of 15000+200000
+ 30817 words of font info for 69 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 40i,10n,45p,618b,354s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 40i,11n,45p,1010b,348s stack positions out of 5000i,500n,10000p,200000b,50000s
 {D:/MiKTeX 2.9/fonts/enc/
-dvips/fontname/8r.enc}<D:/MiKTeX 2.9/fonts/type1/urw/times/utmb8a.pfb><D:/MiKTe
-X 2.9/fonts/type1/urw/times/utmr8a.pfb><D:/MiKTeX 2.9/fonts/type1/urw/times/utm
-r8a.pfb><D:/MiKTeX 2.9/fonts/type1/urw/times/utmri8a.pfb>
-Output written on dissertation.pdf (17 pages, 83856 bytes).
+dvips/fontname/8r.enc}<D:/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb>
+<D:/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><D:/MiKTeX 2.9/fonts/ty
+pe1/public/amsfonts/cm/cmsy10.pfb><D:/MiKTeX 2.9/fonts/type1/urw/courier/ucrr8a
+.pfb><D:/MiKTeX 2.9/fonts/type1/urw/times/utmb8a.pfb><D:/MiKTeX 2.9/fonts/type1
+/urw/times/utmr8a.pfb><D:/MiKTeX 2.9/fonts/type1/urw/times/utmr8a.pfb><D:/MiKTe
+X 2.9/fonts/type1/urw/times/utmri8a.pfb>
+Output written on dissertation.pdf (33 pages, 2512846 bytes).
 PDF statistics:
- 74 PDF objects out of 1000 (max. 8388607)
+ 159 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 56 words of extra memory for PDF output out of 10000 (max. 10000000)
 
