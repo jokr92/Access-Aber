@@ -1,0 +1,23 @@
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {1.1}{\ignorespaces Longer routes for Persons with Reduced Mobility}}{3}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Route for Persons with Reduced Mobility}}}{3}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Route for able-bodied pedestrians}}}{3}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {2.1}{\ignorespaces Order of Node-expansion}}{13}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Expanding both Pillar- and Tower Nodes}}}{13}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Expanding only the Tower Nodes}}}{13}
+\contentsline {figure}{\numberline {2.2}{\ignorespaces Connections between Ways}}{14}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Individual Ways}}}{14}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Graph}}}{14}
+\contentsline {figure}{\numberline {2.3}{\ignorespaces Red path through areas}}{14}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Sup-optimal path due to bad data}}{18}
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Algorithms avoid stairs}}{20}
+\contentsline {figure}{\numberline {3.3}{\ignorespaces Algorithms avoid stairs 2}}{21}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Inaccessible path in the custom graph}}{25}
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Longest path in the custom graph}}{26}
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Optimal path in the custom graph}}{27}
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }

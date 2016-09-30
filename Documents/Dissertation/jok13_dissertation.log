@@ -1,7 +1,7 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9) (preloaded format=pdflatex 2016.9.2)  24 SEP 2016 09:42
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9) (preloaded format=pdflatex 2016.9.2)  29 SEP 2016 15:24
 entering extended mode
-**./dissertation.tex
-(dissertation.tex
+**./jok13_dissertation.tex
+(jok13_dissertation.tex
 LaTeX2e <2016/03/31> patch level 3
 Babel <3.9r> and hyphenation patterns for 75 language(s) loaded.
 ("D:\MiKTeX 2.9\tex\latex\base\report.cls"
@@ -186,27 +186,26 @@ Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
 LaTeX Info: Redefining \cite on input line 302.
 LaTeX Info: Redefining \nocite on input line 332.
 Package: cite 2015/02/27  v 5.5
-) (dissertation.aux (cover.aux) (declaration.aux) (acknowledgements.aux)
-(abstract.aux) (Chapter1/chapter1.aux) (Chapter2/chapter2.aux)
-(Chapter3/chapter3.aux) (Chapter4/chapter4.aux) (Chapter5/chapter5.aux)
-(Appendix1/appendix1.aux) (Appendix2/appendix2.aux))
-\openout1 = `dissertation.aux'.
+) (jok13_dissertation.aux (cover.aux) (acknowledgements.aux) (abstract.aux)
+(Chapter1/chapter1.aux) (Chapter2/chapter2.aux) (Chapter3/chapter3.aux)
+(Chapter4/chapter4.aux) (Chapter5/chapter5.aux) (Appendix1/appendix1.aux)
+(Appendix2/appendix2.aux))
+\openout1 = `jok13_dissertation.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 57.
-LaTeX Font Info:    ... okay on input line 57.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 57.
-LaTeX Font Info:    ... okay on input line 57.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 57.
-LaTeX Font Info:    ... okay on input line 57.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 57.
-LaTeX Font Info:    ... okay on input line 57.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 57.
-LaTeX Font Info:    ... okay on input line 57.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 57.
-LaTeX Font Info:    ... okay on input line 57.
-LaTeX Font Info:    Try loading font information for OT1+ptm on input line 57.
-
-("D:\MiKTeX 2.9\tex\latex\psnfss\ot1ptm.fd"
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 59.
+LaTeX Font Info:    ... okay on input line 59.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 59.
+LaTeX Font Info:    ... okay on input line 59.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 59.
+LaTeX Font Info:    ... okay on input line 59.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 59.
+LaTeX Font Info:    ... okay on input line 59.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 59.
+LaTeX Font Info:    ... okay on input line 59.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 59.
+LaTeX Font Info:    ... okay on input line 59.
+LaTeX Font Info:    Try loading font information for OT1+ptm on input line 59.
+ ("D:\MiKTeX 2.9\tex\latex\psnfss\ot1ptm.fd"
 File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
 )
 ("D:\MiKTeX 2.9\tex\context\base\supp-pdf.mkii"
@@ -269,7 +268,7 @@ G,.JBIG2,.JB2,.eps]
 )
 Package lastpage Info: Please have a look at the pageslts package at
 (lastpage)             https://www.ctan.org/pkg/pageslts
-(lastpage)             ! on input line 57.
+(lastpage)             ! on input line 59.
 \openout2 = `cover.aux'.
 
  (cover.tex
@@ -288,72 +287,38 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 
 
 {C:/ProgramData/MiKTeX/2.9/pdftex/config/pdftex.map}])
-\openout2 = `declaration.aux'.
-
- (declaration.tex
-LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <17.28> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 7.
-
-Underfull \hbox (badness 10000) in paragraph at lines 14--15
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 17--18
-
- []
-
-LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10.95> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 23.
-
-Underfull \hbox (badness 10000) in paragraph at lines 29--30
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 32--33
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 54--55
-
- []
-
-)
-Underfull \hbox (badness 10000) in paragraph at lines 57--72
-
- []
-
-[1
-
-
-]
 \openout2 = `acknowledgements.aux'.
 
- (acknowledgements.tex) [2
+ (acknowledgements.tex
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <17.28> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 4.
+) [1
 
 
 ]
 \openout2 = `abstract.aux'.
 
- (abstract.tex) [3
+ (abstract.tex) [2
 
 
-] (dissertation.toc)
+]
+(jok13_dissertation.toc
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10.95> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1.
+)
 \tf@toc=\write3
-\openout3 = `dissertation.toc'.
+\openout3 = `jok13_dissertation.toc'.
 
  [1
 
-]
-(dissertation.lof)
+] (jok13_dissertation.lof)
 \tf@lof=\write4
-\openout4 = `dissertation.lof'.
+\openout4 = `jok13_dissertation.lof'.
 
- [2] (dissertation.lot)
+ [2]
+(jok13_dissertation.lot)
 \tf@lot=\write5
-\openout5 = `dissertation.lot'.
+\openout5 = `jok13_dissertation.lot'.
 
  [3]
 \openout2 = `Chapter1/chapter1.aux'.
@@ -367,152 +332,186 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <24.88> not available
 [1
 
 
-] <Images/AStar_CSdept-SU.png, id=32, 1445.4pt x 782.925pt>
+] <Images/AStar_CSdept-SU.png, id=29, 1445.4pt x 782.925pt>
 File: Images/AStar_CSdept-SU.png Graphic file (type png)
 
 <use Images/AStar_CSdept-SU.png>
 Package pdftex.def Info: Images/AStar_CSdept-SU.png used on input line 54.
 (pdftex.def)             Requested size: 426.79134pt x 231.1759pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 66--68
+<Images/AStar_CSdept-SU_Foot.png, id=30, 1445.4pt x 782.925pt>
+File: Images/AStar_CSdept-SU_Foot.png Graphic file (type png)
+
+<use Images/AStar_CSdept-SU_Foot.png>
+Package pdftex.def Info: Images/AStar_CSdept-SU_Foot.png used on input line 56.
+
+(pdftex.def)             Requested size: 426.79134pt x 231.1759pt.
+LaTeX Font Info:    Try loading font information for OT1+pcr on input line 57.
+ ("D:\MiKTeX 2.9\tex\latex\psnfss\ot1pcr.fd"
+File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
+)
+Underfull \hbox (badness 10000) in paragraph at lines 70--72
 
  []
 
-[2 <./Images/AStar_CSdept-SU.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 72--74
+
+Underfull \hbox (badness 10000) in paragraph at lines 76--78
 
  []
 
-) [3]
+[2] [3 <./Images/AStar_CSdept-SU.png> <./Images/AStar_CSdept-SU_Foot.png>])
+[4]
 \openout2 = `Chapter2/chapter2.aux'.
 
  (Chapter2/chapter2.tex
 Chapter 2.
-[4
+[5
 
 
 
-] [5]
-Overfull \hbox (6.5988pt too wide) in paragraph at lines 65--66
+] [6]
+Overfull \hbox (6.5988pt too wide) in paragraph at lines 66--67
 []\OT1/ptm/m/n/10.95 A cus-tom test-graph has also been de-vel-oped, which is m
 eant to ver-ify that the search-algorithms
  []
 
-[6]
-LaTeX Font Info:    Try loading font information for OT1+pcr on input line 94.
- ("D:\MiKTeX 2.9\tex\latex\psnfss\ot1pcr.fd"
-File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
-) [7]
-Overfull \hbox (1.41444pt too wide) in paragraph at lines 136--137
+[7] [8]
+Overfull \hbox (6.63527pt too wide) in paragraph at lines 125--126
+[]| \OT1/ptm/m/n/10.95 So-lu-tion: Fil-ter out Pillar-Nodes be-fore ap-ply-ing 
+any routing-algorithms to the routing-
+ []
+
+[9]
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 155.
+ [10] [11]
+Overfull \hbox (1.41444pt too wide) in paragraph at lines 183--184
 []\OT1/ptm/m/n/10.95 Considered: Graph-Hop-per (Promi-nent at-tri-bu-tion + Pub
 -licly ac-ces-si-ble ap-pli-ca-tion), Leaflet,
  []
 
-[8] <Images/Way_expansion-order.png, id=56, 364.36125pt x 481.8pt>
-File: Images/Way_expansion-order.png Graphic file (type png)
+[12] <Images/Way_expansion-order_All.png, id=73, 365.365pt x 401.5pt>
+File: Images/Way_expansion-order_All.png Graphic file (type png)
 
-<use Images/Way_expansion-order.png>
-Package pdftex.def Info: Images/Way_expansion-order.png used on input line 153.
+<use Images/Way_expansion-order_All.png>
+Package pdftex.def Info: Images/Way_expansion-order_All.png used on input line 
+203.
+(pdftex.def)             Requested size: 209.1301pt x 229.81308pt.
 
-(pdftex.def)             Requested size: 209.1301pt x 276.53293pt.
+<Images/Way_expansion-order_Tower-Node.png, id=75, 365.365pt x 401.5pt>
+File: Images/Way_expansion-order_Tower-Node.png Graphic file (type png)
 
-<Images/Connections_Way.png, id=58, 233.87375pt x 193.72375pt>
+<use Images/Way_expansion-order_Tower-Node.png>
+Package pdftex.def Info: Images/Way_expansion-order_Tower-Node.png used on inpu
+t line 205.
+(pdftex.def)             Requested size: 209.1301pt x 229.81308pt.
+
+<Images/Connections_Way.png, id=76, 233.87375pt x 193.72375pt>
 File: Images/Connections_Way.png Graphic file (type png)
 
 <use Images/Connections_Way.png>
-Package pdftex.def Info: Images/Connections_Way.png used on input line 158.
+Package pdftex.def Info: Images/Connections_Way.png used on input line 213.
 (pdftex.def)             Requested size: 209.1301pt x 173.23535pt.
 
-<Images/Connections_Way2.png, id=59, 314.17375pt x 203.76125pt>
+<Images/Connections_Way2.png, id=77, 314.17375pt x 203.76125pt>
 File: Images/Connections_Way2.png Graphic file (type png)
 
 <use Images/Connections_Way2.png>
-Package pdftex.def Info: Images/Connections_Way2.png used on input line 161.
+Package pdftex.def Info: Images/Connections_Way2.png used on input line 216.
 (pdftex.def)             Requested size: 209.1301pt x 135.63321pt.
 
-<Images/AStar_Through_building.png, id=60, 1445.4pt x 782.925pt>
+<Images/AStar_Through_building.png, id=78, 217.5628pt x 344.03531pt>
 File: Images/AStar_Through_building.png Graphic file (type png)
 
 <use Images/AStar_Through_building.png>
-Package pdftex.def Info: Images/AStar_Through_building.png used on input line 1
-71.
-(pdftex.def)             Requested size: 426.79134pt x 231.1759pt.
- [9] [10 <./Images/Way_expansion-order.png> <./Images/Connections_Way.png> <./I
-mages/Connections_Way2.png>]) [11 <./Images/AStar_Through_building.png>]
+Package pdftex.def Info: Images/AStar_Through_building.png used on input line 2
+26.
+(pdftex.def)             Requested size: 213.39566pt x 337.46727pt.
+ [13 <./Images/Way_expansion-order_All.png> <./Images/Way_expansion-order_Tower
+-Node.png>] [14 <./Images/Connections_Way.png> <./Images/Connections_Way2.png> 
+<./Images/AStar_Through_building.png>]
+[15]
+Overfull \hbox (89.81415pt too wide) in paragraph at lines 255--256
+\OT1/ptm/m/n/10.95 weights. The pri-or-ity queue used in this sys-tem was im-po
+rted from the Java-library: []\OT1/pcr/m/n/10.95 java.util.PriorityQueue\OT1/pt
+m/m/n/10.95 .
+ []
+
+) [16]
 \openout2 = `Chapter3/chapter3.aux'.
 
  (Chapter3/chapter3.tex
 Chapter 3.
-<Images/AStar_Missing_Node-data.png, id=75, 1445.4pt x 782.925pt>
+[17
+
+
+
+] <Images/AStar_Missing_Node-data.png, id=100, 1445.4pt x 782.925pt>
 File: Images/AStar_Missing_Node-data.png Graphic file (type png)
 
 <use Images/AStar_Missing_Node-data.png>
 Package pdftex.def Info: Images/AStar_Missing_Node-data.png used on input line 
-33.
+32.
 (pdftex.def)             Requested size: 426.79134pt x 231.1759pt.
-
-<Images/AStar_Avoids_stairs.png, id=76, 1445.4pt x 782.925pt>
+ [18 <./Images/AStar_Missing_Node-data.png>] [19] <Images/AStar_Avoids_stairs.p
+ng, id=108, 1445.4pt x 782.925pt>
 File: Images/AStar_Avoids_stairs.png Graphic file (type png)
 
 <use Images/AStar_Avoids_stairs.png>
-Package pdftex.def Info: Images/AStar_Avoids_stairs.png used on input line 40.
+Package pdftex.def Info: Images/AStar_Avoids_stairs.png used on input line 67.
 (pdftex.def)             Requested size: 426.79134pt x 231.1759pt.
 
-<Images/AStar_Avoids_stairs2.png, id=77, 1445.4pt x 782.925pt>
+<Images/AStar_Avoids_stairs2.png, id=109, 1445.4pt x 782.925pt>
 File: Images/AStar_Avoids_stairs2.png Graphic file (type png)
 
 <use Images/AStar_Avoids_stairs2.png>
-Package pdftex.def Info: Images/AStar_Avoids_stairs2.png used on input line 46.
+Package pdftex.def Info: Images/AStar_Avoids_stairs2.png used on input line 73.
 
 (pdftex.def)             Requested size: 426.79134pt x 231.1759pt.
- [12
-
-
-
-] [13 <./Images/AStar_Missing_Node-data.png> <./Images/AStar_Avoids_stairs.png>
-]) [14 <./Images/AStar_Avoids_stairs2.png>]
+ [20 <./Images/AStar_Avoids_stairs.png>]
+[21 <./Images/AStar_Avoids_stairs2.png>]) [22]
 \openout2 = `Chapter4/chapter4.aux'.
 
  (Chapter4/chapter4.tex
 Chapter 4.
-<Images/Custom_graph-Inaccessible.png, id=88, 840.13875pt x 830.10126pt>
+[23
+
+
+
+] <Images/Custom_graph-Inaccessible.png, id=122, 840.13875pt x 830.10126pt>
 File: Images/Custom_graph-Inaccessible.png Graphic file (type png)
 
 <use Images/Custom_graph-Inaccessible.png>
 Package pdftex.def Info: Images/Custom_graph-Inaccessible.png used on input lin
-e 37.
+e 51.
 (pdftex.def)             Requested size: 426.79134pt x 421.68677pt.
 
-<Images/Custom_graph-Longest.png, id=89, 829.0975pt x 835.12pt>
+<Images/Custom_graph-Longest.png, id=123, 829.0975pt x 835.12pt>
 File: Images/Custom_graph-Longest.png Graphic file (type png)
 
 <use Images/Custom_graph-Longest.png>
-Package pdftex.def Info: Images/Custom_graph-Longest.png used on input line 44.
+Package pdftex.def Info: Images/Custom_graph-Longest.png used on input line 58.
 
 (pdftex.def)             Requested size: 426.79134pt x 429.88135pt.
 
-<Images/Custom_graph-Shortest.png, id=90, 840.13875pt x 830.10126pt>
+<Images/Custom_graph-Shortest.png, id=124, 840.13875pt x 830.10126pt>
 File: Images/Custom_graph-Shortest.png Graphic file (type png)
 
 <use Images/Custom_graph-Shortest.png>
-Package pdftex.def Info: Images/Custom_graph-Shortest.png used on input line 51
+Package pdftex.def Info: Images/Custom_graph-Shortest.png used on input line 65
 .
 (pdftex.def)             Requested size: 426.79134pt x 421.68677pt.
- [15
-
-
-
-] [16 <./Images/Custom_graph-Inaccessible.png>] [17 <./Images/Custom_graph-Long
-est.png>] [18 <./Images/Custom_graph-Shortest.png>]) [19]
+ [24] [25 <./Images/Custom_graph-Inaccessible.png>] [26 <./Images/Custom_graph-
+Longest.png>] [27 <./Images/Custom_graph-Shortest.png>]) [28]
 \openout2 = `Chapter5/chapter5.aux'.
 
  (Chapter5/chapter5.tex
 Chapter 5.
-[20
+[29
 
 
 
-]) [21] [22
+] [30] [31]) [32] [33
 
 
 ]
@@ -520,7 +519,7 @@ Chapter 5.
 
  (Appendix1/appendix1.tex
 Appendix A.
-) [23
+) [34
 
 
 ]
@@ -528,37 +527,46 @@ Appendix A.
 
  (Appendix2/appendix2.tex
 Appendix B.
-) [24
+) [35
 
 
 
-] (dissertation.bbl [25
+] (jok13_dissertation.bbl
+Underfull \hbox (badness 10000) in paragraph at lines 93--96
+\OT1/ptm/m/n/10.95 blob / master / mapsforge-[]samples-[]awt / src / main / jav
+a / org / mapsforge / samples / awt / Samples .
+ []
+
+[36
 
 
-]) 
+] [37]) 
 AED: lastpage setting LastPage
-[26] (dissertation.aux (cover.aux) (declaration.aux) (acknowledgements.aux)
-(abstract.aux) (Chapter1/chapter1.aux) (Chapter2/chapter2.aux)
-(Chapter3/chapter3.aux) (Chapter4/chapter4.aux) (Chapter5/chapter5.aux)
-(Appendix1/appendix1.aux) (Appendix2/appendix2.aux)) ) 
+[38] (jok13_dissertation.aux (cover.aux) (acknowledgements.aux) (abstract.aux)
+(Chapter1/chapter1.aux) (Chapter2/chapter2.aux) (Chapter3/chapter3.aux)
+(Chapter4/chapter4.aux) (Chapter5/chapter5.aux) (Appendix1/appendix1.aux)
+(Appendix2/appendix2.aux)) ) 
 Here is how much of TeX's memory you used:
- 3391 strings out of 493334
- 44243 string characters out of 3145267
- 111524 words of memory out of 3000000
- 6729 multiletter control sequences out of 15000+200000
- 30817 words of font info for 69 fonts, out of 3000000 for 9000
+ 3410 strings out of 493334
+ 44893 string characters out of 3145267
+ 111240 words of memory out of 3000000
+ 6752 multiletter control sequences out of 15000+200000
+ 32950 words of font info for 72 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 40i,11n,45p,1010b,348s stack positions out of 5000i,500n,10000p,200000b,50000s
-{D:/MiKTeX 2.9/fonts/enc/
-dvips/fontname/8r.enc}<D:/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb>
-<D:/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><D:/MiKTeX 2.9/fonts/ty
-pe1/public/amsfonts/cm/cmsy10.pfb><D:/MiKTeX 2.9/fonts/type1/urw/courier/ucrr8a
-.pfb><D:/MiKTeX 2.9/fonts/type1/urw/times/utmb8a.pfb><D:/MiKTeX 2.9/fonts/type1
-/urw/times/utmr8a.pfb><D:/MiKTeX 2.9/fonts/type1/urw/times/utmr8a.pfb><D:/MiKTe
-X 2.9/fonts/type1/urw/times/utmri8a.pfb>
-Output written on dissertation.pdf (33 pages, 2512846 bytes).
+ 40i,11n,45p,1051b,350s stack positions out of 5000i,500n,10000p,200000b,50000s
+{D:/MiKTeX 2.9/fonts/enc/dvips/fontname/8r.enc}<D:/
+MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><D:/MiKTeX 2.9/fonts/type1
+/public/amsfonts/cm/cmmi10.pfb><D:/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cm
+mi6.pfb><D:/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi8.pfb><D:/MiKTeX 2.9/
+fonts/type1/public/amsfonts/cm/cmr10.pfb><D:/MiKTeX 2.9/fonts/type1/public/amsf
+onts/cm/cmr8.pfb><D:/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><D:/M
+iKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy8.pfb><D:/MiKTeX 2.9/fonts/type1/u
+rw/courier/ucrr8a.pfb><D:/MiKTeX 2.9/fonts/type1/urw/times/utmb8a.pfb><D:/MiKTe
+X 2.9/fonts/type1/urw/times/utmr8a.pfb><D:/MiKTeX 2.9/fonts/type1/urw/times/utm
+r8a.pfb><D:/MiKTeX 2.9/fonts/type1/urw/times/utmri8a.pfb>
+Output written on jok13_dissertation.pdf (44 pages, 2873475 bytes).
 PDF statistics:
- 159 PDF objects out of 1000 (max. 8388607)
+ 220 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 56 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 66 words of extra memory for PDF output out of 10000 (max. 10000000)
 

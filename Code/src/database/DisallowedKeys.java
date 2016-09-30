@@ -19,6 +19,7 @@ public enum DisallowedKeys {
 	SURFACE_GRASS("surface","grass"),
 	SURFACE_SAND("surface","sand"),
 	BAD_SMOOTHNESS("smoothness","bad");
+	
 	//SIDEWALK_NONE("sidewalk","none"),//Is this one needed? The path may still be accessible
 	//INDUSTRIAL("building","industrial"), //TODO There are two (or one?) buildings with this tag on the Aber campus - between the Sports Cage and Science Park
 	//OFFICE("building","office")

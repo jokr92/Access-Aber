@@ -53,6 +53,8 @@
 % Use the following to selectively exclude chapters
 %\includeonly{cover,abstract,acknowledge,declare,chapter1,chapter2}
 
+%TODO added by me
+\interfootnotelinepenalty=10000 %Completely prevent breaking of footnotes 
 
 \begin{document}
 
@@ -69,7 +71,7 @@
 \pagestyle{empty}
 
 % declarations of originality 
-\include{declaration}               
+%\include{declaration}%Apparently only needed for older projects
 
 \include{acknowledgements} % Acknowledgements
 \include{abstract}                 % Abstract

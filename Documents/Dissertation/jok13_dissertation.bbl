@@ -18,6 +18,13 @@
 \fi
 #2}}
 
+\bibitem{gmaps2}
+\BIBentryALTinterwordspacing
+BBC. {Google Maps uses Ground Truth project to battle Apple}. [Online].
+  Available: \url{www.bbc.com/news/technology-19536269}
+\BIBentrySTDinterwordspacing
+
+
 \bibitem{botea-etal-jogd04}
 A.~Botea, M.~M\"{u}ller, and J.~Schaeffer, ``{Near Optimal Hierarchical
   Path-Finding},'' \emph{Journal of Game Development}, vol.~1, no.~1, pp.
@@ -44,15 +51,15 @@ A.~Botea, M.~M\"{u}ller, and J.~Schaeffer, ``{Near Optimal Hierarchical
 \BIBentrySTDinterwordspacing
 
 
+\bibitem{GoogleMaps}
+Google. {Google Maps}. \url{https://maps.google.com/}.
+
+
 \bibitem{Google-TermsOfService}
 \BIBentryALTinterwordspacing
-Google. Google maps - terms of service. [Online]. Available:
+------. Google maps - terms of service. [Online]. Available:
   \url{https://developers.google.com/maps/terms}
 \BIBentrySTDinterwordspacing
-
-
-\bibitem{GoogleMaps}
-{Google}. (2015) {Google Maps}. \url{https://maps.google.com/}.
 
 
 \bibitem{Graphhopper}
@@ -81,9 +88,16 @@ A.~Kishimoto, A.~Fukunaga, and A.~Botea, ``{Scalable, Parallel Best-First
 \BIBentrySTDinterwordspacing
 
 
+\bibitem{mapsforgeMap}
+\BIBentryALTinterwordspacing
+Mapsforge. {Map-sample awt}. [Online]. Available:
+  \url{https://github.com/mapsforge/mapsforge/blob/master/mapsforge-samples-awt/src/main/java/org/mapsforge/samples/awt/Samples.java}
+\BIBentrySTDinterwordspacing
+
+
 \bibitem{Mapsforge}
 \BIBentryALTinterwordspacing
-Mapsforge. Mapsforge - homepage. [Online]. Available: \url{mapsforge.org}
+------. Mapsforge - homepage. [Online]. Available: \url{mapsforge.org}
 \BIBentrySTDinterwordspacing
 
 
@@ -91,6 +105,14 @@ Mapsforge. Mapsforge - homepage. [Online]. Available: \url{mapsforge.org}
 \BIBentryALTinterwordspacing
 ------. Mapsforge - map-tiles. [Online]. Available:
   \url{download.mapsforge.org/maps/}
+\BIBentrySTDinterwordspacing
+
+
+\bibitem{marsRover}
+\BIBentryALTinterwordspacing
+NASA. {Autonomous Planetary Mobility for the Mars Exploration Rover Mission}.
+  [Online]. Available:
+  \url{mars.nasa.gov/mer/technology/is_autonomous_mobility.html}
 \BIBentrySTDinterwordspacing
 
 
@@ -191,15 +213,62 @@ Mapsforge. Mapsforge - homepage. [Online]. Available: \url{mapsforge.org}
 \BIBentrySTDinterwordspacing
 
 
+\bibitem{Route4Me}
+{Route4Me}, ``{Route4Me Route Planning SDK},''
+  \url{http://route-planning-blog.route4me.com/2014/08/route4me-releases-c-sdk-for-route-planning-api-2/},
+  Aug. 2014, accessed February 2015.
+
+
+\bibitem{BigOCheatSheet}
+\BIBentryALTinterwordspacing
+E.~Rowell. {Big O cheat sheet}. [Online]. Available: \url{bigocheatsheet.com}
+\BIBentrySTDinterwordspacing
+
+
 \bibitem{RN27}
 S.~J. Russel and P.~Norvig, \emph{Artificial Intelligence: A Modern Approach},
   3rd~ed.\hskip 1em plus 0.5em minus 0.4em\relax Pearson Custom Library, 2014,
   pearson New International Edition. 978-1-292-02420-2.
 
 
+\bibitem{SandersSchultesRoutePlanning}
+P.~Sanders and D.~Schultes, ``{Sanders/Schultes: Route Planning},''
+  \url{http://algo2.iti.uka.de/schultes/hwy/}, Feb. 2008, accessed February
+  2015.
+
+
+\bibitem{gmaps1}
+\BIBentryALTinterwordspacing
+{The Atlantic}. {How Google Builds Its Maps - and What It Means for the Future
+  of Everything}. [Online]. Available:
+  \url{www.theatlantic.com/technology/archive/2012/09/how-google-builds-its-maps-and-what-it-means-for-the-future-of-everything/261913/}
+\BIBentrySTDinterwordspacing
+
+
 \bibitem{Eclipse_License}
 {The Eclipse Foundation}. Eclipse public license - v 1.0.
   \url{www.eclipse.org/legal/epl-v10.html}.
+
+
+\bibitem{GNU-LGPL}
+\BIBentryALTinterwordspacing
+{The Free Software Foundation}. {GNU LGPL}. [Online]. Available:
+  \url{http://www.gnu.org/licenses/lgpl.html}
+\BIBentrySTDinterwordspacing
+
+
+\bibitem{tinklin2004}
+\BIBentryALTinterwordspacing
+T.~Tinklin, S.~Riddell, and A.~Wilson. {Disabled Students in Higher Education}.
+  [Online]. Available: \url{http://www.ces.ed.ac.uk/PDF%20Files/Brief032.pdf}
+\BIBentrySTDinterwordspacing
+
+
+\bibitem{osm_research-projects}
+\BIBentryALTinterwordspacing
+{Various}. Osm routing-research projects. [Online]. Available:
+  \url{wiki.openstreetmap.org/wiki/Research}
+\BIBentrySTDinterwordspacing
 
 
 \bibitem{leaflet}
