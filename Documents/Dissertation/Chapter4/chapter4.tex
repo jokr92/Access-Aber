@@ -7,37 +7,16 @@
 %The following sections indicate some areas you might include. Other sections may be more appropriate to your project. 
 
 \section{Overall Approach to Testing}
-\textbf{NOTES: - DELETE THIS -}
-\begin{itemize}
-	\item Test Driven Development (\textbf{TDD}).
-	\subitem Tests have been written for every class and every method within those classes.
-	\subitem Tests were usually written before or right after a new method was implemented.
-	\item Top-level test-class for running every test together.
-	\item map used to ensure that routes are optimal. Compared routes to OSM's routes.
-	\item custom graph?
-\end{itemize}
-
 This project has been developed using Test Driven Development (TDD), which means that there is at least one test associated with every method implemented in the system. Instead of collecting every test in one single test-class, they have been split into separate test-classes for each class being tested. A top-level test-class has also been created to make it easier to make sure that every part of the system works as it should, not just isolated classes and methods.
 
 As soon as the map was implemented, it became possible to visually analyse the routes planned by the system to make sure that they follow the expected path. The map also made it possible to compare the routes planned by this system to the routes planned by other route-planners like GraphHopper, Mapzen (both at:\cite{OSM}) and Google Maps\cite{GoogleMaps}. These comparisons showed that PRMs usually have to follow much longer routes than other pedestrians, but also that my route-planning system was able to plan routes through areas where other systems cannot -- like through buildings or across open spaces like a piazza.
 
 \section{Automated Testing}
-\textbf{NOTES: - DELETE THIS -}
-\begin{itemize}
-	\item JUnit-tests created for every class and method. Top-level test-class used to run every test automatically.
-\end{itemize}
-
 Most of the Junit tests are fully automated, and only require the programmer's attention whenever they fail. Some test like the complexity-analysis tests do require that the user looks over the output however, as the runtime of each algorithm tends to fluctuate somewhat depending on the IDE, available system-resources, etc. There are Java libraries made exclusively for testing the time/space complexities of specific parts of the system, but they were a little tricky to import and implement into the system, so the simple complexity-analysis performed by the system at the moment will have to do. Those libraries made it sound like they provided higher accuracy than standard measurement-methods by eliminating variables like automatic code-optimizations, IDE-quirks, and fluctuating available system-resources, but they also seemed to be aimed at professional systems where minor optimizations down to the millisecond or nanosecond could have a massive impact on the runtime of the system.
 
 A final automated test is the top-level test-class which runs every other test-class in order, working with the same data as the test-classes before it used and possible modified. This top-level test class is useful because it lets us test the system as a whole, rather than as many separate modules.
 
 \section{Integration Testing}
-\textbf{NOTES: - DELETE THIS -}
-\begin{itemize}
-	\item Is this where I talk about the custom graph made for testing optimality and completeness?
-	\item Nodes not visited in the custom graph-illustrations are meant to represent loops and dead ends.
-\end{itemize}
-
 The top-level test-class made to test every other test-class in the system acts as a sort of \textquotedblleft Big Bang\textquotedblright~Integration test, where most of the system's modules are coupled together to form a complete system. There is also a special test-class made for the Main-class, where the entire system is run, and the programmer has to look at the routes created in order to spot any issues. This test-class does not interact with any other test-class, so if something fails, then the other top-level test-class has to be run in order to find which class and/or method the issue is located in.
 
 The system has also been tested manually by placing the start- and goal-positions at different coordinates in an attempt to break the system, and force a crash.
@@ -67,11 +46,6 @@ Another integration test has been performed with a custom graph created specific
 
 
 \section{User Testing}
-\textbf{NOTES: - DELETE THIS -}
-\begin{itemize}
-	\item The system has not been tested together with any PRMs.
-\end{itemize}
-
 The system has unfortunately not been tested in a real environment, so any routes planned by the system has just been assumed to be accessible for PRMs. There are a few errors in the OSM data used for route-planning (See Figure \ref{fig:badDataBadPath}), where things like stairs that exist in reality are not marked in the dataset (for example on the path between the Llandinam building and Physical Sciences Building), but routes planned through these areas are not the fault of the system, but rather the fault of missing data.
 
 As already stated: Routes passing through buildings cannot be guaranteed to be accessible on the inside of the building, but every entry- and exit-point is guaranteed to be accessible. This is because the interiors of buildings are rarely mapped in the OSM-database -- evident by the lack of interior mapping inside buildings on the Penglais campus of Aberystwyth University -- so there was no reason to develop this functionality in the system; it could be a very useful addition to further improve the functionality of the system however.

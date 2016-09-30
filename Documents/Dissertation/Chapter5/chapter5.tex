@@ -17,25 +17,14 @@
 
 %Review the discussion on the Evaluation section from the lectures. A recording is available on Blackboard.
 \section{Completed work}
-\textbf{NOTES: - DELETE THIS -}
-\begin{itemize}
-	\item Occasional NullPointerExceptions (and a few other exceptions) when running the system. Problem originates in Mapsforge's code, not mine. Example: unable to load map-tile...
-	\item Project started a month later than expected; unable to find supervisor(s) - only two (three?) potential supervisors replied to emails.
-	\subitem At least one potential supervisor ignored emails because they were under the impression that I already had a project.
-	%\item No contact with supervisor for a month.
-	\item Routes not always correct; caused by incorrect labelling in the OSM database, or missing routing-data. (Show Llandinam and Rosser as examples?).
-	\item Pillar Nodes skipped while searches are running. Path-costs should be calculated from Tower Node to Tower Node before any searches are performed, not after a Node has been expanded. This should speed everything up significantly.
-\end{itemize}
-
 I have made sure that I am allowed to use all of the data and third-party libraries used in this project, and have included most of the licenses in the bibliography at the end of this document, or in the Javadoc of my source-code.
 
-I was able to fulfil the large majority of the functional requirements set forth at the start of this project. I did not have time to ask Aberystwyth University for their records on accessible and/or inaccessible areas on their campuses, which would have let me make sure that the OSM data is updated. This does not have any adverse effects on my system though, as it is still fully capable of planning routes.
+I was able to fulfil the large majority of the functional requirements set forth at the start of this project, but I did not have time to ask Aberystwyth University for their records on accessible and/or inaccessible areas on their campuses, which would have let me make sure that the OSM data is updated. This does not have any adverse effects on my system though, as it is still fully capable of planning routes.\\
+I did not have time to look into implementing any tracking-functionality either, which would have let me plan routes relative to the user's physical position. This would include running the system on an emulated mobile environment with a simulated GPS-signal, but this functionality is not needed in order for the system to be able to plan routes either.
 
-I did not have time to look into implementing any tracking-functionality, which would have let me plan routes relative to the user's physical position. This would include running the system on an emulated mobile environment with a simulated GPS-signal, but this functionality is not needed in order for the system to be able to plan routes.
+Route-suggestions (especially through buildings) could probably be significantly improved if OSM's routing-data reflected the university's records on accessibility. Right now the route-planner just assumes that it is possible to travel from one accessible entrance to another within the same building, but when I walked around the Penglais campus to try to identify possible problem-areas, I noticed that some accessible entrances were on floors only connected to other floors via stairs (Like the new automatic doors on the bottom of the Llandinam builing, opposite IBERS). This could prove potentially problematic, but I don't know how to rectify this issue without mapping the interior of buildings, or marking the door as leading to an inaccessible area in the OSM database.
 
-Route-suggestions (especially through buildings) could probably be significantly improved if OSM's routing-data reflected the university's records on accessibility. The system itself would also be made much more useful if it was able to plan routes relative to a user's location. Functionality has been added to find the accessible Node closest to a set of coordinates (eg. the user's GPS coordinates), but no tracking-systems have been tested with this system.
-
-This system is most likely unable to plan routes quickly (and using little memory) if the start and goal Nodes are very far apart. This is because path-finding algorithms that abstract the search-space into larger blocks or sectors usually can't guarantee optimal routes, but justify this by being able to find routes quickly, using little additional memory. This system is aimed at PRMs, a group which includes people like the elderly and wheelchair-users, both of which may struggle to follow longer, sub-optimal routes -- So I have made a concious decision to preserve the optimality of my algorithms and routes.
+This system is most likely unable to plan routes quickly (and using little memory) if the start and goal Nodes are very far apart. This is because path-finding algorithms that abstract the search-space into larger blocks or sectors usually can't guarantee optimal routes, but justify this by being able to find routes quickly, using little additional memory. This system is aimed at PRMs, a group which includes people like the elderly and wheelchair-users, both of which may struggle to follow longer, sub-optimal routes -- So I have made a concious decision to preserve the optimality of my algorithms and routes by abstracting the search-space less. This does lead to improved runtimes and memory-requirements, but could be improved even further by calculating path-costs between Tower Nodes before searches are performed, and ignoring Pillar Nodes altogether until the route needs to be drawn.
 
 The system is not always able to plan optimal routes. This is usually caused by missing routing-data (See Figure \ref{fig:badDataBadPath} and \ref{fig:longerRoutePRM}), or mislabelling of Nodes and Ways in the OSM database. These routes are optimal in the sense that there exists no better path in the available routing-data, but appear to be sub-optimal when viewed on the map where we are able to visualise the optimal routes ourselves.
 
@@ -55,33 +44,12 @@ If you want to see just how easy it is to update the routing-data used by this s
 \end{enumerate}
 
 
-The Pillar Nodes inside Ways are not removed or skipped until the Way is expanded. This means that the path-cost from Tower Node to Tower Node via the Pillar Nodes between them has to be calculated while the routes are being planned. If the path-cost from Tower Node to Tower Node was calculated before the searches, then the system would resemble a hierarchical path-finder more than it currently does, and runtimes and memory-use would be significantly decreased further, while still ensuring completeness and/or optimality for complete and/or optimal algorithms.
+The Pillar Nodes inside Ways are not removed or skipped until the Way is expanded. This means that the path-cost from Tower Node to Tower Node via the Pillar Nodes between them has to be calculated while the routes are being planned. If the path-cost from Tower Node to Tower Node was calculated before the searches, then the system would resemble a hierarchical path-finder more than it currently does, and runtimes and memory-use could be decreased even further, while still ensuring completeness and/or optimality for complete and/or optimal algorithms.
 
 %This project was started on Friday 24.06.2016, which was a month later than I first expected; I tried to get in touch with a few supervisors, but only a few of them replied to my emails after a couple of weeks. I feel like I've been able to finish quite a few things in the three months since I started though. I was also unable to get in touch with my supervisor for about a month while working on this project, and had no idea why until she returned and told me herself via email.
 
 \section{Future work}
 %Future work detailing your ideas about the requirements you didn't have time for.
-\textbf{NOTES: - DELETE THIS -}
-\begin{itemize}
-	\item Display route-distance on map and improve the GUI.
-	\item Automatic retrieval of Nodes and Ways from OSM.
-	\subitem Issue \#25 and \#23 (and \#10?) - GitHub
-	\item Store data in better data-structures for faster indexing and lower memory-requirements.
-	\subitem Hash table/map?
-	\subitem Eliminate the need to store Ways by filtering out inaccessible Ways, and then storing Node-connections within the Nodes themselves? Way-type might not be needed after the filtering.
-	\item Let user choose their disability/method of locomotion - eg. Manual/Motorised wheelchair, crutches, foot, bike, etc.
-	\item Implement more/better search-algorithms.
-	\subitem Google Maps, GraphHopper, etc. are able to plan routes across great distances really quickly; my algorithms probably can't do this.
-	\subitem This system is quite good at planning short routes, but probably terrible at planning longer ones. Not tested.
-	\item Update/add data to the OpenStreetMap databases to improve the usefulness and accuracy of my system's suggestions.
-	\subitem The university should be able to provide records of accessible entrances, wheelchair-ramps, etc. on campus. That might be a good place to start.
-	\item Implement localisation (eg. GPS) to make it easier for people to use the system.
-	\item Add search-functionality to let users search for buildings and places rather than forcing them to click on the map; the user might know what the place they want to go to is called, but not necessarily where it is located.
-	\item Include the data-type \textquotedblleft Relations\textquotedblright in route-planning; emphasise bus-routes.
-	\item Use services like \cite{geofabrik,osrm} to download larger map-areas than what is possible by using the export-option on openstreetmap.org (Which is what I currently do).
-	\subitem This is unnecessary if routing-data is downloaded as the system is running though.
-\end{itemize}
-
 The map does not currently display the distance of the routes it returns. It stores this value in a variable, but I was unable to find out how to print it on the map.
 
 The system works with routing-data and map-tiles stored locally. Retrieving this data from a third party\cite{geofabrik,openlayers} would make the system able to plan routes over greater distances, and make sure that it always works with updated data.

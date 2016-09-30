@@ -1,1 +1,75 @@
 \chapter{Code samples}
+\section{calculating the distance between two Nodes}
+\verb|public static double distanceBetweenPoints(double latitude1,|\\  \verb|  double longitude1, double latitude2, double longitude2){|\\
+\\
+\verb|//Distance=squareRoot((x1-y1)^2 + (x2-y2)^2)|\\
+\verb|double distance = Math.sqrt(Math.pow(latitude1-latitude2,2)+|\\
+  \verb|  Math.pow(longitude1-longitude2,2));|\\
+\\
+\verb|/*This ensures that all distances are >0 (CRUCIAL FOR PATH-COST|\\
+  \verb|  CALCULATIONS),|\\
+\verb|* but some accuracy is lost when dealing with nodes really close to|\\
+  \verb|  each other.|\\
+\verb|* UPDATE(21.July.2016): These calculations seem to work now - at least|
+  \verb|  with the path I have tested everything on. -|\\
+\verb|* - finding the distance from a node to itself will still return >0|
+  \verb|  (as it should)|\\
+\verb|*/|\\
+\\
+\verb|return Math.max(distance, Double.MIN_VALUE);|\\
+\verb|}|\\
+
+\newpage
+\section{PermittedKeys}
+public enum PermittedKeys \{\\
+	\\
+	WHEELCHAIR("wheelchair","yes"),\\
+	WHEELCHAIR\textunderscore LIM("wheelchair","limited"),\\
+	WHEELCHAIR\textunderscore DES("wheelchair","designated"),\\
+	\\
+	FOOT\textunderscore ACCESS("foot","yes"),\\
+	FOOT\textunderscore PERMISSIVE("foot","permissive"),\\
+	BIKE\textunderscore ACCESS("bicycle","yes"),\\
+	BIKE\textunderscore PERMISSIVE("bicycle","permissive"),\\
+\\
+	FOOTWAY("highway","footway"),\\
+	PEDESTRIAN("highway","pedestrian"),\\
+	CYCLEWAY("highway","cycleway"),\\
+	LIVING\textunderscore STREET("highway","living\textunderscore street"),\\
+	RESIDENTIAL("highway","residential"),\\
+	//PATH("highway","path"),\\
+	//EQUESTRIAN("highway","bridleway"),\\
+	\\
+	BUILDING("building","yes"),\\
+	UNIVERSITY\textunderscore BUILDING("building","university"),\\
+	PUBLIC\textunderscore BUILDING("building","public"),\\
+	CIVIC\textunderscore BUILDING("building","civic"),\\
+	//BRIDGE("building","bridge"),//Are bridges always accessible?\\
+	\\
+	AREA("area","yes"),\\
+	SQUARE("place","square"),//Is this the same as the Piazza in Aber?\\
+	CROSSING("highway","crossing"),\\
+	SIDEWALK\textunderscore LEFT("sidewalk","left"),\\
+	SIDEWALK\textunderscore RIGHT("sidewalk","right"),\\
+	SIDEWALK\textunderscore BOTH("sidewalk","both"),\\
+	\\
+	PARKING("amenity","parking"),\\
+	//PARKING\textunderscore DISABLED("capacity:disabled",null),\\
+	//DOCTORS("amenity","doctors"),\\
+	PARKING\textunderscore AISLE("service","parking\textunderscore aisle"),\\
+	ENTRANCE("entrance","yes");\\
+	\\
+	String key, value;\\
+	\\
+	PermittedKeys(String key, String value)\{\\
+		this.key=key;\\
+		this.value=value;\\
+	\}\\
+	\\
+	String getKey()\{\\
+		return key;\\
+	\}\\
+	String getValue()\{\\
+		return value;\\
+	\}\\
+\}\\

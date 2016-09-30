@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9) (preloaded format=pdflatex 2016.9.2)  29 SEP 2016 15:24
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9) (preloaded format=pdflatex 2016.9.2)  30 SEP 2016 16:32
 entering extended mode
 **./jok13_dissertation.tex
 (jok13_dissertation.tex
@@ -332,177 +332,153 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <24.88> not available
 [1
 
 
-] <Images/AStar_CSdept-SU.png, id=29, 1445.4pt x 782.925pt>
+] <Images/AStar_CSdept-SU.png, id=28, 1445.4pt x 782.925pt>
 File: Images/AStar_CSdept-SU.png Graphic file (type png)
 
 <use Images/AStar_CSdept-SU.png>
-Package pdftex.def Info: Images/AStar_CSdept-SU.png used on input line 54.
+Package pdftex.def Info: Images/AStar_CSdept-SU.png used on input line 43.
 (pdftex.def)             Requested size: 426.79134pt x 231.1759pt.
 
-<Images/AStar_CSdept-SU_Foot.png, id=30, 1445.4pt x 782.925pt>
+<Images/AStar_CSdept-SU_Foot.png, id=29, 1445.4pt x 782.925pt>
 File: Images/AStar_CSdept-SU_Foot.png Graphic file (type png)
 
 <use Images/AStar_CSdept-SU_Foot.png>
-Package pdftex.def Info: Images/AStar_CSdept-SU_Foot.png used on input line 56.
+Package pdftex.def Info: Images/AStar_CSdept-SU_Foot.png used on input line 45.
 
 (pdftex.def)             Requested size: 426.79134pt x 231.1759pt.
-LaTeX Font Info:    Try loading font information for OT1+pcr on input line 57.
+LaTeX Font Info:    Try loading font information for OT1+pcr on input line 46.
  ("D:\MiKTeX 2.9\tex\latex\psnfss\ot1pcr.fd"
 File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
-)
-Underfull \hbox (badness 10000) in paragraph at lines 70--72
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 76--78
-
- []
-
-[2] [3 <./Images/AStar_CSdept-SU.png> <./Images/AStar_CSdept-SU_Foot.png>])
-[4]
+) [2] [3 <./Images/AStar_CSdept-SU.png> <./Images/AStar_CSdept-SU_Foot.png>]) [
+4]
 \openout2 = `Chapter2/chapter2.aux'.
 
  (Chapter2/chapter2.tex
 Chapter 2.
-[5
+<Images/Connections_Way.png, id=40, 233.87375pt x 193.72375pt>
+File: Images/Connections_Way.png Graphic file (type png)
 
+<use Images/Connections_Way.png>
+Package pdftex.def Info: Images/Connections_Way.png used on input line 21.
+(pdftex.def)             Requested size: 209.1301pt x 173.23535pt.
 
+<Images/Connections_Way2.png, id=42, 314.17375pt x 203.76125pt>
+File: Images/Connections_Way2.png Graphic file (type png)
 
-] [6]
-Overfull \hbox (6.5988pt too wide) in paragraph at lines 66--67
-[]\OT1/ptm/m/n/10.95 A cus-tom test-graph has also been de-vel-oped, which is m
-eant to ver-ify that the search-algorithms
- []
+<use Images/Connections_Way2.png>
+Package pdftex.def Info: Images/Connections_Way2.png used on input line 24.
+(pdftex.def)             Requested size: 209.1301pt x 135.63321pt.
 
-[7] [8]
-Overfull \hbox (6.63527pt too wide) in paragraph at lines 125--126
-[]| \OT1/ptm/m/n/10.95 So-lu-tion: Fil-ter out Pillar-Nodes be-fore ap-ply-ing 
-any routing-algorithms to the routing-
- []
-
-[9]
-LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 155.
- [10] [11]
-Overfull \hbox (1.41444pt too wide) in paragraph at lines 183--184
-[]\OT1/ptm/m/n/10.95 Considered: Graph-Hop-per (Promi-nent at-tri-bu-tion + Pub
--licly ac-ces-si-ble ap-pli-ca-tion), Leaflet,
- []
-
-[12] <Images/Way_expansion-order_All.png, id=73, 365.365pt x 401.5pt>
+<Images/Way_expansion-order_All.png, id=43, 365.365pt x 401.5pt>
 File: Images/Way_expansion-order_All.png Graphic file (type png)
 
 <use Images/Way_expansion-order_All.png>
 Package pdftex.def Info: Images/Way_expansion-order_All.png used on input line 
-203.
+32.
 (pdftex.def)             Requested size: 209.1301pt x 229.81308pt.
 
-<Images/Way_expansion-order_Tower-Node.png, id=75, 365.365pt x 401.5pt>
+<Images/Way_expansion-order_Tower-Node.png, id=44, 365.365pt x 401.5pt>
 File: Images/Way_expansion-order_Tower-Node.png Graphic file (type png)
 
 <use Images/Way_expansion-order_Tower-Node.png>
 Package pdftex.def Info: Images/Way_expansion-order_Tower-Node.png used on inpu
-t line 205.
+t line 34.
 (pdftex.def)             Requested size: 209.1301pt x 229.81308pt.
+ [5
 
-<Images/Connections_Way.png, id=76, 233.87375pt x 193.72375pt>
-File: Images/Connections_Way.png Graphic file (type png)
 
-<use Images/Connections_Way.png>
-Package pdftex.def Info: Images/Connections_Way.png used on input line 213.
-(pdftex.def)             Requested size: 209.1301pt x 173.23535pt.
 
-<Images/Connections_Way2.png, id=77, 314.17375pt x 203.76125pt>
-File: Images/Connections_Way2.png Graphic file (type png)
+] [6 <./Images/Connections_Way.png> <./Images/Connections_Way2.png> <./Images/W
+ay_expansion-order_All.png> <./Images/Way_expansion-order_Tower-Node.png>] [7]
+Overfull \hbox (6.5988pt too wide) in paragraph at lines 62--63
+[]\OT1/ptm/m/n/10.95 A cus-tom test-graph has also been de-vel-oped, which is m
+eant to ver-ify that the search-algorithms
+ []
 
-<use Images/Connections_Way2.png>
-Package pdftex.def Info: Images/Connections_Way2.png used on input line 216.
-(pdftex.def)             Requested size: 209.1301pt x 135.63321pt.
-
-<Images/AStar_Through_building.png, id=78, 217.5628pt x 344.03531pt>
+[8] [9]
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 118.
+ [10] [11] [12] [13]
+<Images/AStar_Through_building.png, id=86, 217.5628pt x 344.03531pt>
 File: Images/AStar_Through_building.png Graphic file (type png)
 
 <use Images/AStar_Through_building.png>
-Package pdftex.def Info: Images/AStar_Through_building.png used on input line 2
-26.
+Package pdftex.def Info: Images/AStar_Through_building.png used on input line 1
+99.
 (pdftex.def)             Requested size: 213.39566pt x 337.46727pt.
- [13 <./Images/Way_expansion-order_All.png> <./Images/Way_expansion-order_Tower
--Node.png>] [14 <./Images/Connections_Way.png> <./Images/Connections_Way2.png> 
-<./Images/AStar_Through_building.png>]
-[15]
-Overfull \hbox (89.81415pt too wide) in paragraph at lines 255--256
-\OT1/ptm/m/n/10.95 weights. The pri-or-ity queue used in this sys-tem was im-po
-rted from the Java-library: []\OT1/pcr/m/n/10.95 java.util.PriorityQueue\OT1/pt
-m/m/n/10.95 .
+ [14] [15]
+Overfull \hbox (49.83621pt too wide) in paragraph at lines 222--223
+\OT1/ptm/m/n/10.95 The pri-or-ity queue used in this sys-tem was im-ported from
+ the Java-library: []\OT1/pcr/m/n/10.95 java.util.PriorityQueue\OT1/ptm/m/n/10.
+95 .
  []
 
-) [16]
+) [16] [17 <./Images/AStar_Through_building.png>]
 \openout2 = `Chapter3/chapter3.aux'.
 
  (Chapter3/chapter3.tex
 Chapter 3.
-[17
+[18
 
 
 
-] <Images/AStar_Missing_Node-data.png, id=100, 1445.4pt x 782.925pt>
+] <Images/AStar_Missing_Node-data.png, id=103, 1445.4pt x 782.925pt>
 File: Images/AStar_Missing_Node-data.png Graphic file (type png)
 
 <use Images/AStar_Missing_Node-data.png>
 Package pdftex.def Info: Images/AStar_Missing_Node-data.png used on input line 
-32.
+28.
 (pdftex.def)             Requested size: 426.79134pt x 231.1759pt.
- [18 <./Images/AStar_Missing_Node-data.png>] [19] <Images/AStar_Avoids_stairs.p
-ng, id=108, 1445.4pt x 782.925pt>
+ [19 <./Images/AStar_Missing_Node-data.png>] <Images/AStar_Avoids_stairs.png, i
+d=108, 1445.4pt x 782.925pt>
 File: Images/AStar_Avoids_stairs.png Graphic file (type png)
 
 <use Images/AStar_Avoids_stairs.png>
-Package pdftex.def Info: Images/AStar_Avoids_stairs.png used on input line 67.
+Package pdftex.def Info: Images/AStar_Avoids_stairs.png used on input line 49.
 (pdftex.def)             Requested size: 426.79134pt x 231.1759pt.
 
 <Images/AStar_Avoids_stairs2.png, id=109, 1445.4pt x 782.925pt>
 File: Images/AStar_Avoids_stairs2.png Graphic file (type png)
 
 <use Images/AStar_Avoids_stairs2.png>
-Package pdftex.def Info: Images/AStar_Avoids_stairs2.png used on input line 73.
+Package pdftex.def Info: Images/AStar_Avoids_stairs2.png used on input line 55.
 
 (pdftex.def)             Requested size: 426.79134pt x 231.1759pt.
- [20 <./Images/AStar_Avoids_stairs.png>]
-[21 <./Images/AStar_Avoids_stairs2.png>]) [22]
+ [20] [21 <./Images/AStar_Avoids_stairs.png> <./Images/AStar_Avoids_stairs2.png
+>] [22]) [23]
 \openout2 = `Chapter4/chapter4.aux'.
 
  (Chapter4/chapter4.tex
 Chapter 4.
-[23
+[24
 
 
 
-] <Images/Custom_graph-Inaccessible.png, id=122, 840.13875pt x 830.10126pt>
+] <Images/Custom_graph-Inaccessible.png, id=125, 840.13875pt x 830.10126pt>
 File: Images/Custom_graph-Inaccessible.png Graphic file (type png)
 
 <use Images/Custom_graph-Inaccessible.png>
 Package pdftex.def Info: Images/Custom_graph-Inaccessible.png used on input lin
-e 51.
+e 30.
 (pdftex.def)             Requested size: 426.79134pt x 421.68677pt.
 
-<Images/Custom_graph-Longest.png, id=123, 829.0975pt x 835.12pt>
+<Images/Custom_graph-Longest.png, id=126, 829.0975pt x 835.12pt>
 File: Images/Custom_graph-Longest.png Graphic file (type png)
 
 <use Images/Custom_graph-Longest.png>
-Package pdftex.def Info: Images/Custom_graph-Longest.png used on input line 58.
+Package pdftex.def Info: Images/Custom_graph-Longest.png used on input line 37.
 
 (pdftex.def)             Requested size: 426.79134pt x 429.88135pt.
 
-<Images/Custom_graph-Shortest.png, id=124, 840.13875pt x 830.10126pt>
+<Images/Custom_graph-Shortest.png, id=127, 840.13875pt x 830.10126pt>
 File: Images/Custom_graph-Shortest.png Graphic file (type png)
 
 <use Images/Custom_graph-Shortest.png>
-Package pdftex.def Info: Images/Custom_graph-Shortest.png used on input line 65
+Package pdftex.def Info: Images/Custom_graph-Shortest.png used on input line 44
 .
 (pdftex.def)             Requested size: 426.79134pt x 421.68677pt.
- [24] [25 <./Images/Custom_graph-Inaccessible.png>] [26 <./Images/Custom_graph-
-Longest.png>] [27 <./Images/Custom_graph-Shortest.png>]) [28]
+) [25] [26 <./Images/Custom_graph-Inaccessible.png>] [27 <./Images/Custom_graph
+-Longest.png>] [28 <./Images/Custom_graph-Shortest.png>]
 \openout2 = `Chapter5/chapter5.aux'.
 
  (Chapter5/chapter5.tex
@@ -511,7 +487,7 @@ Chapter 5.
 
 
 
-] [30] [31]) [32] [33
+] [30]) [31] [32
 
 
 ]
@@ -519,7 +495,7 @@ Chapter 5.
 
  (Appendix1/appendix1.tex
 Appendix A.
-) [34
+) [33
 
 
 ]
@@ -527,33 +503,128 @@ Appendix A.
 
  (Appendix2/appendix2.tex
 Appendix B.
-) [35
+
+Underfull \hbox (badness 10000) in paragraph at lines 3--21
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 3--21
+
+ []
+
+
+Overfull \hbox (13.39813pt too wide) in paragraph at lines 3--21
+[]\OT1/pcr/m/n/10.95 * but some accuracy is lost when dealing with nodes really
+ close to 
+ []
+
+
+Overfull \hbox (33.10811pt too wide) in paragraph at lines 3--21
+[]\OT1/pcr/m/n/10.95 * UPDATE(21.July.2016): These calculations seem to work no
+w - at least
+ []
+
+
+Overfull \hbox (13.39813pt too wide) in paragraph at lines 3--21
+[]\OT1/pcr/m/n/10.95 * - finding the distance from a node to itself will still 
+return >0
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 3--21
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 3--21
+
+ []
+
+[34
 
 
 
-] (jok13_dissertation.bbl
+]
+LaTeX Font Info:    Try loading font information for OMS+ptm on input line 24.
+ ("D:\MiKTeX 2.9\tex\latex\psnfss\omsptm.fd"
+File: omsptm.fd 
+)
+LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10.95> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 24.
+)
+Underfull \hbox (badness 10000) in paragraph at lines 24--131
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 24--131
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 24--131
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 24--131
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 24--131
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 24--131
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 24--131
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 24--131
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 24--131
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 24--131
+
+ []
+
+[35] [36] (jok13_dissertation.bbl
 Underfull \hbox (badness 10000) in paragraph at lines 93--96
 \OT1/ptm/m/n/10.95 blob / master / mapsforge-[]samples-[]awt / src / main / jav
 a / org / mapsforge / samples / awt / Samples .
  []
 
-[36
+[37
 
 
-] [37]) 
+] [38]) 
 AED: lastpage setting LastPage
-[38] (jok13_dissertation.aux (cover.aux) (acknowledgements.aux) (abstract.aux)
+[39] (jok13_dissertation.aux (cover.aux) (acknowledgements.aux) (abstract.aux)
 (Chapter1/chapter1.aux) (Chapter2/chapter2.aux) (Chapter3/chapter3.aux)
 (Chapter4/chapter4.aux) (Chapter5/chapter5.aux) (Appendix1/appendix1.aux)
 (Appendix2/appendix2.aux)) ) 
 Here is how much of TeX's memory you used:
- 3410 strings out of 493334
- 44893 string characters out of 3145267
- 111240 words of memory out of 3000000
- 6752 multiletter control sequences out of 15000+200000
+ 3428 strings out of 493334
+ 45177 string characters out of 3145267
+ 111238 words of memory out of 3000000
+ 6767 multiletter control sequences out of 15000+200000
  32950 words of font info for 72 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 40i,11n,45p,1051b,350s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 40i,11n,45p,1196b,350s stack positions out of 5000i,500n,10000p,200000b,50000s
 {D:/MiKTeX 2.9/fonts/enc/dvips/fontname/8r.enc}<D:/
 MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><D:/MiKTeX 2.9/fonts/type1
 /public/amsfonts/cm/cmmi10.pfb><D:/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cm
@@ -564,9 +635,9 @@ iKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy8.pfb><D:/MiKTeX 2.9/fonts/type1/u
 rw/courier/ucrr8a.pfb><D:/MiKTeX 2.9/fonts/type1/urw/times/utmb8a.pfb><D:/MiKTe
 X 2.9/fonts/type1/urw/times/utmr8a.pfb><D:/MiKTeX 2.9/fonts/type1/urw/times/utm
 r8a.pfb><D:/MiKTeX 2.9/fonts/type1/urw/times/utmri8a.pfb>
-Output written on jok13_dissertation.pdf (44 pages, 2873475 bytes).
+Output written on jok13_dissertation.pdf (45 pages, 2883714 bytes).
 PDF statistics:
- 220 PDF objects out of 1000 (max. 8388607)
+ 223 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  66 words of extra memory for PDF output out of 10000 (max. 10000000)
 

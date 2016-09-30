@@ -80,46 +80,4 @@ public class AStar extends InformedSearch{
 		priorityQueue.clear();
 		return getPath(expansionList,startNode,goalNode);
 	}
-
-	//	/**
-	//	 * TODO Not really used anymore
-	//	 * TODO Make sure that traveled distance is also taken into account here. distance=traveledDistance+distanceToGoalNode. Otherwise, this is greedy Best-First search, not A*
-	//	 * **INSERTION SORT**
-	//	 * Sorts a list of nodes by measuring the distance between each unsorted node and a goal node,
-	//	 * and inserting the unsorted nodes into the list of sorted nodes one at a time.
-	//	 * @param sortedNodes The list of nodes that have already been sorted
-	//	 * @param unsortedNodes The list of nodes to be sorted into the list of sorted nodes
-	//	 * @param goalNd The target node which will determine which order the nodes are sorted in {@link goalNode}
-	//	 * @return A list of sorted nodes, where the nodes with the shortest distance to the goal are put last
-	//	 * @throws NullPointerException
-	//	 */
-	//	protected static List<DistanceMetricNode> sortByDistance(List<DistanceMetricNode> sortedNodes, List<DistanceMetricNode> unsortedNodes) throws NullPointerException{
-	//
-	//		double unsortedNodeDistance;
-	//
-	//		if(sortedNodes.isEmpty()&&!unsortedNodes.isEmpty()){
-	//			if(unsortedNodes.get(unsortedNodes.size()-1).getDistanceToGoal()<=0){
-	//				unsortedNodes.get(unsortedNodes.size()-1).setGoalDistance(Search.distanceBetweenPoints(unsortedNodes.get(unsortedNodes.size()-1).getLatitude(), unsortedNodes.get(unsortedNodes.size()-1).getLongitude(), goalNode.getLatitude(), goalNode.getLongitude()));
-	//			}
-	//			sortedNodes.add(unsortedNodes.remove(unsortedNodes.size()-1));//to pop the last element of the list. Moves fewer (none) elements in larger lists 
-	//		}
-	//
-	//		for(DistanceMetricNode unsortedNode:unsortedNodes){//next unsorted node
-	//			if(unsortedNode.getDistanceToGoal()<=0){
-	//				unsortedNode.setGoalDistance(Search.distanceBetweenPoints(unsortedNode.getLatitude(), unsortedNode.getLongitude(), goalNode.getLatitude(), goalNode.getLongitude()));
-	//			}
-	//			unsortedNodeDistance=(unsortedNode.getDistanceTravelled()+unsortedNode.getDistanceToGoal());
-	//			for(int x=sortedNodes.size()-1; x>=0;x--){//next sorted node
-	//				if(unsortedNodeDistance<=(sortedNodes.get(x).getDistanceTravelled()+sortedNodes.get(x).getDistanceToGoal())){
-	//					sortedNodes.add(x+1, unsortedNode);//reverse order. smallest at the back
-	//					break;
-	//				}else if(x==0){
-	//					sortedNodes.add(0, unsortedNode);
-	//					break;
-	//				}
-	//			}
-	//
-	//		}
-	//		return sortedNodes;
-	//	}
 }
